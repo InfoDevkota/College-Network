@@ -1,0 +1,8 @@
+install dependencies -> npm install
+run mongod -> sudo systemctl start mogod
+run the server -> npm start
+
+Good to go.
+
+
+check Read-Me directory for API docs.
