@@ -9,7 +9,7 @@ const postSchema = new Schema(
         },
         postedBy:{
             type: Schema.Types.ObjectId,
-            ref: "Student",
+            ref: "User",
             required: true
         },
         imageUrl: {
@@ -18,6 +18,9 @@ const postSchema = new Schema(
         date:{
             type: String,
             required: true
+        },
+        broadcast:{
+            type:Boolean,
         }
     },
     { timestamps: true }

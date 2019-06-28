@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const Student = require("../model/student");
+const User = require("../model/user");
 
 module.exports = (req,res,next) => {
     const authHeader = req.get('Authorization');
@@ -18,14 +18,23 @@ module.exports = (req,res,next) => {
     }
     if(!decodedToken){
         const error = new Error('Not authenticated');
+        console.log("Not auth");
         error.statusCode = 401;
         throw error;
     }
-    req.studentId = decodedToken.studentId;
-    Student.findById(req.studentId)
-    .then(student =>{
-        return req.student = student;
-    }).then(student =>{
-        next();
-    });
+    req.userId = decodedToken.userId;
+    User.findById(decodedToken.userId)
+    .then(user =>{
+        if(user){
+            console.log(user);
+            req.user = user
+            next();
+        } else {
+            const error = new Error('Not authenticated');
+            error.statusCode = 401;
+            throw error;
+        }
+    }).catch(error =>{
+        next(error);
+    })
 }

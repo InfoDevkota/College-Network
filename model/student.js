@@ -21,7 +21,10 @@ const studentSchema = new Schema({
     posts: [{
         type: Schema.Types.ObjectId,
         ref:"Post"
-    }]
+    }],
+    semester:{
+        type: String
+    }
 });
 
 let User = module.exports = mongoose.model('Student', studentSchema);

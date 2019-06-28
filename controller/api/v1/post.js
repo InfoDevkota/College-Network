@@ -1,5 +1,5 @@
 const Post = require("../../../model/post");
-const Student = require('../../../model/student');
+const User = require('../../../model/user');
 const { validationResult } = require('express-validator');
 
 exports.postCreatePost = (req,res,next) =>{
@@ -16,15 +16,15 @@ exports.postCreatePost = (req,res,next) =>{
     const content = req.body.content;
     const post = new Post({
         content: content,
-        postedBy: req.studentId,
+        postedBy: req.userId,
         date: date
     })
     return post.save()
     .then(post =>{
-        Student.findById(req.studentId)
-        .then(student =>{
-            student.posts.push(post)
-            return student.save();
+        User.findById(req.userId)
+        .then(user =>{
+            user.posts.push(post)
+            return user.save();
         })
         .then(postCreator =>{
             res.status(201).json({

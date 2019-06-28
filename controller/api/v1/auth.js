@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 
-const Student = require('../../../model/student');
+const User = require('../../../model/user');
 
 exports.getSignup = (req,res,next) => {
     res.render('signup', {
@@ -23,7 +23,7 @@ exports.postSignup = (req,res,next) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    Student.findOne({ email: email })
+    User.findOne({ email: email })
     .then(user => {
         if(user){
             const error = new Error('Email Already Exist');
@@ -40,15 +40,15 @@ exports.postSignup = (req,res,next) => {
         return  bcrypt.hash(password, 12);
     })
     .then(hashedPassword => {
-        const student = new Student({
+        const user = new User({
             email: email,
             name: name,
             password: hashedPassword
         });
-        return student.save();
+        return user.save();
     })
     .then(result=>{
-        res.status(201).json({ message: 'User created!', studentId: result._id });
+        res.status(201).json({ message: 'User created!', userId: result._id });
     })
     .catch(error =>{
         if (!error.statusCode) {
@@ -69,25 +69,25 @@ exports.postLogin = (req,res,next) => {
     const email = req.body.email;
     const password = req.body.password;
     
-    Student
+    User
     .findOne({ email: email })
-    .then(student => {
-        if(!student) {
-            const error = new Error('A Student with this email could not be found.');
+    .then(user => {
+        if(!user) {
+            const error = new Error('A User with this email could not be found.');
             error.statusCode = 401;
             throw error;
         }
-        bcrypt.compare(password, student.password)
+        bcrypt.compare(password, user.password)
         .then(isMatched => {
             if(isMatched) {
                 const token = jwt.sign(
                     {
-                        email: student.email,
-                        studentId: student._id.toString()
+                        email: user.email,
+                        userId: user._id.toString()
                     },
                     'ThisIsASecretKeyAndKey'
                 );
-                res.status(200).json({ token: token, studentId: student._id.toString() });
+                res.status(200).json({ token: token, userId: user._id.toString() });
             } else {
                 const error = new Error('Wrong password!');
                 error.statusCode = 401;
