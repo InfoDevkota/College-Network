@@ -7,6 +7,11 @@ const multer = require('multer');
 // get env variables
 require('dotenv/config');
 
+
+mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => {
+    console.log('connected to DB ..')
+})
+
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
 const apiRoutes = require('./routes/api/api');
@@ -92,11 +97,8 @@ app.use((req,res,next) => {
     res.end();
 })
 
-mongoose
-.connect(process.env.DB_CONNECTION, { useNewUrlParser: true })
-.then(result => {
-    const server = app.listen(4080);
-    chatRoutes(server);//Check
-    console.log("Server Started at Port 4080");
-})
-.catch(error => console.log(error));
+
+const server = app.listen(process.env.port || 4080, () => {
+    console.log('now listening for requests...')
+});
+chatRoutes(server);
