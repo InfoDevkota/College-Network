@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Chat</title>
+        <script src="/static/socket.io.js"></script>
+        <link rel="stylesheet" href="/static/style.css">
+        <script>
+            //Connecting To socket.io
+            let name;
+            var socket = io.connect("http://localhost:4080",
+                {
+                        path: "/api/v1/socket.io",
+                        query: {token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQHRlc3QuY29tIiwidXNlcklkIjoiNWQxNzQzY2IxM2RmYzcwY2ZmOTI1OWQ5IiwiaWF0IjoxNTYxODA1Nzg3fQ.fgWgu1E9YiMR2uGTZOYYxa7ZNrg21X4yFwSw4gnXKVQ"}
+                },
+            );
+
+            var messageNoti = new Audio('/static/noti2.mp3');
+            var userJoinNoti = new Audio('/static/noti1.mp3')
+
+            let sendMessage = () =>{
+                    let message = document.getElementById('inputMessage').value;
+                    if(message.length == 0){
+                            return;
+                    }
+                    socket.emit("new message",message);
+
+                    var sendHolder = document.getElementById('send');
+                    var sendHolder2 = sendHolder.cloneNode(true);
+                    sendHolder2.childNodes[1].innerHTML = message;
+                    document.getElementById('chatHolder').appendChild(sendHolder2);
+                    document.getElementById('inputMessage').value ="";
+            };
+
+            let recivedMessage = (sender, message) =>{
+                    var recivedHolder = document.getElementById('recived');
+                    var recivedHolder = recivedHolder.cloneNode(true);
+                    recivedHolder.childNodes[1].innerHTML = sender;
+                    recivedHolder.childNodes[3].innerHTML = message;
+                    document.getElementById('chatHolder').appendChild(recivedHolder);
+            }
+
+            let info = (user, message) => {
+                    var infoHolder = document.getElementById('info');
+                    var infoHolder = infoHolder.cloneNode(true);
+                    infoHolder.childNodes[1].innerHTML = user + " " + message;
+                    document.getElementById('chatHolder').appendChild(infoHolder);
+            }
+
+            let onlineUser = () =>{
+                document.getElementById('userList').innerHTML = "";
+                    var list = document.createElement('ul');
+                    let users = 0;
+                    clients.forEach(element => {
+                            users++;
+                        var item = document.createElement('li');
+                        item.appendChild(document.createTextNode(element));
+                        list.appendChild(item);
+                    });
+                    document.getElementById('userNo').innerHTML = users;
+                    document.getElementById('userList').appendChild(list);
+            }
+
+
+            socket.on("Start_Chat",function(){
+                alert("Ready!");
+            })
+            socket.on("error",function(){
+                alert("Error");
+            })
+            socket.on("new message", (data) => {
+                        messageNoti.play();
+                        recivedMessage(data.username, data.message);
+                        //socket.emit("new message","hello");
+            });
+
+            socket.on("user joined", (data) => {
+                        userJoinNoti.play();
+                        onlineUser();
+                        info(data.username, "Joined the chat.");
+            });
+
+            socket.on("user left", (data) => {
+                        onlineUser();
+                        info(data.username, "is Disconnected.");
+            });
+
+            socket.on("userList", (data) => {
+                        onlineUser();
+            });
+        </script>
+</head>
+
+<body>
+        <div class="info">
+                <span>Valid till May 19, 2019</span>
+        </div>
+        <div class="wrap">
+                <div id="main-content">
+                        <div id="hidden" style="display: none;">
+                                <div id="recived">
+                                        <b>Sender</b> : <message>Hello</message>
+                                </div>
+                                <div style="text-align:right" id="send">
+                                        <span>Hi</span> : <b>me</b>
+                                </div>
+                                <div style="text-align:center" id="info">
+                                        <span>Info</span>
+                                </div>
+                        </div>
+                        <div id="chatHolder">
+                        </div>
+                        <div class="push"></div>
+
+
+                </div>
+                <div id="sidebar-left">
+                        <h2>Online Users [<span id="userNo"></span>]</h2>
+                        <div id="userList"></div>
+                </div>
+                <!-- <div id="sidebar-right">
+                        <p>Right Sidebar</p>
+                </div> -->
+        </div>
+        <div id="footer">
+                <input id="inputMessage" name="message" type="text" />
+                <button onclick="sendMessage()" type="submit" name="submit">Send</button>
+        </div>
+</body>
+</html>
+<script>
+        let input = document.getElementById("inputMessage");
+            input.addEventListener("keyup", function(event) {
+                // Number 13 is the "Enter" key on the keyboard
+                if (event.keyCode === 13) {
+                        event.preventDefault();
+                        sendMessage();
+                }
+            });
+</script>

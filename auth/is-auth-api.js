@@ -26,7 +26,6 @@ module.exports = (req,res,next) => {
     User.findById(decodedToken.userId)
     .then(user =>{
         if(user){
-            console.log(user);
             req.user = user
             next();
         } else {

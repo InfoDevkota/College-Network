@@ -1,36 +1,9 @@
 <% if(isAuth) { %>
 	<h1>
-		<%= name %>
+		Welcome Admin
 	</h1>
 <% } else {%>
 	<div>
 		<a href="/login" title="">Login</a>
 	</div>
 <%} %>
-
-
-<% if(isAuth) { %>
-    <form action="/createPost" method="POST">
-        <div>
-            <label for="content">Content</label>
-            <textarea name="content" id="" cols="30" rows="10"></textarea>
-        </div>
-        <button type="submit">Post</button>
-    </form>
-<% } %>
-
-<% if(isAuth) { %>
-    <% if(posts.length > 0){ %>
-        <% for (let post of posts) { %>
-            <div>
-                <b>At: <%= post.date %></b>
-                <p><%= post.content %></p>
-                <% if(post.postedBy.userName) { %>
-                    <b>By: <a href="/<%= post.postedBy.userName %>"> <%= post.postedBy.name %></a></b>
-                <%} else {%>
-                    <b>By: <%= post.postedBy.name %></b>
-                <% } %>
-            </div>
-        <% } %>
-    <% } %>
-<% } %>

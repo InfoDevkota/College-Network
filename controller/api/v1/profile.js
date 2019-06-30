@@ -1,4 +1,3 @@
-const Student = require('../../../model/student');
 const User = require('../../../model/user');
 const Department = require('../../../model/department');
 const Semester = require('../../../model/semester');
@@ -81,7 +80,7 @@ exports.getProfileUpdate = (req,res,next) =>{
     let sections;
     let userTypes;
 
-    getOptions = () => {
+    async function getOptions() {
         Department.find()
         .then(allDepartments =>{
             departments = allDepartments;
@@ -96,21 +95,22 @@ exports.getProfileUpdate = (req,res,next) =>{
         })
         UserType.find()
         .then(allUserType =>{
-            userType = allUserType;
+            userTypes = allUserType;
         })
         return true;
     }
     getOptions()
     .then(bool =>{
+        console.log("response");
         User.findById(req.userId)
         .select('-password -posts')
         .then(user =>{
             if(user){
                 res.status(201).json({
-                    message: 'profile fetch successfully!',
+                    message: 'Success',
                     user: user,
                     departments: departments,
-                    semesters: sections,
+                    semesters: semesters,
                     sections: sections,
                     userTypes: userTypes
                 });
@@ -145,6 +145,34 @@ exports.putMe = (req,res,next) =>{
     .then(result =>{
         res.status(201).json({
             message: 'profile updated successfully!',
+            user: result
+        });
+    })
+    .catch(error => {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    });
+
+}
+
+exports.putProfilePic = (req,res,next) =>{
+    let imageLink = "";
+    if(req.file){
+        imageLink = req.file.path;
+    }
+    User.findById(req.userId)
+    .select('-posts -password')
+    .then(user =>{
+        user.profileImage = imageLink;
+
+        req.user = user;
+        return user.save();
+    })
+    .then(result =>{
+        res.status(201).json({
+            message: 'profile pic updated successfully!',
             user: result
         });
     })

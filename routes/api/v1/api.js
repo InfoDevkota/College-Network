@@ -12,6 +12,10 @@ router.get("/",(req,res,next)=>{
     res.end();
 });
 
+router.get("/chat",(req,res,next)=>{
+    res.render('chatindex');
+});
+
 router.use(authRoutes);
 router.use(postRoutes);
 router.use(profileRoutes);

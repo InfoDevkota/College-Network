@@ -6,8 +6,10 @@ const isAuth = require("../../../auth/is-auth-api");
 const router = express.Router();
 
 router.get("/me",isAuth,profileController.getMe);
+router.get("/addInfo",isAuth,profileController.getProfileUpdate);//Call when user login to fill details
 router.put("/me",isAuth,profileController.putMe);
 router.get("/profile/:username",isAuth,profileController.getProfile);
 router.get("/profileById/:userId",isAuth,profileController.getProfileById);
+router.put("/profilePic",isAuth,profileController.putProfilePic)
 
 module.exports = router;

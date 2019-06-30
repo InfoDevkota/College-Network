@@ -3,18 +3,44 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
+const multer = require('multer');
 
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
-const postRoutes = require('./routes/post');
-const profileRoutes = require('./routes/profile');
 const apiRoutes = require('./routes/api/api');
+const adminRoutes = require('./routes/admin');
+const chatRoutes = require('./routes/api/v1/chat');//Check
 
 const Student = require('./model/student');
 
 const app = express();
 
+const fileStorage = multer.diskStorage({
+    destination: (req,file,callback) =>{
+        callback(null,'images');
+    },
+    filename: (req,file,callback) =>{
+        callback(null, new Date().toISOString() + '-' + file.originalname);
+    }
+});
+
+const fileFilter = (req,file,callback) => {
+    if(
+        file.mimetype === 'image/png' ||
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/jpeg'
+    ){
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
+}
+
 app.use(bodyParser.json());
+app.use(
+    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+);
+app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/api",apiRoutes);
 
 app.set('view engine', 'ejs');
@@ -51,10 +77,10 @@ app.use((req,res,next) => {
 
 
 app.use('/', express.static(path.join(__dirname, 'static')));
+app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use(homeRoutes);
+app.use("/admin",adminRoutes);
 app.use(authRoutes);
-app.use(postRoutes);
-app.use(profileRoutes);
 
 app.use((req,res,next) => {
     console.log("404 not Found.");
@@ -67,7 +93,8 @@ app.use((req,res,next) => {
 mongoose
 .connect('mongodb://localhost/collegeNetwork')
 .then(result => {
-    app.listen(4080);
+    const server = app.listen(4080);
+    chatRoutes(server);//Check
     console.log("Server Started at Port 4080");
 })
 .catch(error => console.log(error));

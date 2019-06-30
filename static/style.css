@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    padding: 20px 0 0 0;
+ }
+ 
+ p {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    text-align: center;
+    color: #444;
+    margin: 20px;
+    padding: 150px 0;
+ }
+ 
+ #main-content {
+    background-color: #eef3f7;
+    min-height:50vh;
+    max-height: 87vh;
+    overflow-y: auto;
+ }
+ 
+ #sidebar-left {
+    background-color: #e3e9ee;
+ }
+ 
+ #sidebar-right {
+    background-color: #dbe1e6;
+ }
+ 
+ /*Base Mobile Layout*/
+ .wrap {
+    width: 90%;
+    margin: 0 auto;
+ }
+ 
+ .push, #footer {
+         max-width: 10000px;
+     text-align: center;
+ 
+         position: absolute;
+     left: 0;
+         bottom: 20px;
+     width: 100%;
+     overflow: hidden;
+ }
+
+ .info {
+    width: 90%;
+    text-align: center;
+ }
+ 
+ #main-content, #sidebar-left, #sidebar-right {
+    width: 100%;
+    float: left;
+ }
+ 
+ /*3 Column Layout*/
+ @media only screen and (min-width: 1024px) {
+    .wrap {
+        width: 1024px;
+        margin: 0 auto;
+    }
+ 
+    #main-content {
+        width: 50%;
+        float: left;
+    }
+ 
+    #sidebar-left {
+        width: 25%;
+        float: left;
+    }
+ 
+    #sidebar-right {
+        width: 25%;
+        float: left;
+    }
+ }
+ 
+ /*Wide Layout*/
+ @media only screen and (min-width: 1200px) {
+    .wrap {
+        width: 1140px;
+        margin: 0 auto;
+    }
+ }
+ 
+ /*Move Sidebar Position*/
+ @media only screen and (min-width: 1024px) {
+    .wrap, #main-content, #sidebar-left, #sidebar-right {
+        position: relative;
+    }
+ 
+    #main-content, #sidebar-left, #sidebar-right {
+        top: 0;
+    }
+ 
+    #sidebar-right {
+        right: 0;
+    }
+ 
+    #sidebar-left {
+        left: -50%; /*Width of #main-content*/
+    }
+ 
+    #main-content {
+        left: 25%; /*Width of #left-sidebar*/
+    }
+ }
+ 
+ /*Optional 2 Column Layout*/
+ @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    #sidebar-right {
+        width: 50%;
+    }
+    #sidebar-left {
+        width: 50%;
+    }
+    #main-content {
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+ }
+ 

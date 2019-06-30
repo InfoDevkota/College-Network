@@ -5,6 +5,9 @@ const userTypeSchema = new Schema({
     name: {
         type: String,
         required: true
+    },
+    id: {
+        type:String
     }
 });
 

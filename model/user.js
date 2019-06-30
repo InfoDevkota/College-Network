@@ -18,6 +18,9 @@ const userSchema = new Schema({
     userName: {
         type: String
     },
+    profileImage: {
+        type: String
+    },
     posts: [{
         type: Schema.Types.ObjectId,
         ref: "Post"
