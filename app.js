@@ -8,7 +8,7 @@ const multer = require('multer');
 require('dotenv/config');
 
 
-mongoose.connect(process.env.DB_CONNECTION, { useNewUrlParser: true }, () => {
+mongoose.connect(process.env.DB_CONNECTION, { useCreateIndex: true, useNewUrlParser: true }, () => {
     console.log('connected to DB ..')
 })
 
