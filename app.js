@@ -91,7 +91,7 @@ app.use((req,res,next) => {
 })
 
 mongoose
-.connect('mongodb://localhost/collegeNetwork', { useNewUrlParser: true })
+.connect(process.env.DB_CONNECTION, { useNewUrlParser: true })
 .then(result => {
     const server = app.listen(4080);
     chatRoutes(server);//Check
