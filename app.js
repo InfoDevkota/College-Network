@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
 const multer = require('multer');
+// get env variables
+require('dotenv/config');
 
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
