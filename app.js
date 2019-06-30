@@ -98,7 +98,7 @@ app.use((req,res,next) => {
 })
 
 
-const server = app.listen(process.env.port || 4080, () => {
+const server = app.listen(process.env.PORT || 4080, () => {
     console.log('now listening for requests...')
 });
 chatRoutes(server);
