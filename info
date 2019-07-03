@@ -1,0 +1,2 @@
+start is special, to run other then start, let say 'start-server', use npm run start-server
+to install only for development 'npm install package --save-dev

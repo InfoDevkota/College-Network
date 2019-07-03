@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
 const multer = require('multer');
+require('dotenv/config');
 
 const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
@@ -79,7 +80,7 @@ app.use((req,res,next) => {
 app.use('/', express.static(path.join(__dirname, 'static')));
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use(homeRoutes);
-app.use("/admin",adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(authRoutes);
 
 app.use((req,res,next) => {
@@ -91,10 +92,10 @@ app.use((req,res,next) => {
 })
 
 mongoose
-.connect('mongodb://localhost/collegeNetwork')
+.connect(process.env.DB_CONNECTION, { useCreateIndex: true, useNewUrlParser: true })
 .then(result => {
-    const server = app.listen(4080);
+    const server = app.listen(process.env.PORT || 4080);
     chatRoutes(server);//Check
-    console.log("Server Started at Port 4080");
+    console.log("Server Started at Port " + (process.env.PORT || 4080));
 })
 .catch(error => console.log(error));
