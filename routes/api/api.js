@@ -15,5 +15,6 @@ router.use((req, res, next) => {
 });
 
 router.use("/v1", v1Routes);
+//router.use("/v2", v2Routes);//Just to answer why this api.js?
 
 module.exports = router;

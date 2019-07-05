@@ -4,12 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../../../model/user');
 
-exports.getSignup = (req,res,next) => {
-    res.render('signup', {
-        student: true
-    })
-}
-
 exports.postSignup = (req,res,next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
@@ -87,7 +81,7 @@ exports.postLogin = (req,res,next) => {
                     },
                     'ThisIsASecretKeyAndKey'
                 );
-                res.status(200).json({ token: token, userId: user._id.toString() });
+                res.status(200).json({ token: token, userId: user._id.toString(), name:user.name });
             } else {
                 const error = new Error('Wrong password!');
                 error.statusCode = 401;

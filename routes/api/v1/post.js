@@ -15,6 +15,9 @@ router.post(
             .trim()
             .isLength({min:1})
     ],
-    postController.postCreatePost);
+    postController.postCreatePost
+);
+router.get("/post/:postId", isAuth, postController.getPost);
+router.put("/post/:postId", isAuth, postController.putPost);
 
 module.exports = router;

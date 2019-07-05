@@ -44,24 +44,65 @@ exports.postCreatePost = (req,res,next) =>{
 exports.getPosts = (req,res,next) =>{
     const currentPage = parseInt(req.query.page) || 1;
     const perPage =  parseInt(req.query.size) || 10;
+    let totalPosts;
     
     Post.find()
-    .sort({date:-1})
-    .skip((currentPage - 1) * perPage)
-    .limit(perPage)
-    .populate('postedBy', 'name _id')
-    .then(allPosts =>{
-        return allPosts;
+    .countDocuments()
+    .then(postNumbers => {
+        totalPosts = postNumbers;
+        return true;
     })
-    .then(posts =>{
+    .then(bool =>{
+        Post.find()
+        .sort({date:-1})
+        .skip((currentPage - 1) * perPage)
+        .limit(perPage)
+        .populate('postedBy', 'name _id')
+        .then(allPosts =>{
+            return allPosts;
+        })
+        .then(posts =>{
+            res.status(200).json({
+                message: 'Fetched posts successfully.',
+                posts: posts,
+                totalPosts: totalPosts
+            });
+        }).catch(error =>{
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            next(error);
+        })
+    })
+}
+
+exports.getPost = (req,res,next) =>{
+    let postId = req.params.postId;
+    Post.findById(postId)
+    .then(post=>{
         res.status(200).json({
-            message: 'Fetched posts successfully.',
-            posts: posts
-          });
-    }).catch(error =>{
-        if (!error.statusCode) {
-            error.statusCode = 500;
+            message: 'post fetched successfully.',
+            post: post
+        });
+    })
+}
+
+exports.putPost = (req,res,next) =>{
+    const content = req.body.content;
+    let postId = req.params.postId;
+    Post.findById(postId)
+    .then(post=>{
+        if(post.postedBy != req.userId){
+            res.status(405).json({
+                message: 'You have no permission to edit this post.'
+            });
+        } else {
+            post.content = content;
+            post.save();
+            res.status(201).json({
+                message: 'post successfully editted.',
+                post: post
+            });
         }
-        next(error);
     })
 }
