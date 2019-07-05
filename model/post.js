@@ -12,6 +12,13 @@ const postSchema = new Schema(
             ref: "User",
             required: true
         },
+        likes:[{
+            type: Schema.Types.ObjectId,
+            ref: "User"
+        }],
+        totalLike:{
+            type:Number
+        },
         imageUrl: {
             type: String
         },
@@ -21,6 +28,9 @@ const postSchema = new Schema(
         },
         broadcast:{
             type:Boolean,
+        },
+        liked:{
+            type:Boolean
         }
     },
     { timestamps: true }

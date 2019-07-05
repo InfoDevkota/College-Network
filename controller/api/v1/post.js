@@ -59,6 +59,14 @@ exports.getPosts = (req,res,next) =>{
         .limit(perPage)
         .populate('postedBy', 'name _id')
         .then(allPosts =>{
+            allPosts.forEach(element => {
+                element.liked=false;
+                element.likes.forEach(user =>{
+                    if(user == req.userId){
+                        element.liked = true;
+                    }
+                })
+            });
             return allPosts;
         })
         .then(posts =>{
@@ -101,6 +109,65 @@ exports.putPost = (req,res,next) =>{
             post.save();
             res.status(201).json({
                 message: 'post successfully editted.',
+                post: post
+            });
+        }
+    })
+}
+
+exports.putLike = (req,res,next) =>{
+    let postId = req.params.postId;
+    Post.findById(postId)
+    .then(post =>{
+        let liked = false; 
+        post.likes.forEach(user =>{
+            if(user = req.userId){
+                liked = true;
+            }
+        })
+        if(!liked){
+            likes = post.totalLike + 1;
+            post.likes.push(req.userId);
+            post.totalLike = likes;
+            post.save();
+            res.status(201).json({
+                message: 'post successfully liked.',
+                post: post
+            });
+        } else {
+            res.status(405).json({
+                message: 'Already liked.',
+                post: post
+            });
+        }
+    }).catch(error =>{
+        console.log(error);
+        next(error);
+    })
+}
+
+exports.putUnLike = (req,res,next) =>{
+    let postId = req.params.postId;
+    Post.findById(postId)
+    .then(post =>{
+        let yes = false; 
+        post.likes.forEach(user =>{
+            if(user = req.userId){
+                yes = true;
+            }
+        })
+        if(yes){
+            likes = post.totalLike - 1;
+            post.likes.pop(req.userId);
+            post.totalLike = likes;
+            post.save();
+            res.status(201).json({
+                message: 'post successfully Unliked.',
+                post: post
+            });
+        } else {
+            res.status(405).json({
+                message: 'cannot Unliked.',
                 post: post
             });
         }
