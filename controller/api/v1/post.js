@@ -173,3 +173,22 @@ exports.putUnLike = (req,res,next) =>{
         }
     })
 }
+
+exports.deletePost = (req,res,next) =>{
+    let postId = req.params.postId;
+    Post.findById(postId)
+    .then(post=>{
+        if(post.postedBy != req.userId){
+            res.status(405).json({
+                message: 'You have no permission to delete this post.'
+            });
+        } else {
+            Post.findByIdAndDelete(postId)
+            .then(bool =>{
+                res.status(202).json({
+                    message: 'post successfully deleted.'
+                });
+            })
+        }
+    })
+}

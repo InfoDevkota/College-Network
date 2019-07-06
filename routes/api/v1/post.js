@@ -21,5 +21,6 @@ router.get("/post/:postId", isAuth, postController.getPost);
 router.put("/post/:postId", isAuth, postController.putPost);
 router.put("/like/:postId", isAuth, postController.putLike);
 router.put("/unlike/:postId", isAuth, postController.putUnLike);
+router.delete("/post/:postId", isAuth, postController.deletePost);
 
 module.exports = router;
