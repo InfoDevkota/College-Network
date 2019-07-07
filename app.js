@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const path = require('path');
 const multer = require('multer');
+const cors = require('cors');
+
 require('dotenv/config');
 
 const authRoutes = require('./routes/auth');
@@ -36,7 +38,7 @@ const fileFilter = (req,file,callback) => {
         callback(null, false);
     }
 }
-
+app.use(cors());
 app.use(bodyParser.json());
 app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
