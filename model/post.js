@@ -16,8 +16,17 @@ const postSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "User"
         }],
+        comments:[{
+            type: Schema.Types.ObjectId,
+            ref: "Comment"
+        }],
+        totalComments:{
+            type: Number,
+            default:0
+        },
         totalLike:{
-            type:Number
+            type:Number,
+            default:0
         },
         imageUrl: {
             type: String

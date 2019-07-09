@@ -2,6 +2,7 @@ const express = require('express');
 const { body } = require('express-validator');
 
 const postController = require("../../../controller/api/v1/post");
+const commentController = require("../../../controller/api/v1/comment");
 const isAuth = require("../../../auth/is-auth-api");
 
 const router = express.Router();
@@ -22,5 +23,8 @@ router.put("/post/:postId", isAuth, postController.putPost);
 router.put("/like/:postId", isAuth, postController.putLike);
 router.put("/unlike/:postId", isAuth, postController.putUnLike);
 router.delete("/post/:postId", isAuth, postController.deletePost);
+router.post("/post/:postId/comment", isAuth, commentController.postComment);
+router.put("/comment/:commentId", isAuth, commentController.putComment);
+router.delete("/comment/:commentId", isAuth, commentController.deleteComment);
 
 module.exports = router;

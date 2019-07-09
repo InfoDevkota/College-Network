@@ -58,6 +58,10 @@ exports.getPosts = (req,res,next) =>{
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
         .populate('postedBy', 'name _id')
+        .populate({
+            path: 'comments',
+            populate: {path: 'commentBy', select: 'name _id'}//multiple level population
+        })//Here we populate comments first then commentBy(user) with in that comment
         .then(allPosts =>{
             allPosts.forEach(element => {
                 element.liked=false;
@@ -87,6 +91,11 @@ exports.getPosts = (req,res,next) =>{
 exports.getPost = (req,res,next) =>{
     let postId = req.params.postId;
     Post.findById(postId)
+    .populate('postedBy', 'name _id')
+    .populate({
+        path: 'comments',
+        populate: {path: 'commentBy', select: 'name _id'}
+    })
     .then(post=>{
         res.status(200).json({
             message: 'post fetched successfully.',
