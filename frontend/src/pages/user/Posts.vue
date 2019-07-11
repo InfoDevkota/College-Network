@@ -118,7 +118,7 @@
           <q-item dense>
             <q-item-section avatar>
               <q-btn size="sm" flat round color="primary" icon="fas fa-thumbs-up">
-                <q-badge color="orange" floating>4</q-badge>
+                <q-badge color="orange" floating>{{ item.totalLike }}</q-badge>
                 <q-tooltip anchor="bottom left" self="center left">Here I am!</q-tooltip>
               </q-btn>
             </q-item-section>
@@ -127,7 +127,7 @@
 
             <q-item-section side>
               <q-btn size="sm" flat round color="secondary" icon="fas fa-comments">
-                <q-badge color="orange" floating>4</q-badge>
+                <q-badge color="orange" floating>{{ item.totalComments }}</q-badge>
                 <q-tooltip anchor="bottom left" self="center left">Here I am!</q-tooltip>
               </q-btn>
             </q-item-section>
@@ -136,7 +136,7 @@
           <q-item dense style="padding: 0">
             <q-item-section>
               <q-btn-group size="sm" flat spread>
-                <q-btn size="sm" flat icon="fas fa-thumbs-up" color="grey-7" @click="handlePostLike(item.id)" :text-color="(item.liked) ? 'primary' : ''"  label="Like"/>
+                <q-btn size="sm" flat icon="fas fa-thumbs-up" color="grey-7" @click="(item.liked)? handlePostUnlike(item.id) :handlePostLike(item.id)" :text-color="(item.liked) ? 'primary' : ''"  label="Like"/>
                 <q-btn size="sm" flat icon="fas fa-comments" color="grey-7"  label="Comment"/>
               </q-btn-group>
             </q-item-section>
@@ -234,9 +234,19 @@ export default {
       //   })
     },
     handlePostLike (postId) {
-      this.$axios.patch(`/api/v1/like`, { params: { postId } })
+      this.$axios.put(`/api/v1/like/${postId}`)
         .then(response => {
-
+          const index = this.items.findIndex(item => item.id === response.data.post._id)
+          this.items[index]['liked'] = true
+          this.items[index]['totalLike'] = response.data.post.totalLike
+        })
+    },
+    handlePostUnlike (postId) {
+      this.$axios.put(`/api/v1/unlike/${postId}`)
+        .then(response => {
+          const index = this.items.findIndex(item => item.id === response.data.post._id)
+          this.items[index]['liked'] = false
+          this.items[index]['totalLike'] = response.data.post.totalLike
         })
     },
     onLoad (index, done) {
@@ -254,7 +264,10 @@ export default {
                   id: post.postedBy._id,
                   name: post.postedBy.name
                 },
-                date: post.updatedAt
+                date: post.updatedAt,
+                liked: post.liked,
+                totalComments: post.totalComments,
+                totalLike: post.totalLike
               }
             })
             this.items.push(...temp)
