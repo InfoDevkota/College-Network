@@ -106,7 +106,7 @@
               </q-btn>
             </q-item-section>
           </q-item>
-           <q-item style="padding: 5px">
+           <q-item style="padding: 5px" clickable v-ripple @click="handleDetailPost(item.id)">
             <q-item-section v-html="item.content">
             </q-item-section>
            </q-item>
@@ -186,6 +186,9 @@ export default {
   created () {
   },
   methods: {
+    handleDetailPost (postId) {
+      this.$router.push({ name: 'feed-detail', params: { id: postId } })
+    },
     handleUpdatePost (post, postIndex) {
       this.createPostDialog = true
       this.editor = post.content
