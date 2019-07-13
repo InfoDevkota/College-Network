@@ -72,6 +72,9 @@
         style="margin-bottom: 10px"
         bordered
         flat
+        v-ripple
+        clickable
+        @click="handleDetailPost(item.id)"
       >
         <q-list bordered>
           <q-item>
@@ -106,7 +109,7 @@
               </q-btn>
             </q-item-section>
           </q-item>
-           <q-item style="padding: 5px" clickable v-ripple @click="handleDetailPost(item.id)">
+           <q-item style="padding: 5px">
             <q-item-section v-html="item.content">
             </q-item-section>
            </q-item>

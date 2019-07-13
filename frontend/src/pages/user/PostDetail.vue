@@ -1,6 +1,5 @@
 <template>
   <q-page padding>
-    {{id}}sds
     <q-dialog v-model="createPostDialog" position="top">
       <q-card style="width: 500px">
         <q-linear-progress :value="0.6" color="pink" />
@@ -136,7 +135,25 @@
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-input v-model="text" rounded autogrow standout dense></q-input>
+            <q-input v-model="comment" rounded autogrow standout dense></q-input>
+          </q-item-section>
+           <q-item-section side>
+            <q-btn outline round color="primary" @click="postComment" icon="fas fa-2x fa-paperclip" />
+          </q-item-section>
+        </q-item>
+      </q-list>
+      <q-list v-for="(comment) in post.comments" :key="comment._id">
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar>
+              <img :src="`https://cdn.quasar.dev/img/${offline[0].avatar}`" />
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label v-if="post.postedBy">{{ comment.commentBy.name }}</q-item-label>
+            <q-item-label caption lines="1">{{ comment.comment }}</q-item-label>
+            <q-item-label caption lines="1">{{ comment.updatedAt }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -164,6 +181,7 @@ export default {
         count: 1,
         size: 5
       },
+      comment: '',
       items: [],
       offline,
       drawerLeft: true,
@@ -181,6 +199,16 @@ export default {
     this.getPostDetail(this.id)
   },
   methods: {
+    postComment () {
+      this.$q.loading.show()
+      this.$axios
+        .post(`/api/v1/post/${this.id}/comment/`, { comment: this.comment })
+        .then(response => {
+          this.$q.loading.hide()
+          this.post.totalComments = response.data.post.totalComments
+          this.comment = ''
+        })
+    },
     getPostDetail (postId) {
       this.$axios.get(`/api/v1/post/${postId}`).then(response => {
         this.post = {
@@ -193,7 +221,8 @@ export default {
           date: response.data.post.updatedAt,
           liked: response.data.post.liked,
           totalComments: response.data.post.totalComments,
-          totalLike: response.data.post.totalLike
+          totalLike: response.data.post.totalLike,
+          comments: response.data.post.comments
         }
       })
     },
