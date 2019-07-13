@@ -72,9 +72,6 @@
         style="margin-bottom: 10px"
         bordered
         flat
-        v-ripple
-        clickable
-        @click="handleDetailPost(item.id)"
       >
         <q-list bordered>
           <q-item>
@@ -85,7 +82,9 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label v-if="item.postedBy">{{ item.postedBy.name }}</q-item-label>
+              <router-link  :to="{name: 'user-profile', params: { id: item.postedBy.id }}">
+                <q-item-label v-if="item.postedBy">{{ item.postedBy.name }}</q-item-label>
+              </router-link>
               <q-item-label caption lines="1">{{ item.date }}</q-item-label>
             </q-item-section>
 
@@ -109,7 +108,7 @@
               </q-btn>
             </q-item-section>
           </q-item>
-           <q-item style="padding: 5px">
+           <q-item style="padding: 5px" clickable @click="handleDetailPost(item.id)">
             <q-item-section v-html="item.content">
             </q-item-section>
            </q-item>
