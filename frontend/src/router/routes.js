@@ -28,6 +28,10 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') }
     ]
+  },
+  {
+    path: '/chats',
+    component: () => import('pages/chat')
   }
 ]
 

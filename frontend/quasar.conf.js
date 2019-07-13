@@ -78,7 +78,8 @@ module.exports = function (ctx) {
         'QParallax',
         'QToggle',
         'QForm',
-        'QLinearProgress'
+        'QLinearProgress',
+        'QFooter'
       ],
 
       directives: [
