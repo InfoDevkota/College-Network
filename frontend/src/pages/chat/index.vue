@@ -61,8 +61,8 @@
         :breakpoint="690"
       >
         <q-toolbar class="bg-grey-3">
-          <q-avatar class="cursor-pointer">
-            <img src="https://cdn.quasar.dev/app-icons/icon-128x128.png" />
+          <q-avatar class="cursor-pointer" @click="$router.push({name: 'feed'})">
+             <q-icon name="fas fa-arrow-circle-left" />
           </q-avatar>
 
           <q-space />
@@ -140,7 +140,7 @@
                 <q-item-label caption>
                   {{ conversation.time }}
                 </q-item-label>
-                <q-icon name="keyboard_arrow_down" />
+            <q-icon name="fas fa-circle" class="text-green" style="font-size: 0.7em"/>
               </q-item-section>
             </q-item>
           </q-list>
@@ -282,7 +282,7 @@ export default {
           avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
           caption: 'I\'m working on Quasar!',
           time: '16:00',
-          sent: true
+          deleted: true
         },
         {
           id: 3,

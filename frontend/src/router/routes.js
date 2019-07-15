@@ -31,6 +31,7 @@ const routes = [
   },
   {
     path: '/chats',
+    name: 'chat-detail',
     component: () => import('pages/chat')
   }
 ]

@@ -53,25 +53,17 @@
     >
             <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd">
       <q-list>
-        <q-item clickable v-ripple :active="active">
-        <q-item-section avatar>
-<q-avatar>
-                <img :src="`https://cdn.quasar.dev/img/avatar2.jpg`">
-              </q-avatar>        </q-item-section>
-        <q-item-section>Sagar Samal</q-item-section>
-        <q-item-section side></q-item-section>
-      </q-item>
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple @click="$router.push({name: 'feed'})">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>
 
               <q-item-section>
-                News Feed
+                college Buzz
               </q-item-section>
             </q-item>
 
-             <q-item clickable v-ripple>
+             <q-item clickable v-ripple @click="$router.push({name: 'chat-detail'})">
               <q-item-section avatar>
                 <q-icon name="drafts" />
               </q-item-section>
@@ -107,8 +99,8 @@
             <q-avatar size="56px" class="q-mb-sm">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png">
             </q-avatar>
-            <div class="text-weight-bold">Razvan Stoenescu</div>
-            <div>@rstoenescu</div>
+            <div class="text-weight-bold">{{getAuthUser.email}}</div>
+            <!-- <div>@rstoenescu</div> -->
           </div>
         </q-img>
     </q-drawer>
@@ -285,17 +277,15 @@
       </q-list>
             </q-scroll-area>
     </q-drawer>
-    <q-page-container style="background-color: #e9ebee;">
-        <div class="row">
-            <div class="col-xs-12 col-md-9">
-                  <router-view></router-view>
-            </div>
-        </div>
+    <q-page-container style="background-color: #e9ebee;" >
+      <router-view></router-view>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode'
+
 export default {
   data () {
     return {
@@ -327,6 +317,12 @@ export default {
           ]
         }
       ]
+    }
+  },
+  computed: {
+    getAuthUser () {
+      const decodedUser = jwtDecode(this.$q.sessionStorage.getItem('token'))
+      return decodedUser
     }
   },
   methods: {
