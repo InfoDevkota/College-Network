@@ -96,6 +96,15 @@ exports.getPost = (req,res,next) =>{
         path: 'comments',
         populate: {path: 'commentBy', select: 'name _id'}
     })
+    .then(post =>{
+        post.liked=false;
+        post.likes.forEach(user =>{
+            if(user == req.userId){
+                post.liked = true;
+            }
+        })
+        return post;
+    })
     .then(post=>{
         res.status(200).json({
             message: 'post fetched successfully.',
@@ -108,6 +117,20 @@ exports.putPost = (req,res,next) =>{
     const content = req.body.content;
     let postId = req.params.postId;
     Post.findById(postId)
+    .populate('postedBy', 'name _id')
+    .populate({
+        path: 'comments',
+        populate: {path: 'commentBy', select: 'name _id'}
+    })
+    .then(post =>{
+        post.liked=false;
+        post.likes.forEach(user =>{
+            if(user == req.userId){
+                post.liked = true;
+            }
+        })
+        return post;
+    })
     .then(post=>{
         if(post.postedBy != req.userId){
             res.status(405).json({

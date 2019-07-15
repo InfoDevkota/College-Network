@@ -5,6 +5,13 @@
   >
     <div class="q-pa-xl" :style="{ width: 100 + '%' }">
       <q-form @submit="onSubmit" @reset="onReset" >
+        <q-input dark :disable="isLogin" rounded standout bottom-slots v-model="name" label="Name" type="text" counter>          <template v-slot:prepend>
+            <q-icon name="person" />
+          </template>
+          <template v-slot:append>
+            <q-icon name="close" @click="text = ''" class="cursor-pointer" />
+          </template>
+        </q-input>
         <q-input dark :disable="isLogin" rounded standout bottom-slots v-model="email" label="Email" type="email" counter>          <template v-slot:prepend>
             <q-icon name="email" />
           </template>
@@ -13,7 +20,7 @@
           </template>
         </q-input>
         <q-input
-        dark
+          dark
           rounded
           :disable="isLogin"
           style="bg-color: 'black'"
@@ -37,14 +44,14 @@
         <q-toggle v-model="accept" label="I accept the license and terms" />
 
         <div>
-          <q-btn label="Login"  :loading="isLogin"  type="submit" color="primary">
+          <q-btn label="Register"  :loading="isLogin"  type="submit" color="primary">
              <template v-slot:loading>
                 <q-spinner-facebook />
               </template>
           </q-btn>
         </div>
-        <router-link :to="{name: 'register'}">
-          Not a Member ?
+        <router-link :to="{name: 'signin'}">
+          Login
         </router-link>
       </q-form>
     </div>
@@ -56,6 +63,7 @@
 export default {
   data () {
     return {
+      name: '',
       email: '',
       password: '',
       accept: false,
@@ -74,23 +82,25 @@ export default {
         })
       } else {
         this.isLogin = true
-        this.$axios.post('/api/v1/login', {
+        this.$axios.post('/api/v1/signup', {
+          name: this.name,
           email: this.email,
           password: this.password
         })
           .then(response => {
-            this.$q.sessionStorage.set('token', response.data.token)
-            // const decodedUser = jwtDecode(response.data.token)
-            this.$q.notify({
-              color: 'green-4',
-              textColor: 'white',
-              icon: 'fas fa-check-circle',
-              message: `Welcome ${response.data.name}`
-            })
-            setTimeout(() => {
-              this.isLogin = false
-              this.$router.push({ name: 'feed' })
-            }, 1000)
+            this.$router.push({ name: 'signin' })
+            // this.$q.sessionStorage.set('token', response.data.token)
+            // // const decodedUser = jwtDecode(response.data.token)
+            // this.$q.notify({
+            //   color: 'green-4',
+            //   textColor: 'white',
+            //   icon: 'fas fa-check-circle',
+            //   message: `Welcome ${response.data.name}`
+            // })
+            // setTimeout(() => {
+            //   this.isLogin = false
+            //   this.$router.push({ name: 'feed' })
+            // }, 1000)
           })
           .catch(error => {
             let mssg = ''

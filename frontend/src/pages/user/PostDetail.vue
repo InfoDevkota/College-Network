@@ -175,7 +175,9 @@ export default {
   props: ['id'],
   data () {
     return {
-      post: {},
+      post: {
+        comments: []
+      },
       post_params: {
         page: 1,
         count: 1,
@@ -205,9 +207,9 @@ export default {
         .post(`/api/v1/post/${this.id}/comment/`, { comment: this.comment })
         .then(response => {
           this.$q.loading.hide()
-          this.post.totalComments = response.data.post.totalComments
-          this.comment = ''
+          this.post.comments = response.data.post.comments
         })
+      this.comment = ''
     },
     getPostDetail (postId) {
       this.$axios.get(`/api/v1/post/${postId}`).then(response => {

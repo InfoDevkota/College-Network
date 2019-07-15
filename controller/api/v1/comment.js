@@ -5,19 +5,24 @@ exports.postComment = (req,res,next) =>{
     let postId = req.params.postId;
     const comment = req.body.comment;
     const newComment = Comment({
-        comment:comment,
+        comment: comment,
         commentBy: req.userId
     })
     return newComment.save()
     .then(comment =>{
         Post.findById(postId)
+        .populate({
+            path: 'comments',
+            populate: {path: 'commentBy', select: 'name _id'}//multiple level population
+        })
         .then(post=>{
             post.totalComments++;
             post.comments.push(comment);
             post.save();
             res.status(201).json({
                 message: 'Comment Successfully Posted!',
-                post:post
+                newComment: comment,
+                post: post
             });
         })
     })
@@ -34,7 +39,8 @@ exports.putComment = (req,res,next) =>{
     })
     .then(comment =>{
         res.status(201).json({
-            message: 'Comment Successfully Updated!'
+            message: 'Comment Successfully Updated!',
+            comment: comment
         });
     })
 }

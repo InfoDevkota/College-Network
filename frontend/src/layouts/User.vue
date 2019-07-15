@@ -17,7 +17,7 @@
         <q-avatar>
           <img src="https://cdn.quasar.dev/img/boy-avatar.png">
         </q-avatar>
-        John
+        {{ getAuthUser.email }}
       </q-chip>
       <q-btn dense round flat icon="email">
       <q-badge color="red" floating >

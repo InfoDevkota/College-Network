@@ -32,8 +32,10 @@
                 <q-item-section>
                 </q-item-section>
             <q-item-section side>
-                            <q-item-label>   <q-btn size="md" push color="primary" label="Share"  @click="savePost" />
-                            <!-- <q-btn size="md" push color="primary" label="Update" v-else @click="updatePost" /> -->
+                            <q-item-label>
+                              <q-btn size="md" push color="primary" v-if="isEdit" label="Update"  @click="updatePost" />
+                              <q-btn size="md" push color="primary" v-else  label="Share"  @click="savePost" />
+
 </q-item-label>
 
             </q-item-section>
@@ -177,7 +179,9 @@ export default {
       offline,
       drawerLeft: true,
       createPostDialog: false,
-      editor: ''
+      editor: '',
+      isEdit: false,
+      currentPostId: ''
     }
   },
   computed: {
@@ -192,6 +196,8 @@ export default {
       this.$router.push({ name: 'feed-detail', params: { id: postId } })
     },
     handleUpdatePost (post, postIndex) {
+      this.currentPostId = post.id
+      this.isEdit = true
       this.createPostDialog = true
       this.editor = post.content
     },
@@ -223,20 +229,24 @@ export default {
         })
     },
     updatePost () {
-      // this.$q.loading.show()
-      // this.$axios.post('/api/v1/createPost', { content: this.editor })
-      //   .then(response => {
-      //     console.log(response.data)
-      //     this.$q.loading.hide()
-      //     this.createPostDialog = false
-      //     this.items.unshift({
-      //       id: response.data.post._id,
-      //       content: response.data.post.content,
-      //       postedBy: { name: 'sagar', id: response.data.post.postedBy },
-      //       date: response.data.post.updatedAt
-      //     })
-      //     this.editor = ''
-      //   })
+      this.$q.loading.show()
+      this.$axios.put(`/api/v1/post/${this.currentPostId}`, { content: this.editor })
+        .then(response => {
+          console.log(response.data)
+          this.$q.loading.hide()
+          this.createPostDialog = false
+          this.items.unshift({
+            id: response.data.post._id,
+            // liked: post.liked,
+            totalComments: response.data.post.totalComments,
+            totalLike: response.data.post.totalLike,
+            content: response.data.post.content,
+            postedBy: { name: 'sagar', id: response.data.post.postedBy },
+            date: response.data.post.updatedAt
+          })
+          this.editor = ''
+        })
+      this.isEdit = false
     },
     handlePostLike (postId) {
       this.$axios.put(`/api/v1/like/${postId}`)

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { SessionStorage } from 'quasar'
 
 const axiosInstance = axios.create({
-  baseURL: 'https://college-network.herokuapp.com'
+  baseURL: 'http://localhost:4000'
 })
 
 /*
