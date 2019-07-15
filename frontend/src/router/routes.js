@@ -10,7 +10,7 @@ const routes = [
       { path: 'feed', name: 'feed', component: () => import('pages/user/Posts.vue') },
       { path: 'feed/:id', name: 'feed-detail', props: true, component: () => import('pages/user/PostDetail.vue') },
 
-      { path: 'profile', component: () => import('pages/user/Profile.vue') },
+      { path: 'profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
       { path: 'chat', name: 'chat', component: () => import('pages/user/Chat.vue') }
     ]
   },
@@ -28,6 +28,11 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') }
     ]
+  },
+  {
+    path: '/chats',
+    name: 'chat-detail',
+    component: () => import('pages/chat')
   }
 ]
 
