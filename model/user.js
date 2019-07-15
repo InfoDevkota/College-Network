@@ -40,6 +40,9 @@ const userSchema = new Schema({
     section:{
         type: Schema.Types.ObjectId,
         ref: "Section"
+    },
+    phone:{
+        type: String
     }
 });
 

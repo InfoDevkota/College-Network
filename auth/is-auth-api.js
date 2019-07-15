@@ -31,7 +31,7 @@ module.exports = (req,res,next) => {
         } else {
             const error = new Error('Not authenticated');
             error.statusCode = 401;
-            throw error;
+            next(error);
         }
     }).catch(error =>{
         next(error);
