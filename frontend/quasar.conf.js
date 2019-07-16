@@ -89,7 +89,8 @@ module.exports = function (ctx) {
         'QPullToRefresh',
         'QSpinnerIos',
         'QSelect',
-        'QDate'
+        'QDate',
+        'QBanner'
       ],
 
       directives: [

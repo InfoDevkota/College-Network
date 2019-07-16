@@ -117,7 +117,7 @@
               :key="conversation.id"
               clickable
               v-ripple
-              @click="currentConversationIndex = index"
+              @click="handleOnConversationSelect(conversation, index)"
             >
               <q-item-section avatar>
                 <q-avatar>
@@ -152,20 +152,23 @@
 
       <q-page-container class="bg-grey-2">
           <q-page padding>
+            {{chatMessenges}}
              <q-chat-message
-                name="me"
-                avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-                :text="['hey, how are you?']"
-                stamp="7 minutes ago"
-                sent
-                bg-color="amber-7"
+                v-for="chatMessenge in chatMessenges"
+                :key="chatMessenge.id"
+                :name="chatMessenge.name"
+                :avatar="chatMessenge.avatar"
+                :text="[chatMessenge.text]"
+                :stamp="chatMessenge.stamp"
+                :sent="chatMessenge.sent"
+                :bg-color="(chatMessenge.sent) ? 'amber-7': 'blue' "
             />
             <q-chat-message
                 name="me"
                 avatar="https://cdn.quasar.dev/img/avatar3.jpg"
                 :text="['hey, how are you?']"
                 stamp="7 minutes ago"
-                sent
+                :sent="true"
                 bg-color="amber-7"
             />
             <q-chat-message
@@ -246,6 +249,9 @@
                 text-color="white"
                 bg-color="grey"
             />
+            <q-banner class="bg-primary text-white">
+              Unfortunately, the credit card did not go through, please try again.
+            </q-banner>
           </q-page>
       </q-page-container>
 
@@ -253,7 +259,7 @@
         <q-toolbar class="bg-grey-3 text-black row">
           <q-btn round flat icon="insert_emoticon" class="q-mr-sm" />
           <q-input rounded outlined dense class="WAL__field col-grow q-mr-sm" bg-color="white" v-model="message" placeholder="Type a message" />
-          <q-btn round flat icon="mic" />
+          <q-btn round flat icon="mic" @click="handleSubmitMessage"/>
         </q-toolbar>
       </q-footer>
     </q-layout>
@@ -261,11 +267,15 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+import jwtDecode from 'jwt-decode'
+
 export default {
   name: 'ChatAppLayout',
-
   data () {
     return {
+      chatMessenges: [],
+      socket: '',
       leftDrawerOpen: false,
       searchUser: '',
       message: '',
@@ -307,7 +317,17 @@ export default {
       ]
     }
   },
+  mounted () {
+    this.socket = io('http://localhost:4000?token=' + this.$q.sessionStorage.getItem('token'),
+      {
+        path: '/api/v1/socket'
+      }
+    )
+  },
   computed: {
+    getCurrentUser () {
+      return jwtDecode(this.$q.sessionStorage.getItem('token'))
+    },
     currentConversation () {
       if (this.conversations) {
         return this.conversations[this.currentConversationIndex]
@@ -342,6 +362,57 @@ export default {
     }
   },
   methods: {
+    handleOnConversationSelect (conversation, index) {
+      this.currentConversationIndex = index
+      this.$axios.get(`/api/v1/chat/${conversation.id}`)
+        .then(response => {
+          if (response.data.hasOwnProperty('messages')) {
+            this.chatMessenges = response.data.messages.messages.map(message => {
+              console.log(message.from._id)
+              console.log(this.getCurrentUser.userId)
+              console.log('------------------')
+              return {
+                id: message._id,
+                name: '',
+                avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+                stamp: '1 minutes ago',
+                text: message.message,
+                textColor: 'white',
+                bgColor: 'amber-7',
+                sent: message.from._id === this.getCurrentUser.userId
+              }
+            })
+          } else {
+
+          }
+          console.log(response.data)
+        })
+    },
+    handleSubmitMessage () {
+      this.socket.emit('new message', {
+        to: this.conversations[this.currentConversationIndex].id,
+        message: this.message
+      })
+      this.$axios.get(`/api/v1/chat/${this.conversations[this.currentConversationIndex].id}`)
+        .then(response => {
+          if (response.data.hasOwnProperty('messages')) {
+            this.chatMessenges = response.data.messages.messages.map(message => {
+              return {
+                id: message._id,
+                name: '',
+                avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+                stamp: '1 minutes ago',
+                text: message.message,
+                textColor: 'white',
+                bgColor: 'amber-7',
+                sent: message.from._id === this.getCurrentUser.userId
+              }
+            })
+          } else {
+
+          }
+        })
+    },
     handleRemoteSearchUser (username) {
       this.loadingConverstions = true
       this.conversations = []
