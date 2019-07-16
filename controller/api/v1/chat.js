@@ -37,6 +37,8 @@ let socket = (server) => {
               if(user){
                 socket.user = user;
                 socket.verifyed = true;
+                socket.join(socket.userId);//The name of room is same as our userID;
+                verifyed = true;
               } else {
                 console.log("no User Found")
               }
@@ -135,27 +137,43 @@ let socket = (server) => {
 
 
           })
-          // we tell the client to execute 'new message'
-          socket.broadcast.emit('new message', {
-            //username: socket.user.name,
-            //message: data
+
+          socket.broadcast.to(receiver).emit("newMessage", {
+            from: sender,
+            message: messageReceived
+          })
+          
+          if(receiver != sender){
+            socket.broadcast.to(sender).emit("newMessage", {
+              from: sender,
+              message: messageReceived
+            })
+          }
+
+        });
+      
+        socket.on('typing', (data) => {
+          let sender = socket.userId;
+          let receiver = data.to;
+          socket.broadcast.to(receiver).emit("typing", {
+            from: sender
           });
         });
       
-        socket.on('typing', () => {
-          socket.broadcast.emit('typing', {
-            username: socket.user.name
-          });
-        });
-      
-        socket.on('stop typing', () => {
-          socket.broadcast.emit('stop typing', {
-            username: socket.user.name
+        socket.on('stop typing', (data) => {
+          let sender = socket.userId;
+          let receiver = data.to;
+          socket.broadcast.to(receiver).emit("stop typing", {
+            from: sender
           });
         });
       
         socket.on('disconnect', () => {
-          
+          let sender = socket.userId;
+          let receiver = data.to;
+          socket.broadcast.to(receiver).emit("disconnect", {
+            from: sender
+          });
         });
     })
 }
