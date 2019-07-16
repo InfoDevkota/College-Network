@@ -163,7 +163,7 @@
                 :sent="chatMessenge.sent"
                 :bg-color="(chatMessenge.sent) ? 'amber-7': 'blue' "
             />
-            <q-chat-message
+            <!-- <q-chat-message
                 name="me"
                 avatar="https://cdn.quasar.dev/img/avatar3.jpg"
                 :text="['hey, how are you?']"
@@ -248,7 +248,7 @@
                 size="8"
                 text-color="white"
                 bg-color="grey"
-            />
+            /> -->
             <q-banner class="bg-primary text-white">
               Unfortunately, the credit card did not go through, please try again.
             </q-banner>
@@ -323,6 +323,10 @@ export default {
         path: '/api/v1/socket'
       }
     )
+    this.socket.on('newMessage', (data) => {
+      console.log(data.from)
+      console.log(data.message)
+    })
   },
   computed: {
     getCurrentUser () {
@@ -362,6 +366,9 @@ export default {
     }
   },
   methods: {
+    onMessageReceived () {
+      alert('')
+    },
     handleOnConversationSelect (conversation, index) {
       this.currentConversationIndex = index
       this.$axios.get(`/api/v1/chat/${conversation.id}`)
@@ -383,7 +390,7 @@ export default {
               }
             })
           } else {
-
+            this.chatMessenges = []
           }
           console.log(response.data)
         })
@@ -409,7 +416,7 @@ export default {
               }
             })
           } else {
-
+            this.chatMessenges = []
           }
         })
     },
