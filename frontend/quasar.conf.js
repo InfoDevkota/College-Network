@@ -86,7 +86,11 @@ module.exports = function (ctx) {
         'QRouteTab',
         'QTabPanel',
         'QTabPanels',
-        'QPullToRefresh'
+        'QPullToRefresh',
+        'QSpinnerIos',
+        'QSelect',
+        'QDate',
+        'QBanner'
       ],
 
       directives: [

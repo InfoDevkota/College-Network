@@ -61,6 +61,9 @@
                       {{userDetail.user.email}}
                     </q-item-section>
                   </q-item>
+                  <q-item class="q-pa-none" :style="{ padding: '5px' }" v-if="id === getAuthUser.userId">
+                    <q-btn outline color="primary" icon="edit" size="sm" class="full-width q-mt-sm" label="Edit Profile" @click="handleUpdateUserProfile"/>
+                  </q-item>
                 </q-list>
               </q-card>
               <q-card class="q-mb-md">
@@ -192,6 +195,8 @@
     </q-page>
 </template>
 <script>
+import jwtDecode from 'jwt-decode'
+
 export default {
   name: 'user Profile',
   props: ['id'],
@@ -201,10 +206,19 @@ export default {
       tab: 'Posts'
     }
   },
+  computed: {
+    getAuthUser () {
+      const decodedUser = jwtDecode(this.$q.sessionStorage.getItem('token'))
+      return decodedUser
+    }
+  },
   mounted () {
     this.getUserProfileDetail(this.id)
   },
   methods: {
+    handleUpdateUserProfile () {
+      this.$router.push({ name: 'profile-update', params: { id: this.id } })
+    },
     getUserProfileDetail (userId) {
       this.$axios.get(`/api/v1/profileById/${userId}`).then(response => {
         this.userDetail = response.data

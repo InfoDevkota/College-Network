@@ -8,6 +8,8 @@ const routes = [
     },
     children: [
       { path: 'feed', name: 'feed', component: () => import('pages/user/Posts.vue') },
+      { path: 'profile/:id/update', name: 'profile-update', props: true, component: () => import('pages/user/ProfileUpdate.vue') },
+
       { path: 'feed/:id', name: 'feed-detail', props: true, component: () => import('pages/user/PostDetail.vue') },
 
       { path: 'profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
