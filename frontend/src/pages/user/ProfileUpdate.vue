@@ -5,6 +5,16 @@
         @reset="onReset"
         >
     <div class="row q-col-gutter-x-md q-col-gutter-y-md">
+      <div class="col-md-12">
+        <q-card>
+          <q-card-section>
+            <q-avatar size="120px">
+              <q-icon name="fas fa-image" />
+              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+            </q-avatar>
+          </q-card-section>
+        </q-card>
+      </div>
       <div class="col-xs-12">
             <div class="row q-col-gutter-x-md q-col-gutter-y-md">
                 <div class="col-xs-12 col-md-6">
@@ -78,13 +88,20 @@
                         <q-separator/>
                             <div class="row q-pa-md">
                                 <div class="col-xs-12">
-                                    <q-date v-model="born_on" />
-                                    <q-select
+                                    <q-input label="Your D.O.B *" filled v-model="born_on" mask="date" :rules="['date']" >
+                                      <template v-slot:append>
+                                        <q-icon name="event" class="cursor-pointer">
+                                          <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                            <q-date v-model="born_on" @input="() => $refs.qDateProxy.hide()" />
+                                          </q-popup-proxy>
+                                        </q-icon>
+                                      </template>
+                                    </q-input>
+                                    <q-input
                                         filled
-                                        v-model="university"
-                                        :options="options.university"
-                                        label="Your University *"
-                                        hint="University is required"
+                                        v-model="lives_in"
+                                        label="Address *"
+                                        hint="Address is required"
                                         emit-value
                                         map-options
                                         lazy-rules
@@ -93,22 +110,10 @@
 
                                     <q-select
                                         filled
-                                        v-model="department"
+                                        v-model="gender"
                                         :options="options.department"
-                                        label="Your Department *"
-                                        hint="Department is required"
-                                        emit-value
-                                        map-options
-                                        lazy-rules
-                                        :rules="[ val => val && val.length > 0 || 'Please type something']"
-                                    />
-
-                                    <q-select
-                                        filled
-                                        v-model="graduation_on"
-                                        :options="options.graduation_on"
-                                        label="Graduation On *"
-                                        hint="Graduation On is required"
+                                        label="Your Gender *"
+                                        hint="Gender is required"
                                         emit-value
                                         map-options
                                         lazy-rules
@@ -122,12 +127,14 @@
       </div>
       <div class="col-xs-12">
           <q-card>
-                <q-toggle v-model="accept" label="I accept the license and terms" />
+            <q-card-section>
+                <q-toggle v-model="accept" label="I accept above details are genuine." />
 
                     <div>
-                        <q-btn label="Submit" type="submit" color="primary"/>
+                        <q-btn label="Update" type="submit" color="primary"/>
                         <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
                     </div>
+                    </q-card-section>
             </q-card>
       </div>
     </div>
@@ -144,6 +151,9 @@ export default {
       department: '',
       graduation_on: '',
       born_on: '',
+      lives_in: '',
+      gender: '',
+      accept: false,
       options: {
         university: [ {
           label: 'Google',

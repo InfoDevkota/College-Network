@@ -84,8 +84,8 @@
             </q-item-section>
 
             <q-item-section>
-              <router-link  :to="{name: 'user-profile', params: { id: item.postedBy.id }}">
-                <q-item-label v-if="item.postedBy">{{ item.postedBy.name }}</q-item-label>
+              <router-link tag="span" class="cursor-pointer" :to="{name: 'user-profile', params: { id: item.postedBy.id }}">
+                <q-item-label class="text-subtitle2" v-if="item.postedBy">{{ item.postedBy.name }}</q-item-label>
               </router-link>
               <q-item-label caption lines="1">{{ item.date | fromNow }}</q-item-label>
             </q-item-section>

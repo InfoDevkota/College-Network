@@ -55,17 +55,17 @@
       <q-list>
         <q-item clickable v-ripple @click="$router.push({name: 'feed'})">
               <q-item-section avatar>
-                <q-icon name="drafts" />
+                <q-icon name="fas fa-bolt" />
               </q-item-section>
 
               <q-item-section>
-                college Buzz
+                College Buzz
               </q-item-section>
             </q-item>
 
-             <q-item clickable v-ripple @click="$router.push({name: 'chat-detail'})">
+             <q-item clickable  :active="active" v-ripple @click="$router.push({name: 'chat-detail'})" active-class="text-orange">
               <q-item-section avatar>
-                <q-icon name="drafts" />
+                <q-icon name="fas fa-comments" />
               </q-item-section>
 
               <q-item-section>
@@ -291,6 +291,7 @@ export default {
     return {
       leftDrawerOpen: true,
       seamless: false,
+      active: true,
       search: '',
       drawer: true,
       lazy: [

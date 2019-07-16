@@ -90,7 +90,8 @@ module.exports = function (ctx) {
         'QSpinnerIos',
         'QSelect',
         'QDate',
-        'QBanner'
+        'QBanner',
+        'QPopupProxy'
       ],
 
       directives: [
