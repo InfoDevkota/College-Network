@@ -323,7 +323,13 @@ export default {
         path: '/api/v1/socket'
       }
     )
-    this.socket.on('newMessage', (data) => {
+    this.socket.on('newMessageSend', (data) => {
+      console.log('##################SEND########################')
+      console.log(data.from)
+      console.log(data.message)
+    })
+    this.socket.on('newMessageReceived', (data) => {
+      console.log('##################RECEIVED########################')
       console.log(data.from)
       console.log(data.message)
     })

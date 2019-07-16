@@ -138,17 +138,17 @@ let socket = (server) => {
 
           })
 
-          socket.broadcast.to(receiver).emit("newMessage", {
+          socket.broadcast.to(receiver).emit("newMessageReceived", {
             from: sender,
             message: messageReceived
           })
           
-          if(receiver != sender){
-            socket.broadcast.to(sender).emit("newMessage", {
+          //if(receiver != sender){
+            io.to(sender).emit("newMessageSend", {
               from: sender,
               message: messageReceived
             })
-          }
+          //}
 
         });
       
