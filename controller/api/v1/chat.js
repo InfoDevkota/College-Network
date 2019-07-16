@@ -169,11 +169,11 @@ let socket = (server) => {
         });
       
         socket.on('disconnect', () => {
-          let sender = socket.userId;
-          let receiver = data.to;
-          socket.broadcast.to(receiver).emit("disconnect", {
-            from: sender
-          });
+          // let sender = socket.userId;
+          // let receiver = data.to;
+          // socket.broadcast.to(receiver).emit("disconnect", {
+          //   from: sender
+          // });
         });
     })
 }

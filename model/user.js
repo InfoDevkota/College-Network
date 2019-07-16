@@ -43,7 +43,8 @@ const userSchema = new Schema({
     },
     messageBoxUser:[{
         userId:{
-            type:String
+            type: Schema.Types.ObjectId,
+            ref: "User"
         },
         messageBox:{
             type: Schema.Types.ObjectId,

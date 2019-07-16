@@ -37,3 +37,24 @@ exports.getMessageHistory = (req,res,next) => {
         }
     })
 }
+
+exports.getChatedUser = (req,res,next) => {
+    let users = [];
+    User.findById(req.userId)
+    .select('-password -posts')
+    .populate('messageBoxUser.userId', 'name, _id')
+    .then(user =>{
+        if(user.messageBoxUser.length != 0){
+            user.messageBoxUser.forEach(element => {
+                users.push(element.userId);
+            });
+        }
+        return true;
+    })
+    .then(bool =>{
+        res.status(201).json({
+            message: 'Chated fetched',
+            users: users
+        });
+    })
+}
