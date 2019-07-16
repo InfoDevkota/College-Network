@@ -5,8 +5,8 @@ const isAuth = require("../../../auth/is-auth-api");
 
 const router = express.Router();
 
-router.get("/chat/:userId",isAuth,messengerController.getMessageHistory);
 router.get("/chat/users",isAuth,messengerController.getChatedUser);
+router.get("/chat/:userId",isAuth,messengerController.getMessageHistory);
 
 
 module.exports = router;

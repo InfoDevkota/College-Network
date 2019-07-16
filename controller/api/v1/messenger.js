@@ -42,7 +42,7 @@ exports.getChatedUser = (req,res,next) => {
     let users = [];
     User.findById(req.userId)
     .select('-password -posts')
-    .populate('messageBoxUser.userId', 'name, _id')
+    .populate('messageBoxUser.userId', '-password -messageBoxUser -posts -__v')
     .then(user =>{
         if(user.messageBoxUser.length != 0){
             user.messageBoxUser.forEach(element => {
