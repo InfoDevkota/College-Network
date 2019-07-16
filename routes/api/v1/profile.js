@@ -10,6 +10,7 @@ router.get("/addInfo",isAuth,profileController.getProfileUpdate);//Call when use
 router.put("/me",isAuth,profileController.putMe);
 router.get("/profile/:username",isAuth,profileController.getProfile);
 router.get("/profileById/:userId",isAuth,profileController.getProfileById);
-router.put("/profilePic",isAuth,profileController.putProfilePic)
+router.put("/profilePic",isAuth,profileController.putProfilePic);
+router.get("/users/:name",isAuth,profileController.getUserByName);
 
 module.exports = router;

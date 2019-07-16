@@ -184,3 +184,24 @@ exports.putProfilePic = (req,res,next) =>{
     });
 
 }
+
+exports.getUserByName = (req,res,next) =>{
+    const name = req.params.name;
+
+    User.find({name:{
+        $regex: new RegExp(name, "ig")
+    }})
+    .select('-posts -password')
+    .then(users =>{
+        if(users){
+            res.status(201).json({
+                message: 'list of Users',
+                users: users
+            });
+        } else {
+            res.status(201).json({
+                message: 'No users Found on that keyword'
+            });
+        }
+    })
+}
