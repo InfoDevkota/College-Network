@@ -152,7 +152,6 @@
 
       <q-page-container class="bg-grey-2">
           <q-page padding>
-            {{chatMessenges}}
              <q-chat-message
                 v-for="chatMessenge in chatMessenges"
                 :key="chatMessenge.id"
@@ -318,6 +317,20 @@ export default {
     }
   },
   mounted () {
+    this.$axios.get(`/api/v1/chat/users`)
+      .then(response => {
+        this.conversations = response.data.users.map(user => {
+          return {
+            id: user._id,
+            person: user.name,
+            avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+            caption: 'I\'m working on Quasar!',
+            time: '18:00',
+            sent: true
+          }
+        })
+      })
+
     this.socket = io('http://localhost:4000?token=' + this.$q.sessionStorage.getItem('token'),
       {
         path: '/api/v1/socket'
@@ -325,13 +338,33 @@ export default {
     )
     this.socket.on('newMessageSend', (data) => {
       console.log('##################SEND########################')
-      console.log(data.from)
-      console.log(data.message)
+      this.chatMessenges.push(
+        {
+          id: data['messageId'],
+          name: '',
+          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+          stamp: '1 minutes ago',
+          text: data.message,
+          textColor: 'white',
+          bgColor: 'amber-7',
+          sent: true
+        }
+      )
     })
     this.socket.on('newMessageReceived', (data) => {
       console.log('##################RECEIVED########################')
-      console.log(data.from)
-      console.log(data.message)
+      this.chatMessenges.push(
+        {
+          id: data['messageId'],
+          name: '',
+          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+          stamp: '1 minutes ago',
+          text: data.message,
+          textColor: 'white',
+          bgColor: 'amber-7',
+          sent: false
+        }
+      )
     })
   },
   computed: {
@@ -406,25 +439,25 @@ export default {
         to: this.conversations[this.currentConversationIndex].id,
         message: this.message
       })
-      this.$axios.get(`/api/v1/chat/${this.conversations[this.currentConversationIndex].id}`)
-        .then(response => {
-          if (response.data.hasOwnProperty('messages')) {
-            this.chatMessenges = response.data.messages.messages.map(message => {
-              return {
-                id: message._id,
-                name: '',
-                avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-                stamp: '1 minutes ago',
-                text: message.message,
-                textColor: 'white',
-                bgColor: 'amber-7',
-                sent: message.from._id === this.getCurrentUser.userId
-              }
-            })
-          } else {
-            this.chatMessenges = []
-          }
-        })
+      // this.$axios.get(`/api/v1/chat/${this.conversations[this.currentConversationIndex].id}`)
+      //   .then(response => {
+      //     if (response.data.hasOwnProperty('messages')) {
+      //       this.chatMessenges = response.data.messages.messages.map(message => {
+      //         return {
+      //           id: message._id,
+      //           name: '',
+      //           avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+      //           stamp: '1 minutes ago',
+      //           text: message.message,
+      //           textColor: 'white',
+      //           bgColor: 'amber-7',
+      //           sent: message.from._id === this.getCurrentUser.userId
+      //         }
+      //       })
+      //     } else {
+      //       this.chatMessenges = []
+      //     }
+      //   })
     },
     handleRemoteSearchUser (username) {
       this.loadingConverstions = true
