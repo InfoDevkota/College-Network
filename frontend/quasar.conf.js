@@ -87,7 +87,9 @@ module.exports = function (ctx) {
         'QTabPanel',
         'QTabPanels',
         'QPullToRefresh',
-        'QSpinnerIos'
+        'QSpinnerIos',
+        'QSelect',
+        'QDate'
       ],
 
       directives: [

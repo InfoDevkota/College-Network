@@ -262,7 +262,7 @@
 
 <script>
 export default {
-  name: 'WhatsappLayout',
+  name: 'ChatAppLayout',
 
   data () {
     return {
