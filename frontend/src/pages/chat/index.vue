@@ -13,11 +13,11 @@
 
           <q-btn round flat>
             <q-avatar>
-              <img :src="currentConversation.avatar">
+              <img :src="currentConversation.avatar" v-if="currentConversation">
             </q-avatar>
           </q-btn>
 
-          <span class="q-subtitle-1 q-pl-md">
+          <span class="q-subtitle-1 q-pl-md" v-if="currentConversation">
             {{ currentConversation.person }}
           </span>
 
@@ -103,7 +103,7 @@
         </q-toolbar>
 
         <q-toolbar class="bg-grey-2">
-          <q-input rounded outlined dense class="WAL__field full-width" bg-color="white" v-model="search" placeholder="Search or start a new conversation">
+          <q-input rounded outlined dense class="WAL__field full-width" bg-color="white" v-model="searchUser" placeholder="Search or start a new conversation">
             <template slot="prepend">
               <q-icon name="search" />
             </template>
@@ -143,6 +143,9 @@
             <q-icon name="fas fa-circle" class="text-green" style="font-size: 0.7em"/>
               </q-item-section>
             </q-item>
+            <q-inner-loading :showing="loadingConverstions">
+                <q-spinner-ios size="50px" color="primary" />
+              </q-inner-loading>
           </q-list>
         </q-scroll-area>
       </q-drawer>
@@ -264,8 +267,9 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      search: '',
+      searchUser: '',
       message: '',
+      loadingConverstions: false,
       currentConversationIndex: 0,
       conversations: [
         {
@@ -303,10 +307,13 @@ export default {
       ]
     }
   },
-
   computed: {
     currentConversation () {
-      return this.conversations[this.currentConversationIndex]
+      if (this.conversations) {
+        return this.conversations[this.currentConversationIndex]
+      } else {
+        return ''
+      }
     },
 
     style () {
@@ -317,6 +324,12 @@ export default {
   },
 
   watch: {
+    searchUser: {
+      handler (username) {
+        if (username) this.handleRemoteSearchUser(username)
+        else this.conversations = []
+      }
+    },
     leftDrawerOpen (val) {
       // if user opens drawer in mobile mode
       // then widens the window and closes drawer,
@@ -326,6 +339,30 @@ export default {
           this.leftDrawerOpen = true
         })
       }
+    }
+  },
+  methods: {
+    handleRemoteSearchUser (username) {
+      this.loadingConverstions = true
+      this.conversations = []
+      this.$axios.get(`/api/v1/users/${username}`)
+        .then(response => {
+          this.loadingConverstions = false
+          if (response.data.users.length > 0) {
+            this.conversations = response.data.users.map(user => {
+              return {
+                id: user._id,
+                person: user.name,
+                avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+                caption: 'I\'m working on Quasar!',
+                time: '18:00',
+                sent: true
+              }
+            })
+          } else {
+            this.conversations = []
+          }
+        })
     }
   }
 }

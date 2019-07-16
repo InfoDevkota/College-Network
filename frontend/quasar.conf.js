@@ -86,7 +86,8 @@ module.exports = function (ctx) {
         'QRouteTab',
         'QTabPanel',
         'QTabPanels',
-        'QPullToRefresh'
+        'QPullToRefresh',
+        'QSpinnerIos'
       ],
 
       directives: [
