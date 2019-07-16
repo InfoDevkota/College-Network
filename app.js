@@ -12,7 +12,7 @@ const authRoutes = require('./routes/auth');
 const homeRoutes = require('./routes/home');
 const apiRoutes = require('./routes/api/api');
 const adminRoutes = require('./routes/admin');
-const chatRoutes = require('./routes/api/v1/chat');//Check
+const chatV1Controller = require('./controller/api/v1/chat');//Check
 
 const Student = require('./model/student');
 
@@ -97,7 +97,7 @@ mongoose
 .connect(process.env.DB_CONNECTION, { useCreateIndex: true, useNewUrlParser: true })
 .then(result => {
     const server = app.listen(process.env.PORT || 4080);
-    chatRoutes(server);//Check
+    chatV1Controller(server);//Check
     console.log("Server Started at Port " + (process.env.PORT || 4080));
 })
 .catch(error => console.log(error));
