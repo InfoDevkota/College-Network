@@ -59,7 +59,6 @@ let socket = (server) => {
           let receiver = data.to;
           let oldChat = false;
           let messageReceived = data.message;
-          console.log(socket.ram);
           console.log("to " + data.to);
           console.log("from " + socket.user);
           console.log("Message " + data.message);
@@ -118,7 +117,7 @@ let socket = (server) => {
               User.findById(sender)
               .then(user =>{
                 user.messageBoxUser.forEach(element => {
-                  if(element.userId == sender){
+                  if(element.userId == receiver){
                     console.log(element.messageBox);
                     MessageBox.findById(element.messageBox)
                     .then(messageBox =>{
@@ -138,8 +137,8 @@ let socket = (server) => {
           })
           // we tell the client to execute 'new message'
           socket.broadcast.emit('new message', {
-            username: socket.user.name,
-            message: data
+            //username: socket.user.name,
+            //message: data
           });
         });
       
