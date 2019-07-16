@@ -41,6 +41,15 @@ const userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Section"
     },
+    messageBoxUser:[{
+        userId:{
+            type:String
+        },
+        messageBox:{
+            type: Schema.Types.ObjectId,
+            ref: "MessageBox"
+        }
+    }],
     phone:{
         type: String
     }

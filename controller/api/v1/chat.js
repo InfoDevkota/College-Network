@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../../../model/user');
+const MessageBox = require('../../../model/messageBox');
 
 let socket = (server) => {
     console.log("I am Running This Controller one");
@@ -54,11 +55,87 @@ let socket = (server) => {
         });
       
         socket.on('new message', (data) => {
+          let sender = socket.userId;
+          let receiver = data.to;
+          let oldChat = false;
+          let messageReceived = data.message;
           console.log(socket.ram);
           console.log("to " + data.to);
           console.log("from " + socket.user);
           console.log("Message " + data.message);
           console.log("New Message emitted by Client");
+
+          User.findById(receiver)
+          .select('-posts -password')
+          .then(rUser =>{
+            console.log(rUser);
+            console.log(rUser.messageBoxUser.length);
+            if(rUser.messageBoxUser.length != 0){
+              rUser.messageBoxUser.forEach(element => {
+                if(element.userId == sender){
+                  oldChat = true;
+                  console.log("found");
+                }
+              });
+            }
+            console.log(oldChat);
+            if(rUser.messageBoxUser.length == 0 || !oldChat){
+              console.log("Empty")
+              let messageBox = new MessageBox({
+                messages:[]
+              });
+              let newMessage = {
+                message: messageReceived,
+                from: sender
+              }
+              messageBox.messages.push(newMessage)
+              messageBox
+              .save()
+              .then(messageBox =>{
+                console.log(messageBox);
+                let messageBoxUser = {
+                  userId:sender,
+                  messageBox:messageBox
+                }
+                rUser.messageBoxUser.push(messageBoxUser);
+                if(sender != receiver){
+                  console.log("Message to self");
+                  User.findById(sender)
+                  .then(sUser =>{
+                    let messageBoxUser = {
+                      userId:receiver,
+                      messageBox:messageBox
+                    }
+                    sUser.messageBoxUser.push(messageBoxUser);
+                    sUser.save();
+                  })
+                }
+                rUser.save();
+              })
+            }
+
+            if(oldChat){
+              User.findById(sender)
+              .then(user =>{
+                user.messageBoxUser.forEach(element => {
+                  if(element.userId == sender){
+                    console.log(element.messageBox);
+                    MessageBox.findById(element.messageBox)
+                    .then(messageBox =>{
+                      let newMessage = {
+                        message: messageReceived,
+                        from: sender
+                      }
+                      messageBox.messages.push(newMessage)
+                      messageBox.save();
+                    })
+                  }
+                })
+              })
+            }
+
+
+          })
           // we tell the client to execute 'new message'
           socket.broadcast.emit('new message', {
             username: socket.user.name,
