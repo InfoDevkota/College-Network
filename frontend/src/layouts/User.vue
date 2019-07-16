@@ -32,7 +32,7 @@
           transition-hide="scale"
         >
           <q-list style="min-width: 100px">
-            <q-item clickable>
+            <q-item clickable @click="handleProfileDetail">
               <q-item-section>Profile</q-item-section>
             </q-item>
             <q-item clickable>
@@ -326,6 +326,9 @@ export default {
     }
   },
   methods: {
+    handleProfileDetail () {
+      this.$router.push({ name: 'user-profile', params: { id: this.getAuthUser.userId } })
+    },
     handleLogout () {
       this.$q.sessionStorage.clear()
       this.$router.push({ name: 'signin' })

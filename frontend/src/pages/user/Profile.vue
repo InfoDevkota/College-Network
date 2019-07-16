@@ -61,6 +61,9 @@
                       {{userDetail.user.email}}
                     </q-item-section>
                   </q-item>
+                  <q-item class="q-pa-none" :style="{ padding: '5px' }" v-if="id === getAuthUser.userId">
+                    <q-btn outline color="primary" icon="edit" size="sm" class="full-width q-mt-sm" label="Edit Profile"/>
+                  </q-item>
                 </q-list>
               </q-card>
               <q-card class="q-mb-md">
@@ -192,6 +195,8 @@
     </q-page>
 </template>
 <script>
+import jwtDecode from 'jwt-decode'
+
 export default {
   name: 'user Profile',
   props: ['id'],
@@ -199,6 +204,12 @@ export default {
     return {
       userDetail: '',
       tab: 'Posts'
+    }
+  },
+  computed: {
+    getAuthUser () {
+      const decodedUser = jwtDecode(this.$q.sessionStorage.getItem('token'))
+      return decodedUser
     }
   },
   mounted () {

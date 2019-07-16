@@ -87,7 +87,7 @@
               <router-link  :to="{name: 'user-profile', params: { id: item.postedBy.id }}">
                 <q-item-label v-if="item.postedBy">{{ item.postedBy.name }}</q-item-label>
               </router-link>
-              <q-item-label caption lines="1">{{ item.date }}</q-item-label>
+              <q-item-label caption lines="1">{{ item.date | fromNow }}</q-item-label>
             </q-item-section>
 
             <q-item-section side>
@@ -158,6 +158,7 @@
 </template>
 <script>
 import jwtDecode from 'jwt-decode'
+import moment from 'moment'
 
 const offline = [
   {
@@ -182,6 +183,11 @@ export default {
       editor: '',
       isEdit: false,
       currentPostId: ''
+    }
+  },
+  filters: {
+    fromNow: function (date) {
+      return moment(date).startOf('hour').fromNow()
     }
   },
   computed: {
