@@ -5,6 +5,7 @@ module.exports = {
     console.log(version);
     console.log("InitIO")
     io = require('socket.io')(httpServer, {path: '/api/'+version+'/socket'});
+    io.origins('*:*');
     //io = require('socket.io')(httpServer);
     return io;
   },

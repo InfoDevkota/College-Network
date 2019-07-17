@@ -19,11 +19,16 @@ const userSchema = new Schema({
         type: String
     },
     profileImage: {
-        type: String
+        type: String,
+        default: "static/placeHolder.png"
     },
     posts: [{
         type: Schema.Types.ObjectId,
         ref: "Post"
+    }],
+    comments: [{
+        type: Schema.Types.ObjectId,
+        ref: "Comment"
     }],
     userType: {
         type: Schema.Types.ObjectId,
@@ -52,6 +57,21 @@ const userSchema = new Schema({
         }
     }],
     phone:{
+        type: String
+    },
+    college:{
+        type: String
+    },
+    graduationOn:{
+        type: String
+    },
+    bornOn:{
+        type: String
+    },
+    livesIn:{
+        type: String
+    },
+    gender:{
         type: String
     }
 });

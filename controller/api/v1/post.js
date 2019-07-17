@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const Post = require("../../../model/post");
 const User = require('../../../model/user');
 const { validationResult } = require('express-validator');
@@ -19,6 +22,9 @@ exports.postCreatePost = (req,res,next) =>{
         postedBy: req.userId,
         date: date
     })
+    if(req.file){
+        post.imageUrl = req.file.path;
+    }
     return post.save()
     .then(post =>{
         User.findById(req.userId)
@@ -57,7 +63,7 @@ exports.getPosts = (req,res,next) =>{
         .sort({date:-1})
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
-        .populate('postedBy', 'name _id')
+        .populate('postedBy', 'name _id profileImage')
         .populate({
             path: 'comments',
             populate: {path: 'commentBy', select: 'name _id'}//multiple level population
@@ -91,7 +97,7 @@ exports.getPosts = (req,res,next) =>{
 exports.getPost = (req,res,next) =>{
     let postId = req.params.postId;
     Post.findById(postId)
-    .populate('postedBy', 'name _id')
+    .populate('postedBy', 'name _id profileImage')
     .populate({
         path: 'comments',
         populate: {path: 'commentBy', select: 'name _id'}
@@ -208,13 +214,16 @@ exports.putUnLike = (req,res,next) =>{
 
 exports.deletePost = (req,res,next) =>{
     let postId = req.params.postId;
+    let imageURL;
     Post.findById(postId)
     .then(post=>{
+        imageURL = post.imageUrl;
         if(post.postedBy != req.userId){
             res.status(405).json({
                 message: 'You have no permission to delete this post.'
             });
         } else {
+            clearImage(imageURL);
             Post.findByIdAndDelete(postId)
             .then(bool =>{
                 res.status(202).json({
@@ -224,3 +233,8 @@ exports.deletePost = (req,res,next) =>{
         }
     })
 }
+
+const clearImage = filePath => {
+    filePath = path.join(__dirname, '..', filePath);
+    fs.unlink(filePath, err => console.log(err));
+  };

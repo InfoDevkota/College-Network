@@ -12,6 +12,11 @@ const commentSchema = new Schema(
             ref: "User",
             required: true
         },
+        commentOn:{
+            type: Schema.Types.ObjectId,
+            ref: "Post",
+            required: true
+        },
         edited:{
             type: Boolean,
             default: false

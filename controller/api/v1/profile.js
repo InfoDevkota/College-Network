@@ -32,8 +32,12 @@ exports.getProfileById = (req,res,next) => {
     const userId = req.params.userId;
 
     User.findById(userId)
-    .select('-password')
+    .select('-password -messageBoxUser')
     .populate('posts', 'date content')
+    .populate('semester', 'name _id number')
+    .populate('department', 'name _id id')
+    .populate('section', 'name _id id')
+    .populate('comments', '_id comment commentOn createdAt updatedAt')
     .then(user =>{
         if(user){
             res.status(201).json({
@@ -56,8 +60,12 @@ exports.getProfileById = (req,res,next) => {
 
 exports.getMe = (req,res,next) =>{
     User.findById(req.userId)
-    .select('-password')
+    .select('-password -messageBoxUser')
     .populate('posts', 'date content')
+    .populate('semester', 'name _id number')
+    .populate('department', 'name _id id')
+    .populate('section', 'name _id id')
+    .populate('comments', '_id comment commentOn createdAt updatedAt')
     .then(user =>{
         if(user){
             res.status(201).json({
@@ -103,7 +111,7 @@ exports.getProfileUpdate = (req,res,next) =>{
     .then(bool =>{
         console.log("response");
         User.findById(req.userId)
-        .select('-password -posts')
+        .select('-password -posts -messageBoxUser')
         .then(user =>{
             if(user){
                 res.status(201).json({
@@ -131,13 +139,31 @@ exports.getProfileUpdate = (req,res,next) =>{
 exports.putMe = (req,res,next) =>{
     const name = req.body.name;
     const email = req.body.email;
-    const userName = req.body.userName;
+    const semester = req.body.semester;
+    const department = req.body.department;
+    const section = req.body.section;
+    const phone = req.body.phone;
+    const college = req.body.college;
+    const bornOn = req.body.bornOn;
+    const livesIn = req.body.livesIn;
+    const graduationOn = req.body.graduationOn;
+    const gender = req.body.gender;
+
     User.findById(req.userId)
-    .select('-posts -password')
+    .select('-posts -password -messageBoxUser')
     .then(user =>{
         user.name = name;
         user.email = email;
-        user.userName = userName;
+        user.semester = semester;
+        user.department = department;
+        user.section = section;
+        user.phone = phone;
+        user.college = college;
+        user.bornOn = bornOn;
+        user.livesIn = livesIn;
+        user.graduationOn = graduationOn;
+        user.gender = gender;
+        user.phone = phone;
 
         req.user = user;
         return user.save();
@@ -163,7 +189,7 @@ exports.putProfilePic = (req,res,next) =>{
         imageLink = req.file.path;
     }
     User.findById(req.userId)
-    .select('-posts -password')
+    .select('-posts -password -messageBoxUser')
     .then(user =>{
         user.profileImage = imageLink;
 
