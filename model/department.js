@@ -9,8 +9,19 @@ const departmentSchema = new Schema({
         type:String
     },
     hod:{
-        type:String
-    }
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    },
+    intro:{
+        type: String
+    },
+    photo:{
+        type: String
+    },
+    posts: [{
+        type: Schema.Types.ObjectId,
+        ref: "Post"
+    }]
 });
 
 module.exports = mongoose.model('Department', departmentSchema);

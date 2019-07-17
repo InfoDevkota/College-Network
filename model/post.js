@@ -12,6 +12,16 @@ const postSchema = new Schema(
             ref: "User",
             required: true
         },
+        postedFor:{
+            isDepartment: {
+                type:Boolean,
+                default: false
+            },
+            department:{
+                type:Schema.Types.ObjectId,
+                ref: "Department"
+            }
+        },
         likes:[{
             type: Schema.Types.ObjectId,
             ref: "User"

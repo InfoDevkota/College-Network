@@ -131,13 +131,30 @@ exports.getProfileUpdate = (req,res,next) =>{
 exports.putMe = (req,res,next) =>{
     const name = req.body.name;
     const email = req.body.email;
-    const userName = req.body.userName;
+    const semester = req.body.semester;
+    const department = req.body.department;
+    const section = req.body.section;
+    const phone = req.body.body;
+    const college = req.body.college;
+    const bornOn = req.body.bornOn;
+    const livesIn = req.body.livesIn;
+    const graduationOn = req.body.graduationOn;
+    const gender = req.body.gender;
+
     User.findById(req.userId)
     .select('-posts -password -messageBoxUser')
     .then(user =>{
         user.name = name;
         user.email = email;
-        user.userName = userName;
+        user.semester = semester;
+        user.department = department;
+        user.section = section;
+        user.phone = phone;
+        user.college = college;
+        user.bornOn = bornOn;
+        user.livesIn = livesIn;
+        user.graduationOn = graduationOn;
+        user.gender = gender;
 
         req.user = user;
         return user.save();

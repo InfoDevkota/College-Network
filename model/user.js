@@ -57,6 +57,21 @@ const userSchema = new Schema({
     }],
     phone:{
         type: String
+    },
+    college:{
+        type: String
+    },
+    graduationOn:{//graduation_on
+        type: String
+    },
+    bornOn:{//born_on
+        type: Date
+    },
+    livesIn:{//lives_in
+        type: String
+    },
+    gender:{
+        type: String
     }
 });
 
