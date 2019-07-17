@@ -158,12 +158,14 @@ let socket = (server) => {
 
           socket.broadcast.to(receiver).emit("newMessageReceived", {
             from: sender,
+            to: receiver,
             message: messageReceived
           })
           
           //if(receiver != sender){
             io.to(sender).emit("newMessageSend", {
               from: sender,
+              to: receiver,
               message: messageReceived
             })
           //}
