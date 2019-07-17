@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const User = require('../../../model/user');
 const MessageBox = require('../../../model/messageBox');
+//TODO This chat.js is no more only for chat. Now we also use to show user status on and off.
+
+let onlineUsers = [];
 
 let socket = (server) => {
     console.log("I am Running This Controller one");
@@ -52,9 +55,24 @@ let socket = (server) => {
       }else{
         console.log("Verified IO Connected");
       }
-        socket.emit('test',{
-          data:'nodata'
+      
+      socket.emit('onlineUsers',{ //Inform me who are online
+        onlineUsers:onlineUsers
+      });
+
+      User.findById(socket.userId)
+      .then(user =>{
+        let me = {
+          _id : user._id,
+          profileImage: user.profileImage,
+          name: user.name
+        }
+        onlineUsers.push(me);
+        socket.broadcast.emit('onlineUsers',{ //Inform other I am Login
+          onlineUsers:onlineUsers
         });
+        
+      })
       
         socket.on('new message', (data) => {
           let sender = socket.userId;
@@ -169,6 +187,10 @@ let socket = (server) => {
         });
       
         socket.on('disconnect', () => {
+          onlineUsers.splice(onlineUsers.indexOf(socket.userId),1);
+          socket.broadcast.emit('onlineUsers',{
+            onlineUsers:onlineUsers
+          });
           // let sender = socket.userId;
           // let receiver = data.to;
           // socket.broadcast.to(receiver).emit("disconnect", {
