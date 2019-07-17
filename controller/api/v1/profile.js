@@ -34,6 +34,10 @@ exports.getProfileById = (req,res,next) => {
     User.findById(userId)
     .select('-password -messageBoxUser')
     .populate('posts', 'date content')
+    .populate('semester', 'name _id number')
+    .populate('department', 'name _id id')
+    .populate('section', 'name _id id')
+    .populate('comments', '_id comment commentOn createdAt updatedAt')
     .then(user =>{
         if(user){
             res.status(201).json({
@@ -58,6 +62,10 @@ exports.getMe = (req,res,next) =>{
     User.findById(req.userId)
     .select('-password -messageBoxUser')
     .populate('posts', 'date content')
+    .populate('semester', 'name _id number')
+    .populate('department', 'name _id id')
+    .populate('section', 'name _id id')
+    .populate('comments', '_id comment commentOn createdAt updatedAt')
     .then(user =>{
         if(user){
             res.status(201).json({
@@ -134,7 +142,7 @@ exports.putMe = (req,res,next) =>{
     const semester = req.body.semester;
     const department = req.body.department;
     const section = req.body.section;
-    const phone = req.body.body;
+    const phone = req.body.phone;
     const college = req.body.college;
     const bornOn = req.body.bornOn;
     const livesIn = req.body.livesIn;
@@ -155,6 +163,7 @@ exports.putMe = (req,res,next) =>{
         user.livesIn = livesIn;
         user.graduationOn = graduationOn;
         user.gender = gender;
+        user.phone = phone;
 
         req.user = user;
         return user.save();

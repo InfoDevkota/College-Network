@@ -19,7 +19,8 @@ const userSchema = new Schema({
         type: String
     },
     profileImage: {
-        type: String
+        type: String,
+        default: "static/placeHolder.png"
     },
     posts: [{
         type: Schema.Types.ObjectId,
@@ -61,13 +62,13 @@ const userSchema = new Schema({
     college:{
         type: String
     },
-    graduationOn:{//graduation_on
+    graduationOn:{
         type: String
     },
-    bornOn:{//born_on
-        type: Date
+    bornOn:{
+        type: String
     },
-    livesIn:{//lives_in
+    livesIn:{
         type: String
     },
     gender:{

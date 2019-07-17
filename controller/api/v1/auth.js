@@ -77,7 +77,9 @@ exports.postLogin = (req,res,next) => {
                 const token = jwt.sign(
                     {
                         email: user.email,
-                        userId: user._id.toString()
+                        userId: user._id.toString(),
+                        name: user.name,
+                        profileImage: user.profileImage
                     },
                     'ThisIsASecretKeyAndKey'
                 );
