@@ -1,15 +1,22 @@
 const Post = require("../../../model/post");
 const Comment = require("../../../model/comment");
+const User = require("../../../model/user");
 
 exports.postComment = (req,res,next) =>{
     let postId = req.params.postId;
     const comment = req.body.comment;
     const newComment = Comment({
         comment: comment,
-        commentBy: req.userId
+        commentBy: req.userId,
+        commentOn: postId
     })
     return newComment.save()
     .then(comment =>{
+        User.findById(req.userId)
+        .then(user =>{
+            user.comments.push(comment);
+            user.save();
+        })
         Post.findById(postId)
         .populate({
             path: 'comments',

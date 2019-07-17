@@ -32,7 +32,7 @@ exports.getProfileById = (req,res,next) => {
     const userId = req.params.userId;
 
     User.findById(userId)
-    .select('-password')
+    .select('-password -messageBoxUser')
     .populate('posts', 'date content')
     .then(user =>{
         if(user){
@@ -56,7 +56,7 @@ exports.getProfileById = (req,res,next) => {
 
 exports.getMe = (req,res,next) =>{
     User.findById(req.userId)
-    .select('-password')
+    .select('-password -messageBoxUser')
     .populate('posts', 'date content')
     .then(user =>{
         if(user){
@@ -103,7 +103,7 @@ exports.getProfileUpdate = (req,res,next) =>{
     .then(bool =>{
         console.log("response");
         User.findById(req.userId)
-        .select('-password -posts')
+        .select('-password -posts -messageBoxUser')
         .then(user =>{
             if(user){
                 res.status(201).json({
@@ -133,7 +133,7 @@ exports.putMe = (req,res,next) =>{
     const email = req.body.email;
     const userName = req.body.userName;
     User.findById(req.userId)
-    .select('-posts -password')
+    .select('-posts -password -messageBoxUser')
     .then(user =>{
         user.name = name;
         user.email = email;
@@ -163,7 +163,7 @@ exports.putProfilePic = (req,res,next) =>{
         imageLink = req.file.path;
     }
     User.findById(req.userId)
-    .select('-posts -password')
+    .select('-posts -password -messageBoxUser')
     .then(user =>{
         user.profileImage = imageLink;
 
