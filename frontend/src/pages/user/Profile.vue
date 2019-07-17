@@ -15,7 +15,7 @@
                     <q-badge color="red" floating>{{userDetail.user.posts.length}}</q-badge>
                   </q-tab>
                   <q-tab name="Comments" label="Comments">
-                    <q-badge color="red" floating>10+</q-badge>
+                    <q-badge color="red" floating>{{userDetail.user.comments.length}}</q-badge>
                   </q-tab>
                 </q-tabs>
 
@@ -25,7 +25,7 @@
                   <q-tab-panel name="Posts">
                     <div class="text-h6">Posts</div>
                     <q-list  bordered separator>
-                      <q-item v-for="(post) in userDetail.user.posts" :key="post._id">
+                      <q-item v-for="(post) in userDetail.user.posts" :key="post._id" clickable v-ripple @click="handleGotoPost(post._id)">
                         <q-item-section>
                           <q-item-label v-html="post.content"></q-item-label>
                           <q-item-label caption>{{post.date}}</q-item-label>
@@ -36,7 +36,14 @@
 
                   <q-tab-panel name="Comments">
                     <div class="text-h6">Comments</div>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    <q-list  bordered separator>
+                      <q-item v-for="(comment) in userDetail.user.comments" :key="comment._id" clickable v-ripple @click="handleGotoPost(comment.commentOn)">
+                        <q-item-section>
+                          <q-item-label>{{ comment.comment }}</q-item-label>
+                          <q-item-label caption>{{comment.updatedAt}}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
                   </q-tab-panel>
                 </q-tab-panels>
               </q-card>
@@ -47,7 +54,8 @@
                   <q-item class="q-pa-none">
                     <q-item-section class="text-weight-light items-center">
                       <q-avatar size="110px">
-                        <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+                        <img v-if="userDetail.user.profileImage" :src='$axios.defaults.baseURL + userDetail.user.profileImage'>
+                        <q-icon  v-else name="fas fa-image" />
                       </q-avatar>
                     </q-item-section>
                   </q-item>
@@ -68,42 +76,34 @@
               </q-card>
               <q-card class="q-mb-md">
                 <q-list dense class="rounded-borders">
-                  <q-item-label header class="text-caption q-py-sm">About</q-item-label>
-                  <q-separator/>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      Born on
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      Lives in
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      is
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card>
-              <q-card class="q-mb-md">
-                <q-list dense class="rounded-borders">
                   <q-item-label header class="text-caption q-py-sm">Current Affiliation</q-item-label>
                   <q-separator/>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      University
+                      College {{userDetail.user.college}}
                     </q-item-section>
                   </q-item>
                   <q-item>
                     <q-item-section class="text-weight-light">
                       Department
+                      <router-link :to="{ name: 'department-detail', params: { id:  userDetail.user.department.value} }">
+                        {{userDetail.user.department.name}}
+                      </router-link>
                     </q-item-section>
                   </q-item>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      Graduation on
+                      Graduation on {{userDetail.user.graduationOn}}
+                    </q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section class="text-weight-light">
+                      Semester {{userDetail.user.semester.name}}
+                    </q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section class="text-weight-light">
+                      Section {{userDetail.user.section.name}}
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -114,43 +114,22 @@
                   <q-separator/>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      Born on
+                      Born on  {{userDetail.user.bornOn}}
                     </q-item-section>
                   </q-item>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      Lives in
+                      Lives in {{userDetail.user.livesIn}}
                     </q-item-section>
                   </q-item>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      is
+                      is {{userDetail.user.gender}}
                     </q-item-section>
                   </q-item>
                 </q-list>
               </q-card>
-              <q-card class="q-mb-md">
-                <q-list dense class="rounded-borders">
-                  <q-item-label header class="text-caption q-py-sm">Contact</q-item-label>
-                  <q-separator/>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      fb
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      twitter
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      instagram
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-card>
-              <q-card class="q-mb-md">
+              <!-- <q-card class="q-mb-md">
                 <q-list class="rounded-borders">
                   <q-item-label header class="text-caption q-py-sm">Photos</q-item-label>
                   <q-separator/>
@@ -189,7 +168,7 @@
                     </div>
                   </q-item>
                 </q-list>
-              </q-card>
+              </q-card> -->
             </div>
         </div>
     </q-page>
@@ -216,6 +195,9 @@ export default {
     this.getUserProfileDetail(this.id)
   },
   methods: {
+    handleGotoPost (postId) {
+      this.$router.push({ name: 'feed-detail', params: { id: postId } })
+    },
     handleUpdateUserProfile () {
       this.$router.push({ name: 'profile-update', params: { id: this.id } })
     },

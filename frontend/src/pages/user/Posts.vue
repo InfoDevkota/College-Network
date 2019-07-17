@@ -5,6 +5,7 @@
         <q-linear-progress :value="0.6" color="pink" />
 
         <q-card-section class="row items-center no-wrap">
+          <q-editor v-model="editor" :definitions="definitions"/>
                     <q-list>
 <q-item>
                   <q-item-section avatar top>
@@ -30,6 +31,14 @@
               </q-item>
               <q-item  dense style="padding:0 15px 10px">
                 <q-item-section>
+                  <q-card-section>
+              <q-uploader
+                field-name="image"
+                :factory="factoryFn"
+                no-thumbnails
+                style="max-width: 300px"
+              />
+            </q-card-section>
                 </q-item-section>
             <q-item-section side>
                             <q-item-label>
@@ -171,10 +180,25 @@ const offline = [
 export default {
   data () {
     return {
+      image: '',
       post_params: {
         page: 1,
         count: 1,
         size: 5
+      },
+      definitions: {
+        save: {
+          tip: 'Save your work',
+          icon: 'save',
+          label: 'Save',
+          handler: this.insertImg
+        },
+        // bold: { label: 'Bold', icon: null, tip: 'My bold tooltip' },
+        insert_img: {
+          label: 'image',
+          icon: 'photo',
+          handler: this.insertImg // handler will call insertImg() method
+        }
       },
       items: [],
       offline,
@@ -198,6 +222,63 @@ export default {
   created () {
   },
   methods: {
+    insertImg () { // insertImg method
+      const post = this.post
+      // create an input file element to open file dialog
+      const input = document.createElement('input')
+      input.type = 'file'
+      input.accept = '.png, .jpg' // file extensions allowed
+      let file
+      input.onchange = _ => {
+        const files = Array.from(input.files)
+        file = files[0]
+
+        // lets load the file as dataUrl
+        const reader = new FileReader()
+        let dataUrl = ''
+        reader.onloadend = function () {
+          dataUrl = reader.result
+          // append result to the body of your post
+          post.body += '<div><img src="' + dataUrl + '" /></div>'
+        }
+        reader.readAsDataURL(file)
+      }
+      input.click()
+    },
+    saveWork () {
+      this.$q.notify({
+        message: 'Saved your text to local storage',
+        color: 'green-4',
+        textColor: 'white',
+        icon: 'fas fa-check-circle'
+      })
+    },
+    uploadIt () {
+      this.$q.notify({
+        message: 'Server unavailable. Check connectivity',
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'fas fa-exclamation-triangle'
+      })
+    },
+    factoryFn (files) {
+      let fd = new FormData()
+      fd.append('image', files[0])
+      fd.append('content', this.editor)
+      this.$axios.post('/api/v1/createPost', fd)
+        .then(response => {
+          console.log(response.data)
+          this.$q.loading.hide()
+          this.createPostDialog = false
+          this.items.unshift({
+            id: response.data.post._id,
+            content: response.data.post.content + '<div><img src=' + response.data.post.content + '/></div>',
+            postedBy: { name: 'sagar', id: response.data.post.postedBy },
+            date: response.data.post.updatedAt
+          })
+          this.editor = ''
+        })
+    },
     handleDetailPost (postId) {
       this.$router.push({ name: 'feed-detail', params: { id: postId } })
     },
@@ -280,7 +361,7 @@ export default {
             var temp = response.data.posts.map(post => {
               return {
                 id: post._id,
-                content: post.content,
+                content: post.content + '<div><img src=' + this.$axios.defaults.baseURL + post.imageUrl + '></div>',
                 postedBy: {
                   id: post.postedBy._id,
                   name: post.postedBy.name

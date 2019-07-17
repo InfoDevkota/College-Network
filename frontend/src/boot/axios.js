@@ -2,7 +2,7 @@ import axios from 'axios'
 import { SessionStorage } from 'quasar'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:4000'
+  baseURL: 'http://192.168.43.20:4000/'
 })
 
 /*

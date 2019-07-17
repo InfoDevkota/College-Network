@@ -285,7 +285,6 @@
 
 <script>
 import jwtDecode from 'jwt-decode'
-
 export default {
   data () {
     return {
@@ -319,6 +318,8 @@ export default {
         }
       ]
     }
+  },
+  mounted () {
   },
   computed: {
     getAuthUser () {

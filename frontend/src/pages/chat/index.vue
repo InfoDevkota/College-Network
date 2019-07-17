@@ -266,8 +266,8 @@
 </template>
 
 <script>
-import io from 'socket.io-client'
 import jwtDecode from 'jwt-decode'
+import socketIO from '../../util/socket/socket'
 
 export default {
   name: 'ChatAppLayout',
@@ -317,6 +317,7 @@ export default {
     }
   },
   mounted () {
+    this.socket = socketIO
     this.$axios.get(`/api/v1/chat/users`)
       .then(response => {
         this.conversations = response.data.users.map(user => {
@@ -330,12 +331,6 @@ export default {
           }
         })
       })
-
-    this.socket = io('http://localhost:4000?token=' + this.$q.sessionStorage.getItem('token'),
-      {
-        path: '/api/v1/socket'
-      }
-    )
     this.socket.on('newMessageSend', (data) => {
       console.log('##################SEND########################')
       this.chatMessenges.push(
@@ -353,18 +348,22 @@ export default {
     })
     this.socket.on('newMessageReceived', (data) => {
       console.log('##################RECEIVED########################')
-      this.chatMessenges.push(
-        {
-          id: data['messageId'],
-          name: '',
-          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-          stamp: '1 minutes ago',
-          text: data.message,
-          textColor: 'white',
-          bgColor: 'amber-7',
-          sent: false
-        }
-      )
+      console.log(typeof data.from)
+      console.log(typeof this.conversations[this.currentConversationIndex].id)
+      if (data.from === this.conversations[this.currentConversationIndex].id) {
+        this.chatMessenges.push(
+          {
+            id: data['messageId'],
+            name: '',
+            avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+            stamp: '1 minutes ago',
+            text: data.message,
+            textColor: 'white',
+            bgColor: 'amber-7',
+            sent: false
+          }
+        )
+      }
     })
   },
   computed: {

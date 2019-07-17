@@ -91,7 +91,8 @@ module.exports = function (ctx) {
         'QSelect',
         'QDate',
         'QBanner',
-        'QPopupProxy'
+        'QPopupProxy',
+        'QUploader'
       ],
 
       directives: [

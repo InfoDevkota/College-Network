@@ -14,7 +14,7 @@ const routes = [
 
       { path: 'user/profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
       { path: '/chats', name: 'chat-detail', component: () => import('pages/chat') },
-      { path: '/department', name: 'department-detail', component: () => import('pages/department/index') }
+      { path: '/department/:id', props: true, name: 'department-detail', component: () => import('pages/department/index') }
     ]
   },
   {
