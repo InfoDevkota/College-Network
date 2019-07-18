@@ -215,7 +215,7 @@ export default {
         section: '',
         department: '',
         graduationOn: '',
-        bornOn: '',
+        bornOn: new Date(),
         livesIn: '',
         gender: '',
         phone: ''
@@ -232,6 +232,10 @@ export default {
         {
           label: 'Female',
           value: 'female'
+        },
+        {
+          label: 'Other',
+          value: 'Other'
         }],
         departments: [],
         // todo  add year from current year

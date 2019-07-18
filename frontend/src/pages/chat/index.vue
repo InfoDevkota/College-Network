@@ -158,7 +158,7 @@
                 :name="chatMessenge.name"
                 :avatar="chatMessenge.avatar"
                 :text="[chatMessenge.text]"
-                :stamp="chatMessenge.stamp"
+                stamp=""
                 :sent="chatMessenge.sent"
                 :bg-color="(chatMessenge.sent) ? 'amber-7': 'blue' "
             />
@@ -248,17 +248,17 @@
                 text-color="white"
                 bg-color="grey"
             /> -->
-            <q-banner class="bg-primary text-white">
-              Unfortunately, the credit card did not go through, please try again.
+            <q-banner v-if="chatMessenges.length === 0" class="bg-primary text-white">
+              This is your first conversation
             </q-banner>
           </q-page>
       </q-page-container>
 
       <q-footer>
         <q-toolbar class="bg-grey-3 text-black row">
-          <q-btn round flat icon="insert_emoticon" class="q-mr-sm" />
+          <!-- <q-btn round flat icon="insert_emoticon" class="q-mr-sm" /> -->
           <q-input rounded outlined dense class="WAL__field col-grow q-mr-sm" bg-color="white" v-model="message" placeholder="Type a message" />
-          <q-btn round flat icon="mic" @click="handleSubmitMessage"/>
+          <q-btn round flat icon="fas fa-paper-plane" @click="handleSubmitMessage"/>
         </q-toolbar>
       </q-footer>
     </q-layout>
@@ -281,38 +281,38 @@ export default {
       loadingConverstions: false,
       currentConversationIndex: 0,
       conversations: [
-        {
-          id: 1,
-          person: 'Razvan Stoenescu',
-          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-          caption: 'I\'m working on Quasar!',
-          time: '15:00',
-          sent: true
-        },
-        {
-          id: 2,
-          person: 'Dan Popescu',
-          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-          caption: 'I\'m working on Quasar!',
-          time: '16:00',
-          deleted: true
-        },
-        {
-          id: 3,
-          person: 'Denjell Thompson-Yvetot',
-          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-          caption: 'I\'m working on Quasar!',
-          time: '17:00',
-          sent: true
-        },
-        {
-          id: 4,
-          person: 'Jeff Galbraith',
-          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-          caption: 'I\'m working on Quasar!',
-          time: '18:00',
-          sent: true
-        }
+        // {
+        //   id: 1,
+        //   person: 'Razvan Stoenescu',
+        //   avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+        //   caption: 'I\'m working on Quasar!',
+        //   time: '15:00',
+        //   sent: true
+        // },
+        // {
+        //   id: 2,
+        //   person: 'Dan Popescu',
+        //   avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+        //   caption: 'I\'m working on Quasar!',
+        //   time: '16:00',
+        //   deleted: true
+        // },
+        // {
+        //   id: 3,
+        //   person: 'Denjell Thompson-Yvetot',
+        //   avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+        //   caption: 'I\'m working on Quasar!',
+        //   time: '17:00',
+        //   sent: true
+        // },
+        // {
+        //   id: 4,
+        //   person: 'Jeff Galbraith',
+        //   avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+        //   caption: 'I\'m working on Quasar!',
+        //   time: '18:00',
+        //   sent: true
+        // }
       ]
     }
   },
@@ -487,7 +487,7 @@ export default {
 <style lang="stylus">
 .WAL
   width 100%
-  height 100%
+  height 90%
 
   &:before
     content ''
@@ -502,7 +502,7 @@ export default {
     z-index 4000
     height 100%
     width 100%
-    border-radius 5px
+    border-radius 0px
 
   &__field.q-field--outlined .q-field__control:before
     border none

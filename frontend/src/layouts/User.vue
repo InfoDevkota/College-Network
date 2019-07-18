@@ -4,7 +4,7 @@
                 <q-toolbar>                   <q-btn flat rounded dense icon="menu" class="q-mr-sm" v-if="$q.screen.lt.md" @click="drawer = !drawer" />
 
                  <q-avatar>
-          <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+          <img :src="$axios.defaults.baseURL+getAuthUser.profileImage">
         </q-avatar>
         <q-input dark dense rounded standout v-model="text" input-class="text-right" class="q-ml-md">
           <template v-slot:append>
@@ -15,7 +15,7 @@
                          <q-space />
 <q-chip>
         <q-avatar>
-          <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+          <img :src="$axios.defaults.baseURL+getAuthUser.profileImage">
         </q-avatar>
         {{ getAuthUser.email }}
       </q-chip>
@@ -73,7 +73,7 @@
               </q-item-section>
             </q-item>
              <q-separator spaced />
-      <q-item-label header>Explore</q-item-label>
+      <!-- <q-item-label header>Explore</q-item-label>
       <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="drafts" />
@@ -91,13 +91,13 @@
               <q-item-section>
                 Events
               </q-item-section>
-            </q-item>
+            </q-item> -->
       </q-list>
             </q-scroll-area>
             <q-img class="absolute-top" src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png">
+              <img :src="$axios.defaults.baseURL+getAuthUser.profileImage">
             </q-avatar>
             <div class="text-weight-bold">{{getAuthUser.email}}</div>
             <!-- <div>@rstoenescu</div> -->

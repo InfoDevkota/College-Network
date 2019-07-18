@@ -5,12 +5,11 @@
         <q-linear-progress :value="0.6" color="pink" />
 
         <q-card-section class="row items-center no-wrap">
-          <q-editor v-model="editor" :definitions="definitions"/>
                     <q-list>
 <q-item>
                   <q-item-section avatar top>
                        <q-avatar>
-                <img :src="`https://cdn.quasar.dev/img/avatar3.jpg`">
+                <img :src="$axios.defaults.baseURL+getCurrentUser.profileImage">
               </q-avatar>
                   </q-item-section>
                   <q-item-section>
@@ -27,17 +26,20 @@
         }],
         ['undo', 'redo']
       ]"
-    />                 </q-item-section>
+    />
+              <q-uploader
+              ref="upload"
+                field-name="image"
+                :factory="factoryFn"
+                hide-upload-btn
+                no-thumbnails
+                style="max-width: 100%"
+              />
+            </q-item-section>
               </q-item>
               <q-item  dense style="padding:0 15px 10px">
                 <q-item-section>
                   <q-card-section>
-              <q-uploader
-                field-name="image"
-                :factory="factoryFn"
-                no-thumbnails
-                style="max-width: 300px"
-              />
             </q-card-section>
                 </q-item-section>
             <q-item-section side>
@@ -60,7 +62,7 @@
             <q-item>
                   <q-item-section avatar top>
                        <q-avatar>
-                <img :src="`https://cdn.quasar.dev/img/avatar3.jpg`">
+                <img :src="$axios.defaults.baseURL+getCurrentUser.profileImage">
               </q-avatar>
                   </q-item-section>
                   <q-item-section>
@@ -88,7 +90,7 @@
           <q-item>
             <q-item-section avatar>
               <q-avatar>
-                <img :src="`https://cdn.quasar.dev/img/${offline[0].avatar}`">
+                <img :src="$axios.defaults.baseURL+item.postedBy.profileImage">
               </q-avatar>
             </q-item-section>
 
@@ -272,10 +274,11 @@ export default {
           this.createPostDialog = false
           this.items.unshift({
             id: response.data.post._id,
-            content: response.data.post.content + '<div><img src=' + response.data.post.content + '/></div>',
+            content: (response.data.post.imageUrl) ? `${response.data.post.content}<div><img src=${this.$axios.defaults.baseURL + response.data.post.imageUrl}></div>` : `${response.data.post.content}`,
             postedBy: { name: 'sagar', id: response.data.post.postedBy },
             date: response.data.post.updatedAt
           })
+          this.$refs['upload'].reset()
           this.editor = ''
         })
     },
@@ -300,39 +303,43 @@ export default {
         })
     },
     savePost () {
-      this.$q.loading.show()
-      this.$axios.post('/api/v1/createPost', { content: this.editor })
-        .then(response => {
-          console.log(response.data)
-          this.$q.loading.hide()
-          this.createPostDialog = false
-          this.items.unshift({
-            id: response.data.post._id,
-            content: response.data.post.content,
-            postedBy: { name: 'sagar', id: response.data.post.postedBy },
-            date: response.data.post.updatedAt
-          })
-          this.editor = ''
-        })
+      // this.$q.loading.show()
+      console.log(this.$refs)
+      this.$refs['upload'].upload()
+      // this.$axios.post('/api/v1/createPost', { content: this.editor })
+      //   .then(response => {
+      //     console.log(response.data)
+      //     this.$q.loading.hide()
+      //     this.createPostDialog = false
+      //     this.items.unshift({
+      //       id: response.data.post._id,
+      //       content: response.data.post.content,
+      //       postedBy: { name: 'sagar', id: response.data.post.postedBy },
+      //       date: response.data.post.updatedAt
+      //     })
+      //     this.editor = ''
+      //   })
     },
     updatePost () {
       this.$q.loading.show()
-      this.$axios.put(`/api/v1/post/${this.currentPostId}`, { content: this.editor })
-        .then(response => {
-          console.log(response.data)
-          this.$q.loading.hide()
-          this.createPostDialog = false
-          this.items.unshift({
-            id: response.data.post._id,
-            // liked: post.liked,
-            totalComments: response.data.post.totalComments,
-            totalLike: response.data.post.totalLike,
-            content: response.data.post.content,
-            postedBy: { name: 'sagar', id: response.data.post.postedBy },
-            date: response.data.post.updatedAt
-          })
-          this.editor = ''
-        })
+      console.log(this.$refs)
+      this.$refs['upload'].upload()
+      // this.$axios.put(`/api/v1/post/${this.currentPostId}`, { content: this.editor })
+      //   .then(response => {
+      //     console.log(response.data)
+      //     this.$q.loading.hide()
+      //     this.createPostDialog = false
+      //     this.items.unshift({
+      //       id: response.data.post._id,
+      //       // liked: post.liked,
+      //       totalComments: response.data.post.totalComments,
+      //       totalLike: response.data.post.totalLike,
+      //       content: response.data.post.content,
+      //       postedBy: { name: 'sagar', id: response.data.post.postedBy },
+      //       date: response.data.post.updatedAt
+      //     })
+      //     this.editor = ''
+      //   })
       this.isEdit = false
     },
     handlePostLike (postId) {
@@ -361,10 +368,11 @@ export default {
             var temp = response.data.posts.map(post => {
               return {
                 id: post._id,
-                content: post.content + '<div><img src=' + this.$axios.defaults.baseURL + post.imageUrl + '></div>',
+                content: (post.imageUrl) ? `${post.content}<div><img src=${this.$axios.defaults.baseURL + post.imageUrl}></div>` : `${post.content}`,
                 postedBy: {
                   id: post.postedBy._id,
-                  name: post.postedBy.name
+                  name: post.postedBy.name,
+                  profileImage: post.postedBy.profileImage
                 },
                 date: post.updatedAt,
                 liked: post.liked,

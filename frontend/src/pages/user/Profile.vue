@@ -86,7 +86,7 @@
                   <q-item>
                     <q-item-section class="text-weight-light">
                       Department
-                      <router-link :to="{ name: 'department-detail', params: { id:  userDetail.user.department.value} }">
+                      <router-link v-if="userDetail.user.department" :to="{ name: 'department-detail', params: { id:  userDetail.user.department.value} }">
                         {{userDetail.user.department.name}}
                       </router-link>
                     </q-item-section>
@@ -98,12 +98,12 @@
                   </q-item>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      Semester {{userDetail.user.semester.name}}
+                      Semester <span v-if="userDetail.user.semester"> {{userDetail.user.semester.name}} </span>
                     </q-item-section>
                   </q-item>
                   <q-item>
                     <q-item-section class="text-weight-light">
-                      Section {{userDetail.user.section.name}}
+                      Section <span v-if="userDetail.user.section"> {{userDetail.user.section.name}} </span>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -183,6 +183,11 @@ export default {
     return {
       userDetail: '',
       tab: 'Posts'
+    }
+  },
+  watch: {
+    id (value) {
+      this.getUserProfileDetail(value)
     }
   },
   computed: {
