@@ -49,10 +49,10 @@
                 <q-spinner-facebook />
               </template>
           </q-btn>
+          <router-link :to="{name: 'signin'}">
+          <q-btn flat color="white q-mx-md" label="Already a Member ?" />
+          </router-link>
         </div>
-        <router-link :to="{name: 'signin'}">
-          Login
-        </router-link>
       </q-form>
     </div>
   </div>

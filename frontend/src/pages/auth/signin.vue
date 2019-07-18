@@ -42,10 +42,10 @@
                 <q-spinner-facebook />
               </template>
           </q-btn>
+          <router-link :to="{name: 'register'}">
+             <q-btn flat color="white q-mx-md" label="Not a Member ?" />
+          </router-link>
         </div>
-        <router-link :to="{name: 'register'}">
-          Not a Member ?
-        </router-link>
       </q-form>
     </div>
   </div>

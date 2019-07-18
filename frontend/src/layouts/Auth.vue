@@ -10,7 +10,7 @@
     :style="{ height: 100+'%' }"
     >
     <template v-slot:media>
-        <img src="https://cdn.quasar.dev/img/parallax2.jpg">
+        <img src="statics/banner.jpg">
       </template>
             <template v-slot:content="scope">
                 <div
@@ -33,15 +33,15 @@
     >
       <q-carousel-slide :name="1" img-src="">
           <div class="absolute-bottom custom-caption">
-          <div class="text-h2">First stop</div>
-          <div class="text-subtitle1">Mountains</div>
+          <div class="text-h2">Social Network for College</div>
+          <div class="text-subtitle1">chat, post etc</div>
         </div>
 
       </q-carousel-slide>
       <q-carousel-slide :name="2" img-src="">
           <div class="absolute-bottom custom-caption">
-          <div class="text-h2">Second stop</div>
-          <div class="text-subtitle1">Mountains</div>
+          <div class="text-h2">Social Network for College</div>
+          <div class="text-subtitle1">chat, post etc</div>
         </div>
 
       </q-carousel-slide>

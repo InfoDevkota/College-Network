@@ -47,7 +47,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img :src="`https://cdn.quasar.dev/img/${offline[0].avatar}`" />
+                <img v-if="post.postedBy" :src="$axios.defaults.baseURL+post.postedBy.profileImage">
             </q-avatar>
           </q-item-section>
 
@@ -218,7 +218,8 @@ export default {
           content: response.data.post.content,
           postedBy: {
             id: response.data.post.postedBy._id,
-            name: response.data.post.postedBy.name
+            name: response.data.post.postedBy.name,
+            profileImage: response.data.post.postedBy.profileImage
           },
           date: response.data.post.updatedAt,
           liked: response.data.post.liked,
