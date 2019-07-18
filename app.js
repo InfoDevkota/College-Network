@@ -23,7 +23,17 @@ const fileStorage = multer.diskStorage({
         callback(null,'images');
     },
     filename: (req,file,callback) =>{
-        callback(null, new Date().toISOString() + '-' + file.originalname);
+	let date = new Date();
+	let mm = date.getMonth();
+	let dd = date.getDate();
+	let yyyy = date.getFullYear();
+	let h = date.getHours();
+	let i = date.getMinutes();
+	let s = date.getMilliseconds();	
+
+	let id_photo = mm + '-' + dd + '-' + yyyy + '-' + h + '_' + i + '_' + s;
+	console.log(id_photo + '-' + file.originalname);
+        callback(null, id_photo + '-' + file.originalname);
     }
 });
 
