@@ -5,6 +5,7 @@ const postRoutes = require('../v1/post');
 const profileRoutes = require('../v1/profile');
 const messengerRoutes = require('../v1/messenger');//or simply ./messenger
 const departmentRoutes = require('./department'); // here ./ starts from this directive or sth
+const noteRoutes = require("./note");
 
 const router = express.Router();
 
@@ -23,6 +24,7 @@ router.use(postRoutes);
 router.use(profileRoutes);
 router.use(messengerRoutes);
 router.use(departmentRoutes);
+router.use(noteRoutes);
 
 router.use((error, req,res,next)=>{
     console.log(error);
