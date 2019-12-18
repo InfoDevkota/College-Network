@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../../../model/user');
 const MessageBox = require('../../../model/messageBox');
-//TODO This chat.js is no more only for chat. Now we also use to show user status on and off.
+//INFO This chat.js is no more only for chat. Now we also use to show user status on and off.
 
 let onlineUsers = [];
 

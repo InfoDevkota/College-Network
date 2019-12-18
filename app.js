@@ -48,12 +48,45 @@ const fileFilter = (req,file,callback) => {
         callback(null, false);
     }
 }
+
+const noteFileStorage = multer.diskStorage({
+    destination: (req,file,callback) =>{
+        callback(null,'notes');
+    },
+    filename: (req,file,callback) =>{
+	let date = new Date();
+	let mm = date.getMonth();
+	let dd = date.getDate();
+	let yyyy = date.getFullYear();
+	let h = date.getHours();
+	let i = date.getMinutes();
+	let s = date.getMilliseconds();	
+
+	let id_note = mm + '-' + dd + '-' + yyyy + '-' + h + '_' + i + '_' + s;
+	console.log(id_note + '-' + file.originalname);
+        callback(null, id_note + '-' + file.originalname);
+    }
+});
+
+const noteFileFilter = (req,file,callback) => {
+    var ext = path.extname(file.originalname);
+    if(ext == '.pdf' || ext == '.docs') {
+        callback(null, true)
+    } else {
+        //callback(new Error('Only images are allowed'))
+        callback(null, false);
+    }
+}
 app.use(cors());
 app.use(bodyParser.json());
 app.use(
     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
 );
+app.use(
+    multer({ storage: noteFileStorage, fileFilter: noteFileFilter }).single('note')
+);
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/notes', express.static(path.join(__dirname, 'notes')));
 app.use("/api",apiRoutes);
 
 app.set('view engine', 'ejs');

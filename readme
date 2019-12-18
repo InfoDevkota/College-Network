@@ -6,3 +6,12 @@ Good to go.
 
 
 check Read-Me directory for API docs.
+
+To run front end:-
+    cd frontend
+    quasar dev
+
+    //TODO
+    //Change the url in frontend/src/boot/axios.js
+    //to the url of Backend
+
