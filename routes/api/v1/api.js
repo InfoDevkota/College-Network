@@ -5,7 +5,7 @@ const postRoutes = require('../v1/post');
 const profileRoutes = require('../v1/profile');
 const messengerRoutes = require('../v1/messenger');//or simply ./messenger
 const departmentRoutes = require('./department'); // here ./ starts from this directive or sth
-
+const conversationRoutes = require('./conversation')
 const router = express.Router();
 
 router.get("/",(req,res,next)=>{
@@ -14,7 +14,7 @@ router.get("/",(req,res,next)=>{
     res.end();
 });
 
-router.get("/chat",(req,res,next)=>{
+router.get("/chats",(req,res,next)=>{
     res.render('chatindex');
 });
 
@@ -22,6 +22,7 @@ router.use(authRoutes);
 router.use(postRoutes);
 router.use(profileRoutes);
 router.use(messengerRoutes);
+router.use(conversationRoutes);
 router.use(departmentRoutes);
 
 router.use((error, req,res,next)=>{

@@ -18,41 +18,41 @@ const Student = require('./model/student');
 
 const app = express();
 
-const fileStorage = multer.diskStorage({
-    destination: (req,file,callback) =>{
-        callback(null,'images');
-    },
-    filename: (req,file,callback) =>{
-	let date = new Date();
-	let mm = date.getMonth();
-	let dd = date.getDate();
-	let yyyy = date.getFullYear();
-	let h = date.getHours();
-	let i = date.getMinutes();
-	let s = date.getMilliseconds();	
+// const fileStorage = multer.diskStorage({
+//     destination: (req,file,callback) =>{
+//         callback(null,'images');
+//     },
+//     filename: (req,file,callback) =>{
+// 	let date = new Date();
+// 	let mm = date.getMonth();
+// 	let dd = date.getDate();
+// 	let yyyy = date.getFullYear();
+// 	let h = date.getHours();
+// 	let i = date.getMinutes();
+// 	let s = date.getMilliseconds();	
 
-	let id_photo = mm + '-' + dd + '-' + yyyy + '-' + h + '_' + i + '_' + s;
-	console.log(id_photo + '-' + file.originalname);
-        callback(null, id_photo + '-' + file.originalname);
-    }
-});
+// 	let id_photo = mm + '-' + dd + '-' + yyyy + '-' + h + '_' + i + '_' + s;
+// 	console.log(id_photo + '-' + file.originalname);
+//         callback(null, id_photo + '-' + file.originalname);
+//     }
+// });
 
-const fileFilter = (req,file,callback) => {
-    if(
-        file.mimetype === 'image/png' ||
-        file.mimetype === 'image/jpg' ||
-        file.mimetype === 'image/jpeg'
-    ){
-        callback(null, true);
-    } else {
-        callback(null, false);
-    }
-}
+// const fileFilter = (req,file,callback) => {
+//     if(
+//         file.mimetype === 'image/png' ||
+//         file.mimetype === 'image/jpg' ||
+//         file.mimetype === 'image/jpeg'
+//     ){
+//         callback(null, true);
+//     } else {
+//         callback(null, false);
+//     }
+// }
 app.use(cors());
 app.use(bodyParser.json());
-app.use(
-    multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
-);
+// app.use(
+//     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+// );
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/api",apiRoutes);
 

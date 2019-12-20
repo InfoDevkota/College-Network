@@ -67,11 +67,11 @@
 
           <q-space />
 
-          <q-btn size="sm" round flat icon="message" />
-          <q-btn size="sm" round flat icon="more_vert">
+          <q-btn round flat icon="message" />
+          <q-btn round flat icon="more_vert">
             <q-menu auto-close :offset="[110, 8]">
-              <q-list dense style="min-width: 150px">
-                <q-item clickable @click="newGroup.isVisible = true">
+              <q-list style="min-width: 150px">
+                <q-item clickable @click="">
                   <q-item-section>New group</q-item-section>
                 </q-item>
                 <q-item clickable>
@@ -262,53 +262,6 @@
         </q-toolbar>
       </q-footer>
     </q-layout>
-     <q-dialog v-model="newGroup.isVisible">
-      <q-card style="width: 650px; max-width: 40vw;">
-        <q-toolbar>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
-          </q-avatar>
-
-          <q-toolbar-title>New<span class="text-weight-bold">Group</span></q-toolbar-title>
-
-          <q-btn flat round dense icon="close" v-close-popup />
-        </q-toolbar>
-
-        <q-separator />
-
-        <q-card-section style="max-height: 50vh" class="scroll">
-          <q-input
-            outlined
-            dense
-            v-model="newGroup.data.groupName"
-            label="Name *"
-            hint="Name is required"
-            emit-value
-            map-options
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Please type something']"
-          />
-          <q-input
-            outlined
-            dense
-            v-model="newGroup.data.members"
-            label="Name *"
-            hint="Name is required"
-            emit-value
-            map-options
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Please type something']"
-          />
-        </q-card-section>
-
-        <q-separator />
-
-        <q-card-actions align="right">
-          <q-btn flat label="Create" color="primary" @click="handleCreateNewChatGroup" />
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
   </div>
 </template>
 
@@ -320,13 +273,6 @@ export default {
   name: 'ChatAppLayout',
   data () {
     return {
-      newGroup: {
-        isVisible: false,
-        data: {
-          groupName: "",
-          members: []
-        }
-      },
       chatMessenges: [],
       socket: '',
       leftDrawerOpen: false,
@@ -458,25 +404,6 @@ export default {
     }
   },
   methods: {
-    handleCreateNewChatGroup() {
-      this.$axios.post('/api/v1/me', {
-        name: this.userDetail.name,
-        email: this.userDetail.email,
-        college: this.userDetail.college,
-        semester: this.userDetail.semester,
-        section: this.userDetail.section,
-        department: this.userDetail.department,
-        graduationOn: this.userDetail.graduationOn,
-        bornOn: this.userDetail.bornOn,
-        livesIn: this.userDetail.livesIn,
-        phone: this.userDetail.phone,
-        gender: this.userDetail.gender
-      })
-        .then(response => {
-          this.$router.push({ name: 'user-profile', params: { id: response.data.user._id } })
-          console.log(response)
-        })
-    },
     onMessageReceived () {
       alert('')
     },

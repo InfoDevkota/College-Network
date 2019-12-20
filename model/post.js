@@ -38,9 +38,9 @@ const postSchema = new Schema(
             type:Number,
             default:0
         },
-        imageUrl: {
+        imageUrl: [{
             type: String
-        },
+        }],
         date:{
             type: String,
             required: true

@@ -3,6 +3,7 @@ const { body } = require('express-validator');
 
 const postController = require("../../../controller/api/v1/post");
 const commentController = require("../../../controller/api/v1/comment");
+const uploadController = require("../../../controller/api/v1/upload");
 const isAuth = require("../../../auth/is-auth-api");
 
 const router = express.Router();
@@ -11,6 +12,7 @@ router.get("/getPosts", isAuth, postController.getPosts);
 router.post(
     "/createPost",
     isAuth,
+    uploadController.multipleUpload,
     [
         body('content')
             .trim()
