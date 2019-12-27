@@ -26,24 +26,24 @@ server.listen(process.env.PORT || 4080, function() {
 });
 require("./socket/conversation")(io);
 require("./socket/globalRoom")(io, GlobalRoom, _);
-// const fileStorage = multer.diskStorage({
-//     destination: (req,file,callback) =>{
-//         callback(null,'images');
-//     },
-//     filename: (req,file,callback) =>{
-// 	let date = new Date();
-// 	let mm = date.getMonth();
-// 	let dd = date.getDate();
-// 	let yyyy = date.getFullYear();
-// 	let h = date.getHours();
-// 	let i = date.getMinutes();
-// 	let s = date.getMilliseconds();	
+const fileStorage = multer.diskStorage({
+    destination: (req,file,callback) =>{
+        callback(null,'images');
+    },
+    filename: (req,file,callback) =>{
+	let date = new Date();
+	let mm = date.getMonth();
+	let dd = date.getDate();
+	let yyyy = date.getFullYear();
+	let h = date.getHours();
+	let i = date.getMinutes();
+	let s = date.getMilliseconds();	
 
-// 	let id_photo = mm + '-' + dd + '-' + yyyy + '-' + h + '_' + i + '_' + s;
-// 	console.log(id_photo + '-' + file.originalname);
-//         callback(null, id_photo + '-' + file.originalname);
-//     }
-// });
+	let id_photo = mm + '-' + dd + '-' + yyyy + '-' + h + '_' + i + '_' + s;
+	console.log(id_photo + '-' + file.originalname);
+        callback(null, id_photo + '-' + file.originalname);
+    }
+});
 
 // const fileFilter = (req,file,callback) => {
 //     if(
