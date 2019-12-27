@@ -5,7 +5,9 @@ const session = require('express-session');
 const path = require('path');
 const multer = require('multer');
 const cors = require('cors');
-
+const socketIO = require('socket.io');
+const http = require('http');
+const _ = require("lodash")
 require('dotenv/config');
 
 const authRoutes = require('./routes/auth');
@@ -15,9 +17,15 @@ const adminRoutes = require('./routes/admin');
 const chatV1Controller = require('./controller/api/v1/chat');//Check
 
 const Student = require('./model/student');
-
+const { GlobalRoom } = require('./helpers/GlobalRoom');
 const app = express();
-
+const server = http.createServer(app);
+const io = socketIO(server);
+server.listen(process.env.PORT || 4080, function() {
+    console.log('Listerning on port'+process.env.PORT || 4080)
+});
+require("./socket/conversation")(io);
+require("./socket/globalRoom")(io, GlobalRoom, _);
 const fileStorage = multer.diskStorage({
     destination: (req,file,callback) =>{
         callback(null,'images');
@@ -37,6 +45,20 @@ const fileStorage = multer.diskStorage({
     }
 });
 
+// const fileFilter = (req,file,callback) => {
+//     if(
+//         file.mimetype === 'image/png' ||
+//         file.mimetype === 'image/jpg' ||
+//         file.mimetype === 'image/jpeg'
+//     ){
+//         callback(null, true);
+//     } else {
+//         callback(null, false);
+//     }
+// }
+// app.use(
+//     multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+// );
 const fileFilter = (req,file,callback) => {
     if(
         file.mimetype === 'image/png' ||
@@ -139,8 +161,8 @@ app.use((req,res,next) => {
 mongoose
 .connect(process.env.DB_CONNECTION, { useCreateIndex: true, useNewUrlParser: true })
 .then(result => {
-    const server = app.listen(process.env.PORT || 4080);
-    chatV1Controller(server);//Check
+    // const server = app.listen(process.env.PORT || 4080);
+    // chatV1Controller(server);
     console.log("Server Started at Port " + (process.env.PORT || 4080));
 })
 .catch(error => console.log(error));

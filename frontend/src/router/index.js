@@ -13,9 +13,7 @@ Vue.use(VueRouter)
 
 export default function (/* { store, ssrContext } */) {
   const Router = new VueRouter({
-    mode: {
-      history
-    },
+    mode: 'history',
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
 

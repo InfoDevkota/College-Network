@@ -8,10 +8,7 @@ const { validationResult } = require('express-validator');
 exports.postCreatePost = (req,res,next) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-        const error = new Error('Validation failed');
-        error.statusCode = 422;
-        error.data = errors.array();
-        throw error;
+        return res.status(422).json({ errors: errors.array() })
     }
 
     let date = new Date();
@@ -22,8 +19,8 @@ exports.postCreatePost = (req,res,next) =>{
         postedBy: req.userId,
         date: date
     })
-    if(req.file){
-        post.imageUrl = req.file.path;
+    if(req.files){
+        post.imageUrl = req.files.map(file => file.path);
     }
     return post.save()
     .then(post =>{
