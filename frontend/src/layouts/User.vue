@@ -264,7 +264,7 @@
         <q-card-section style="padding: 0">
           <q-input v-model="text" filled autogrow standout dense>
             <template v-slot:append>
-              <q-icon name="close" @click="text = ''" class="cursor-pointer" />
+              <q-icon name="close" class="cursor-pointer" />
             </template>
           </q-input>
         </q-card-section>
@@ -284,10 +284,10 @@
         <q-list separator dark>
           <q-item>
             <q-item-section>
-              <q-item-label>Friends Online (2/4)</q-item-label>
+              <q-item-label>Friends Online ({{onlineUsers.length}})</q-item-label>
             </q-item-section>
           </q-item>
-          <q-item clickable @click="$router.push({ name: 'chat' })">
+          <!-- <q-item clickable v-for="(onlineUser, index) in onlineUsers" :key="index" @click="$router.push({ name: 'chat' })">
             <q-item-section avatar>
               <q-icon
                 name="fas fa-circle"
@@ -296,7 +296,7 @@
               />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Sagar Samal</q-item-label>
+              <q-item-label>{{onlineUser.name}}</q-item-label>
               <q-item-label caption>Offline</q-item-label>
             </q-item-section>
             <q-item-section side>
@@ -304,8 +304,8 @@
                 <img :src="`https://cdn.quasar.dev/img/avatar2.jpg`" />
               </q-avatar>
             </q-item-section>
-          </q-item>
-          <q-item clickable @click="$router.push({ name: 'chat' })">
+          </q-item> -->
+          <q-item clickable v-for="(onlineUser, index) in onlineUsers" :key="index" @click="$router.push({ name: 'chat' })">
             <q-item-section avatar>
               <q-icon
                 name="fas fa-circle"
@@ -314,7 +314,7 @@
               />
             </q-item-section>
             <q-item-section>
-              <q-item-label>Sagar Samal</q-item-label>
+              <q-item-label>{{onlineUser.name}}</q-item-label>
               <q-item-label caption>Online</q-item-label>
             </q-item-section>
             <q-item-section side>
@@ -334,6 +334,7 @@
 </template>
 
 <script>
+import socket from '../util/socket/socket'
 import jwtDecode from "jwt-decode";
 export default {
   data() {
@@ -343,6 +344,7 @@ export default {
       active: true,
       searchText: "",
       drawer: true,
+      onlineUsers: [],
       lazy: [
         {
           label: "Node 1",
@@ -367,7 +369,20 @@ export default {
       ]
     };
   },
-  mounted() {},
+  mounted() {
+    socket.on("connect", () => {
+      var room = 'GlobalRoom';
+      var user = this.getAuthUser
+      socket.emit('global room', {
+        room: room,
+        user: user
+      })
+      console.log('online')
+    })
+    socket.on("onlineUser", (usersOnline) => {
+      this.onlineUsers = usersOnline;
+    });
+  },
   computed: {
     getAuthUser() {
       const decodedUser = jwtDecode(this.$q.sessionStorage.getItem("token"));

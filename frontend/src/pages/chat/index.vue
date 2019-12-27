@@ -109,12 +109,11 @@
             </template>
           </q-input>
         </q-toolbar>
-
         <q-scroll-area style="height: calc(100% - 100px)">
           <q-list>
             <q-item
               v-for="(conversation, index) in conversations"
-              :key="conversation.id"
+              :key="index"
               clickable
               v-ripple
               @click="handleOnConversationSelect(conversation, index)"
@@ -127,18 +126,18 @@
 
               <q-item-section>
                 <q-item-label lines="1">
-                  {{ conversation.person }}
+                  {{ conversation.author.name }}
                 </q-item-label>
                 <q-item-label class="conversation__summary" caption>
-                  <q-icon name="check" v-if="conversation.sent" />
-                  <q-icon name="fas fa-ban" v-if="conversation.deleted" />
-                  {{ conversation.caption }}
+                  <!-- <q-icon name="check" v-if="conversation.sent" />
+                  <q-icon name="fas fa-ban" v-if="conversation.deleted" /> -->
+                  {{ conversation.message }}
                 </q-item-label>
               </q-item-section>
 
               <q-item-section side>
                 <q-item-label caption>
-                  {{ conversation.time }}
+                  {{ conversation.date | fromNow }}
                 </q-item-label>
             <q-icon name="fas fa-circle" class="text-green" style="font-size: 0.7em"/>
               </q-item-section>
@@ -151,118 +150,29 @@
       </q-drawer>
 
       <q-page-container class="bg-grey-2">
-          <q-page padding>
-             <q-chat-message
-                v-for="chatMessenge in chatMessenges"
-                :key="chatMessenge.id"
-                :name="chatMessenge.name"
-                :avatar="chatMessenge.avatar"
-                :text="[chatMessenge.text]"
-                stamp=""
-                :sent="chatMessenge.sent"
-                :bg-color="(chatMessenge.sent) ? 'amber-7': 'blue' "
-            />
-            <!-- <q-chat-message
-                name="me"
-                avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-                :text="['hey, how are you?']"
-                stamp="7 minutes ago"
-                :sent="true"
-                bg-color="amber-7"
-            />
-            <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="[
-                'doing fine, how r you?',
-                'I just feel like typing a really, really, REALY long message to annoy you...'
-                ]"
-                size="6"
-                stamp="4 minutes ago"
-                text-color="white"
-                bg-color="grey"
-            />
-            <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="['Did it work?']"
-                stamp="1 minutes ago"
-                size="8"
-                text-color="white"
-                bg-color="grey"
-            />
-            <q-chat-message
-                name="me"
-                avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-                :text="['hey, how are you?']"
-                stamp="7 minutes ago"
-                sent
-                bg-color="amber-7"
-            />
-            <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="[
-                'doing fine, how r you?',
-                'I just feel like typing a really, really, REALY long message to annoy you...'
-                ]"
-                size="6"
-                stamp="4 minutes ago"
-                text-color="white"
-                bg-color="grey"
-            />
-            <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="['Did it work?']"
-                stamp="1 minutes ago"
-                size="8"
-                text-color="white"
-                bg-color="grey"
-            /><q-chat-message
-                name="me"
-                avatar="https://cdn.quasar.dev/img/avatar3.jpg"
-                :text="['hey, how are you?']"
-                stamp="7 minutes ago"
-                sent
-                bg-color="amber-7"
-            />
-            <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="[
-                'doing fine, how r you?',
-                'I just feel like typing a really, really, REALY long message to annoy you...'
-                ]"
-                size="6"
-                stamp="4 minutes ago"
-                text-color="white"
-                bg-color="grey"
-            />
-            <q-chat-message
-                name="Jane"
-                avatar="https://cdn.quasar.dev/img/avatar5.jpg"
-                :text="['Did it work?']"
-                stamp="1 minutes ago"
-                size="8"
-                text-color="white"
-                bg-color="grey"
-            /> -->
-            <q-banner v-if="chatMessenges.length === 0" class="bg-primary text-white">
-              This is your first conversation
-            </q-banner>
-          </q-page>
+          <router-view></router-view>
       </q-page-container>
 
-      <q-footer>
+      <q-footer class="bg-grey-3">
+        <q-chip removable v-for="(file, index) in fileList.files" :key="index" class="shadow-2" size="sm" text-color="white"  @remove="deleteFile(index)" color="primary">
+          <q-avatar>
+            <img :src="getImage(file)">>
+          </q-avatar>
+          {{file.name}}
+        </q-chip>
         <q-toolbar class="bg-grey-3 text-black row">
           <!-- <q-btn round flat icon="insert_emoticon" class="q-mr-sm" /> -->
           <q-input rounded outlined dense class="WAL__field col-grow q-mr-sm" bg-color="white" v-model="message" placeholder="Type a message" />
-          <q-btn round flat icon="fas fa-paper-plane" @click="handleSubmitMessage"/>
+          <q-btn round flat icon="fas fa-paper-plane" @click.prevent="handleSubmitMessage"/>
+          <file-upload v-model="fileList">
+            <div slot="activator">
+              <q-btn round flat icon="fas fa-paperclip" @click.prevent="handleSubmitMessage"/>
+            </div>
+          </file-upload>
         </q-toolbar>
       </q-footer>
     </q-layout>
-     <q-dialog v-model="newGroup.isVisible">
+     <q-dialog v-model="newGroup.isVisible" persistent>
       <q-card style="width: 650px; max-width: 40vw;">
         <q-toolbar>
           <q-avatar>
@@ -288,23 +198,75 @@
             lazy-rules
             :rules="[ val => val && val.length > 0 || 'Please type something']"
           />
-          <q-input
+          <q-select
+            class="full-width"
             outlined
-            dense
+            label="Members *"
             v-model="newGroup.data.members"
-            label="Name *"
-            hint="Name is required"
+            use-input
+            dense
+            multiple
+            option-value="id"
+            option-label="name"
             emit-value
+            clearable
+            stack-label
+            input-debounce="0"
+            :options="newGroup.data.memberOptions"
+            @filter="remoteUsersToCreateNewGroup"
             map-options
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'Please type something']"
-          />
+            style="width: 250px"
+          >
+          <template v-slot:selected-item="scope">
+            <q-chip
+              removable
+              dense
+              @remove="scope.removeAtIndex(scope.index)"
+              :tabindex="scope.tabindex"
+              color="primary"
+              text-color="white"
+              class="q-mr-xs"
+            >
+              <q-avatar>
+                <q-img :src="scope.opt.avatar" />
+              </q-avatar>
+              {{ scope.opt.name }}
+            </q-chip>
+          </template>
+            <template slot="prepend">
+              <q-icon name="person_pin" />
+            </template>
+            <template v-slot:option="scope">
+              <q-item
+                dense
+                v-bind="scope.itemProps"
+                v-on="scope.itemEvents"
+              >
+                <q-item-section avatar>
+                  <q-avatar>
+                    <q-img :src="scope.opt.avatar" />
+                  </q-avatar>                  
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ scope.opt.name }}</q-item-label>
+                  <q-item-label caption>{{ scope.opt.email }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </template>
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-italic text-grey">
+                  No users found
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
         </q-card-section>
 
         <q-separator />
 
         <q-card-actions align="right">
-          <q-btn flat label="Create" color="primary" @click="handleCreateNewChatGroup" />
+          <q-btn flat label="Create" color="primary" @click="handleCreateNewConversation" />
           <q-btn flat label="Cancel" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
@@ -314,21 +276,34 @@
 
 <script>
 import jwtDecode from 'jwt-decode'
-import socketIO from '../../util/socket/socket'
-
+import FileUpload from '../../components/FileUpload'
+import socket from '../../util/socket/socket'
+import io from 'socket.io-client'
+import moment from "moment";
 export default {
   name: 'ChatAppLayout',
+  components: {
+    FileUpload: FileUpload
+  },
   data () {
     return {
+      fileList: {},
+      currentConversationId: '',
       newGroup: {
+        isLoading: false,
+        errors: {
+          responseError: "",
+          requestError: "",
+          clientError: ""
+        },
         isVisible: false,
         data: {
           groupName: "",
-          members: []
+          members: [],
+          memberOptions: []
         }
       },
       chatMessenges: [],
-      socket: '',
       leftDrawerOpen: false,
       searchUser: '',
       message: '',
@@ -370,55 +345,78 @@ export default {
       ]
     }
   },
+  filters: {
+    fromNow: function(date) {
+      return moment(date)
+        .startOf("hour")
+        .fromNow();
+    }
+  },
+  created() {
+    // socket.emit('created', 'Sagar')
+    // socket.on('created', (data) => {
+    //     console.log(data)
+    // })
+    // socket.on('chat-message', (data) => {
+    //     this.messages.push({ message: data, type: 'receiving' })
+    // })
+    // socket.on('typing', (data) => {
+    //     this.typing = true
+    // })
+    // socket.on('stopTyping', (data) => {
+    //     this.typing = false
+    // })  
+  },
   mounted () {
-    this.socket = socketIO
-    this.$axios.get(`/api/v1/chat/users`)
-      .then(response => {
-        this.conversations = response.data.users.map(user => {
-          return {
-            id: user._id,
-            person: user.name,
-            avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-            caption: 'I\'m working on Quasar!',
-            time: '18:00',
-            sent: true
-          }
-        })
-      })
-    this.socket.on('newMessageSend', (data) => {
-      console.log('##################SEND########################')
-      this.chatMessenges.push(
-        {
-          id: data['messageId'],
-          name: '',
-          avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-          stamp: '1 minutes ago',
-          text: data.message,
-          textColor: 'white',
-          bgColor: 'amber-7',
-          sent: true
-        }
-      )
-    })
-    this.socket.on('newMessageReceived', (data) => {
-      console.log('##################RECEIVED########################')
-      console.log(typeof data.from)
-      console.log(typeof this.conversations[this.currentConversationIndex].id)
-      if (data.from === this.conversations[this.currentConversationIndex].id) {
-        this.chatMessenges.push(
-          {
-            id: data['messageId'],
-            name: '',
-            avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-            stamp: '1 minutes ago',
-            text: data.message,
-            textColor: 'white',
-            bgColor: 'amber-7',
-            sent: false
-          }
-        )
-      }
-    })
+    this.getCurrentUserConversations()
+    // this.socket = socketIO
+    // this.$axios.get(`/api/v1/chat/users`)
+    //   .then(response => {
+    //     this.conversations = response.data.users.map(user => {
+    //       return {
+    //         id: user._id,
+    //         person: user.name,
+    //         avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+    //         caption: 'I\'m working on Quasar!',
+    //         time: '18:00',
+    //         sent: true
+    //       }
+    //     })
+    //   })
+    // this.socket.on('newMessageSend', (data) => {
+    //   console.log('##################SEND########################')
+    //   this.chatMessenges.push(
+    //     {
+    //       id: data['messageId'],
+    //       name: '',
+    //       avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+    //       stamp: '1 minutes ago',
+    //       text: data.message,
+    //       textColor: 'white',
+    //       bgColor: 'amber-7',
+    //       sent: true
+    //     }
+    //   )
+    // })
+    // this.socket.on('newMessageReceived', (data) => {
+    //   console.log('##################RECEIVED########################')
+    //   console.log(typeof data.from)
+    //   console.log(typeof this.conversations[this.currentConversationIndex].id)
+    //   if (data.from === this.conversations[this.currentConversationIndex].id) {
+    //     this.chatMessenges.push(
+    //       {
+    //         id: data['messageId'],
+    //         name: '',
+    //         avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+    //         stamp: '1 minutes ago',
+    //         text: data.message,
+    //         textColor: 'white',
+    //         bgColor: 'amber-7',
+    //         sent: false
+    //       }
+    //     )
+    //   }
+    // })
   },
   computed: {
     getCurrentUser () {
@@ -458,59 +456,151 @@ export default {
     }
   },
   methods: {
-    handleCreateNewChatGroup() {
-      this.$axios.post('/api/v1/me', {
-        name: this.userDetail.name,
-        email: this.userDetail.email,
-        college: this.userDetail.college,
-        semester: this.userDetail.semester,
-        section: this.userDetail.section,
-        department: this.userDetail.department,
-        graduationOn: this.userDetail.graduationOn,
-        bornOn: this.userDetail.bornOn,
-        livesIn: this.userDetail.livesIn,
-        phone: this.userDetail.phone,
-        gender: this.userDetail.gender
+    deleteFile(index) {
+      this.fileList.files.splice(index, 1);
+    },
+    getImage(file) {
+      return URL.createObjectURL(file)
+    },
+    joinConversation(conversation) {
+      socket.emit('join', { conversation }, function() {
+        console.log("user has joined this channel.");
       })
-        .then(response => {
-          this.$router.push({ name: 'user-profile', params: { id: response.data.user._id } })
-          console.log(response)
+    },
+    async getCurrentUserConversations() {
+      try {
+        const { data } = await this.$axios.get(`/api/v1/chat/conversations/${this.getCurrentUser.userId}`)
+        console.log(data)
+        if(data && data.hasOwnProperty("conversations")) {
+          this.conversations = data.conversations.map(conversation => {
+          return {
+            id: conversation[0] ? conversation[0].conversationId : "",
+            author: conversation[0] ? conversation[0].author: "",
+            message: conversation[0] ? conversation[0].body: "",
+            date: conversation[0] ? conversation[0].updatedAt: ""
+            // id: user[0]._id,
+            // person: user.name,
+            // avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+            // caption: 'I\'m working on Quasar!',
+            // time: '18:00',
+            // sent: true
+          }
         })
+        }
+      } catch (error) {
+
+      } finally {
+
+      }
+    },
+    remoteUsersToCreateNewGroup (val, update, abort) {
+      if (val) {
+        this.$axios.get(`/api/v1/users/${val}`).then(response => {
+          update(() => {
+            this.newGroup.data.memberOptions = response.data.users.map(user => {
+              return {
+                id: user._id,
+                name: user.name,
+                avatar: this.$axios.defaults.baseURL + user.profileImage,
+                email: user.email
+              }
+            })
+          })
+        })
+      }
+      // update(() => {
+      //   this.customerOptions = ['ram', 'hari']
+      // })
+    },
+    async handleCreateNewConversation() {
+      try {
+        // this.clearErrors(this.errors)
+        let payload = {
+          name: this.newGroup.data.groupName,
+          recipients: this.newGroup.data.members,
+          message: 'Hello',
+          user: this.getCurrentUser.userId
+        }
+        const {data, status} = await this.$axios.post('/api/v1/chat/conversation/new', payload)
+        if(status === 201) {
+          this.$q.notify({
+            color: 'teal',
+            icon: 'post_add',
+            position: 'bottom-right',
+            message: `${this.newGroup.data.groupName} Group created.`
+          })
+          // this.$router.push({ name: "feed" })
+        }
+      } catch (error) {
+        if(error.response) {
+          if(error.response.data.hasOwnProperty("errors")) {
+            this.$q.notify({
+            color: 'negative',
+            icon: 'report_problem',
+            position: 'top-right',
+            message: 'One or more fields have errors.'
+          })
+            this.newGroup.errors.responseError = error.response.data.errors;
+          }
+        } else if(error.request) {
+            this.newGroup.errors.requestError = error.request;
+        } else {
+          this.newGroup.errors.clientError = error.message
+        }
+      } finally {
+      }
     },
     onMessageReceived () {
       alert('')
     },
     handleOnConversationSelect (conversation, index) {
-      this.currentConversationIndex = index
-      this.$axios.get(`/api/v1/chat/${conversation.id}`)
-        .then(response => {
-          if (response.data.hasOwnProperty('messages')) {
-            this.chatMessenges = response.data.messages.messages.map(message => {
-              console.log(message.from._id)
-              console.log(this.getCurrentUser.userId)
-              console.log('------------------')
-              return {
-                id: message._id,
-                name: '',
-                avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
-                stamp: '1 minutes ago',
-                text: message.message,
-                textColor: 'white',
-                bgColor: 'amber-7',
-                sent: message.from._id === this.getCurrentUser.userId
-              }
-            })
-          } else {
-            this.chatMessenges = []
-          }
-          console.log(response.data)
-        })
+      this.$router.push({name: 'chat-message-detail', params: { conversationId: conversation.id }})
+      this.currentConversationId = conversation.id
+      this.joinConversation(conversation.id);
+    //   socket.on('connect', () => { // when user connects successfully
+    //     console.log("Yaa user connected.")
+    //     socket.emit('join', { conversation: 1 }, function() {
+    //       console.log("user has joined this channel.");
+    //     })
+    // })
+    //   this.currentConversationIndex = index
+    //   this.currentConversationId = conversation.id
+    //   this.$axios.get(`/api/v1/chat/conversation/${conversation.id}`)
+    //     .then(response => {
+    //       if (response.data.hasOwnProperty("conversation")) {
+    //         this.chatMessenges = response.data.conversation.map(message => {
+    //           return {
+    //             id: message._id,
+    //             name: message.author.name,
+    //             avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
+    //             stamp: message.createdAt,
+    //             text: message.body,
+    //             textColor: 'white',
+    //             bgColor: 'amber-7',
+    //             sent: message.author._id === this.getCurrentUser.userId
+    //           }
+    //         })
+    //       } else {
+    //         this.chatMessenges = []
+    //       }
+    //       console.log(response.data)
+    //     })
     },
     handleSubmitMessage () {
-      this.socket.emit('new message', {
-        to: this.conversations[this.currentConversationIndex].id,
-        message: this.message
+      this.$axios.post(`api/v1/chat/message/${this.currentConversationId}/`, {
+        message: this.message,
+        user: this.getCurrentUser.userId
       })
+      .then(response => {
+        socket.emit('createMessage', {
+          room: this.currentConversationId,
+          text: this.message,
+          sender: this.getCurrentUser
+        },() =>{
+          this.message = ""
+        })
+      })
+      
       // this.$axios.get(`/api/v1/chat/${this.conversations[this.currentConversationIndex].id}`)
       //   .then(response => {
       //     if (response.data.hasOwnProperty('messages')) {
@@ -572,7 +662,7 @@ export default {
 
   &__layout
     margin 0 auto
-    z-index 4000
+    z-index 0
     height 100%
     width 100%
     border-radius 0px

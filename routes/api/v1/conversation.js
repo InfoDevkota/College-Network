@@ -10,16 +10,16 @@ chatRoutes = express.Router();
   apiRoutes.use('/chat', chatRoutes);
 
   // View messages to and from authenticated user
-  chatRoutes.get('/', isAuth, ConversationController.getConversations);
+  chatRoutes.get('/conversations/:userId', isAuth, ConversationController.getConversations);
 
   // Retrieve single conversation
-  chatRoutes.get('/:conversationId', isAuth, ConversationController.getConversation);
+  chatRoutes.get('/conversation/:conversationId', isAuth, ConversationController.getConversation);
 
   // Send reply in conversation
-  chatRoutes.post('/:conversationId', isAuth, ConversationController.sendReply);
+  chatRoutes.post('/message/:conversationId', isAuth, ConversationController.sendReply);
 
   // Start new conversation
-  chatRoutes.post('/new/:recipient', isAuth, ConversationController.newConversation);
+  chatRoutes.post('/conversation/new', isAuth, ConversationController.newConversation);
 
 
 module.exports = apiRoutes;
