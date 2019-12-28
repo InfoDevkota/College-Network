@@ -73,6 +73,14 @@ const userSchema = new Schema({
     },
     gender:{
         type: String
+    },
+    ishod:{
+        type: Boolean,
+        default: false
+    }, 
+    isTeacher:{
+        type: Boolean,
+        default: false
     }
 });
 

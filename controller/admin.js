@@ -1,13 +1,17 @@
+const bcrypt = require('bcryptjs');
+
 const Department = require('../model/department');
 const Semester = require('../model/semester');
 const Section = require('../model/section');
 const UserType = require('../model/userType');
+const User = require('../model/user');
 
 exports.getAdmin = (req,res,next) => {
     let departments;
     let semesters;
     let sections;
     let userTypes;
+    let hods;
 
     //Here what I want is all these fetch from Database done syncournesly
     //once all done response back
@@ -32,6 +36,12 @@ exports.getAdmin = (req,res,next) => {
         .then(allUserType =>{
             userTypes = allUserType;
         });
+        await User.find({
+            ishod: true
+        })
+        .then(allHods =>{
+            hods = allHods;
+        })
         return true;
     }
 
@@ -43,7 +53,10 @@ exports.getAdmin = (req,res,next) => {
             semesters: semesters,
             sections: sections,
             userTypes: userTypes,
-            message: false
+            hods,
+            message: false,
+            error: null,
+            info: null
         })
     })
 }
@@ -54,7 +67,11 @@ exports.postDepartments = (req,res,next) =>{
     const hod = req.body.hod;
 
     if(name.length == 0){
-        res.redirect("/admin");
+        displayAdmin(res, null, "Please provide Department Name");
+        return;
+    }
+    if(hod == null){
+        displayAdmin(res, null, "Please Select HOD or craete one");
         return;
     }
 
@@ -62,8 +79,17 @@ exports.postDepartments = (req,res,next) =>{
         name:name,
         id:id,
         hod:hod
+        // ...(hod && {    //this three line will add hod if it is not null :)
+        //     hod
+        // })
     });
-    department.save().then(result =>{
+    department.save()
+    .then(result =>{
+        User.findById(hod)
+        .then(thisHod =>{
+            thisHod.department = result;
+            thisHod.save();
+        })
         res.redirect('/admin');
     })
 }
@@ -119,5 +145,91 @@ exports.postUserType = (req,res,next) =>{
     });
     userType.save().then(result =>{
         res.redirect('/admin');
+    })
+}
+
+exports.getDepartment = (req,res,next) =>{
+    const departmentId = req.params.departmentId;
+    Department.findById(departmentId)
+    .populate("hod")
+    .then(department =>{
+        res.render("department", {
+            department
+        });
+    })
+}
+
+exports.postAddHOD = (req,res,next) =>{
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+
+    bcrypt.hash(password, 12)
+    .then(hashedPassword => {
+        const user = new User({
+            email: email,
+            name: name,
+            password: hashedPassword,
+            ishod: true
+        });
+        return user.save();
+    })
+    .then(result=>{
+        displayAdmin(res, "Hod Created", null);
+    })
+}
+
+function displayAdmin(res, info, error){
+    let departments;
+    let semesters;
+    let sections;
+    let userTypes;
+    let hods;
+
+    //Here what I want is all these fetch from Database done syncournesly
+    //once all done response back
+    //cant achieve that 
+    //Try to work through this patter and does not work
+    //TODO fix if you have idea
+
+    async function getOptions() {
+        await Department.find()
+        .then(allDepartments =>{
+            departments = allDepartments;
+        })
+        await Semester.find()
+        .then(allSemester =>{
+            semesters = allSemester;
+        })
+        await Section.find()
+        .then(allSection =>{
+            sections = allSection;
+        })
+        await UserType.find()
+        .then(allUserType =>{
+            userTypes = allUserType;
+        });
+        await User.find({
+            ishod: true
+        })
+        .then(allHods =>{
+            hods = allHods;
+        })
+        return true;
+    }
+
+    getOptions()
+    .then(bool =>{
+        console.log("response");
+        res.render('admin', {
+            departments: departments,
+            semesters: semesters,
+            sections: sections,
+            userTypes: userTypes,
+            hods,
+            message: false,
+            info,
+            error
+        })
     })
 }

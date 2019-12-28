@@ -29,6 +29,7 @@ exports.getSearch = async (req,res,next) =>{
         $regex: new RegExp(term, "ig")
     }})
     .select('')
+    .populate('postedBy', 'name _id profileImage')
     .then(posts =>{
         response.posts = posts;
         
@@ -38,6 +39,7 @@ exports.getSearch = async (req,res,next) =>{
         $regex: new RegExp(term, "ig")
     }})
     .select('')
+    .populate('postedBy', 'name _id profileImage')
     .then(notes =>{
         response.notes = notes;
         
@@ -80,6 +82,8 @@ exports.getSearchByNote = (req,res,next) =>{
     }
 
     Note.find(query)
+    .populate('uploadedby', 'name _id profileImage')
+    .populate('noteBy', 'name _id profileImage')
     .then(notes =>{
         res.status(201).json({
             message: 'all notes',
@@ -104,6 +108,7 @@ exports.getSearchByPost = (req,res,next) =>{
     }
 
     Post.find(query)
+    .populate('postedBy', 'name _id profileImage')
     .then(posts =>{
         res.status(201).json({
             message: 'all Posts',

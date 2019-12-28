@@ -21,7 +21,7 @@ router.get("/chats",(req,res,next)=>{
     res.render('chatindex');
 });
 
-router.use(searchRoutes);
+// router.use(searchRoutes);
 router.use(authRoutes);
 router.use(postRoutes);
 router.use(profileRoutes);
