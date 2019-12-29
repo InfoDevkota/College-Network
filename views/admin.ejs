@@ -41,20 +41,35 @@
 </style>
 
 <h1>You are Admin</h1>
-<% if(message) {%>
-    <p><%= message %></p>
+<% if(error) {%>
+    <p style="color: red;"><%= error %></p>
+<%}%>
+<% if(info) {%>
+    <p style="color: green;"><%= info %></p>
 <%}%>
 <h2>Departments</h2>
 <div>
     <% if(departments.length > 0) { %>
         <% for(let dep of departments) { %>
-            <p><%= dep.name %></p>
+            <p> <a href="/admin/department/<%= dep._id %>"><%= dep.name %></a></p>
         <%}%>
     <%} else {%>
         <p>No Departments in System</p>  
     <%}%>
     <button onclick="openModel('#addDep')">Add Department</button>
 
+</div>
+<hr>
+<h2>HODs</h2>
+<div>
+    <% if(hods.length > 0) { %>
+        <% for(let hod of hods) { %>
+            <p><%= hod.name %></p>
+        <%}%>
+    <%} else {%>
+        <p>No Hods in System</p>  
+    <%}%>
+    <button onclick="openModel('#addHODs')">Add Head of Department</button>
 </div>
 <hr>
 <h2>Semester</h2>
@@ -82,6 +97,7 @@
 </div>
 <hr>
 <h2>User Type</h2>
+<p style="color: red;">Deprecated</p>
 <div>
     <% if(userTypes.length > 0) { %>
         <% for(let userType of userTypes) { %>
@@ -107,10 +123,39 @@
                 <input type="text" name="id" id=""/>
             </div>
             <div>
-                <label for="hod">HOd Name</label>
-                <input type="text" name="hod" id=""/>
+                <label for="hod">Select HOD</label>
+                <select name="hod" id="">
+                    <% if(hods.length > 0) { %>
+                        <% for(let hod of hods) { %>
+                            <option value="<%= hod._id %>"><%= hod.name %></option>
+                        <%}%>
+                    <%} else {%>
+                        <p>No Hods in System</p>  
+                    <%}%>
+                </select>
             </div>
             <button type="submit">Add Department</button>
+        </form>
+    </div>
+</div>
+
+<div id="addHODs" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form action="/admin/addHOD" method="POST">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" name="name" id=""/>
+            </div>
+            <div>
+                <label for="name">Email</label>
+                <input type="email" name="email" id=""/>
+            </div>
+            <div>
+                <label for="name">Password</label>
+                <input type="password" name="password" id=""/>
+            </div>
+            <button type="submit">Add HOD</button>
         </form>
     </div>
 </div>
@@ -153,6 +198,7 @@
     <div class="modal-content">
         <span class="close">&times;</span>
         <form action="/admin/userType" method="POST">
+            <p style="color: red;">Deprecated</p>
             <div>
                 <label for="name">Name</label>
                 <input type="text" name="name" id=""/>

@@ -4,22 +4,15 @@ const User = require("../../../model/user");
 const Note = require("../../../model/note");
 
 exports.getSearch = async (req,res,next) =>{
-    const term = req.query.term; //  host/search?term=sagar
-    // const user = req.query.user;
-    // const post = req.query.post;
-    // const comment = req.query.comment;
-    // const note = req.query.note;
-
-    // const noteById = req.query.noteById;
-    // const postById = req.query.postById;
-    // const commentById = req.query.commentById;
+    const term = req.query.term;
 
     let response ={};
    
     await User.find({name:{
         $regex: new RegExp(term, "ig")
     }})
-    .select('-password, -posts, -messageBoxUser')
+    .select('-password -posts -messageBoxUser')
+    .populate('department', 'name _id')
     .then(users =>{
         response.users = users;
         
@@ -29,6 +22,7 @@ exports.getSearch = async (req,res,next) =>{
         $regex: new RegExp(term, "ig")
     }})
     .select('')
+    .populate('postedBy', 'name _id profileImage')
     .then(posts =>{
         response.posts = posts;
         
@@ -38,6 +32,7 @@ exports.getSearch = async (req,res,next) =>{
         $regex: new RegExp(term, "ig")
     }})
     .select('')
+    .populate('uploadedby', 'name _id profileImage')
     .then(notes =>{
         response.notes = notes;
         
@@ -49,19 +44,6 @@ exports.getSearch = async (req,res,next) =>{
     });
 }
 
-
-// http://www.google.com/hi/there?qs1=you&qs2=tube
-
-// req.query
-// {
-//   qs1: 'you',
-//   qs2: 'tube'
-// }
-
-// req.params
-// {
-//   param1: 'there'
-// }
 
 exports.getSearchByNote = (req,res,next) =>{
     const term = req.query.term; // host/search/note?term=sagar
@@ -80,6 +62,8 @@ exports.getSearchByNote = (req,res,next) =>{
     }
 
     Note.find(query)
+    .populate('uploadedby', 'name _id profileImage')
+    //.populate('noteBy', 'name _id profileImage')
     .then(notes =>{
         res.status(201).json({
             message: 'all notes',
@@ -104,11 +88,52 @@ exports.getSearchByPost = (req,res,next) =>{
     }
 
     Post.find(query)
+    .populate('postedBy', 'name _id profileImage')
     .then(posts =>{
         res.status(201).json({
             message: 'all Posts',
             posts: posts
         });
+    })
+}
+
+exports.getUserByDepartment = (req,res,next) =>{
+    const term = req.query.term; // host/search/note?term=sagar
+    const depId = req.query.depId;
+
+    User.find({
+        department: depId,
+        name:{
+            $regex: new RegExp(term, "ig")
+        }
+    })
+    .select('-password -posts -messageBoxUser')
+    .populate('department', 'name _id')
+    .then(users =>{
+        res.status(201).json({
+            message: 'This department Students',
+            users: users
+        });
+        
+    })
+}
+
+exports.getUser = (req,res,next) =>{
+    const term = req.query.term;
+
+    User.find({
+        name:{
+            $regex: new RegExp(term, "ig")
+        }
+    })
+    .select('-password -posts -messageBoxUser')
+    .populate('department', 'name _id')
+    .then(users =>{
+        res.status(201).json({
+            message: 'All users',
+            users: users
+        });
+        
     })
 }
 

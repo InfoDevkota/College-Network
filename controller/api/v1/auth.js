@@ -73,6 +73,7 @@ exports.postLogin = (req,res,next) => {
         }
         bcrypt.compare(password, user.password)
         .then(isMatched => {
+            // console.log(isMatched);
             if(isMatched) {
                 const token = jwt.sign(
                     {
@@ -85,9 +86,7 @@ exports.postLogin = (req,res,next) => {
                 );
                 res.status(200).json({ token: token, userId: user._id.toString(), name:user.name });
             } else {
-                const error = new Error('Wrong password!');
-                error.statusCode = 401;
-                throw error;
+                res.status(401).json({ message: "Wrong Password" });
             }
         })
     })
