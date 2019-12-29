@@ -8,7 +8,14 @@ const routes = [
     },
     children: [
       { path: '/search/:query', name: 'search', component: () => import('pages/search'), props: true },
-      { path: '/feed', name: 'feed', component: () => import('pages/user/Posts.vue') },
+      { 
+        path: '/feed',
+        component: () => import('layouts/Feed.vue'),
+        children: [
+          { path: '/posts', name: 'feed-posts', component: () => import('pages/user/Posts.vue') },
+          { path: '/notes', name: 'feed-notes', component: () => import('pages/user/Notes.vue') },
+        ]
+      },
       { path: '/feed/create', name: 'feed-create', component: () => import('pages/user/PostCreate.vue') },
       { path: '/user/profile/:id/update', name: 'profile-update', props: true, component: () => import('pages/user/ProfileUpdate.vue') },
 

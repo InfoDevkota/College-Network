@@ -11,7 +11,24 @@
           bordered
           flat
         >
-          {{ item.content }}
+          <q-card-section v-html="item.content">
+          </q-card-section>
+          <q-card-section>
+            <q-img
+              transition="fade"
+              :src="$axios.defaults.baseURL+item.images"
+              style="width: 50px"
+              ratio="1"
+              spinner-color="white"
+              class="rounded-borders"
+            >
+            <template v-slot:error>
+              <div class="absolute-full flex flex-center bg-negative text-white">
+                N/A
+              </div>
+            </template>
+            </q-img>
+          </q-card-section>
         </q-card>
         <q-banner v-show="!posts.length" dense class="bg-grey-3">
           <template v-slot:avatar>
@@ -32,7 +49,29 @@
           bordered
           flat
         >
-          {{ item.name }}
+            <q-item clickable v-ripple>
+                <q-item-section avatar>
+                <q-avatar>
+                    <img :src="$axios.defaults.baseURL+item.profileImage">
+                </q-avatar>
+                </q-item-section>
+                <q-item-section>
+                    <q-item-label>
+                        {{ item.name }} 
+                        <q-chip v-if="item.isTeacher" size="sm" class="glossy" color="orange" text-color="white" icon-right="star">
+                            Teacher
+                        </q-chip>
+                        <q-chip v-if="item.isHod" size="sm" class="glossy" color="orange" text-color="white" icon-right="star">
+                            HOD
+                        </q-chip>
+                        <q-chip v-if="item.isStudent" size="sm" class="glossy" color="orange" text-color="white" icon-right="star">
+                            Student
+                        </q-chip>
+                    </q-item-label>
+                    <q-item-label caption lines="1">{{ item.email }}</q-item-label>
+                </q-item-section>
+            </q-item>
+         
         </q-card>
         <q-banner v-show="!users.length" dense class="bg-grey-3">
           <template v-slot:avatar>
@@ -66,13 +105,15 @@
   </q-page>
 </template>
 <script>
+import jwtDecode from 'jwt-decode'
 export default {
   name: "search",
   props: ["query"],
   data() {
     return {
       posts: [],
-      users: []
+      users: [],
+      notes: []
     };
   },
   watch: {
@@ -91,8 +132,11 @@ export default {
           this.users = response.data.results.users.map(user => ({
             name: user.name,
             email: user.email,
-            images: user.profileImage,
-            id: user._id
+            profileImage: user.profileImage,
+            id: user._id,
+            isHod: user.ishod ,
+            isTeacher: user.isTeacher,
+            isStudent: user.isStudent
           }));
           this.posts = response.data.results.posts.map(post => ({
             id: post.id,

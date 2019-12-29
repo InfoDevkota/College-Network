@@ -20,9 +20,9 @@ const noteSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:"User"
     },
-    file: {
+    files: [{
         type: String
-    },
+    }],
     preview: {
         type: String,
         default: "static/notePlaceHolder.png"

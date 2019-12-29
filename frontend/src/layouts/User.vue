@@ -262,7 +262,7 @@
           </div>
         </q-card-section>
         <q-card-section style="padding: 0">
-          <q-input v-model="text" filled autogrow standout dense>
+          <q-input filled autogrow standout dense>
             <template v-slot:append>
               <q-icon name="close" class="cursor-pointer" />
             </template>
@@ -374,7 +374,7 @@ export default {
       if(value) {
         this.$router.push({name: "search", params: { query: value }})
       } else {
-        this.$router.push({name: "feed"})
+        this.$router.push({name: "feed-posts"})
       }
     }
   },

@@ -3,10 +3,14 @@ const path = require('path');
 
 const Note = require("../../../model/note");
 const User = require('../../../model/user');
-
+const { validationResult } = require('express-validator');
 exports.postCreateNote = (req,res,next) =>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() })
+    }
     const title = req.body.title;
-    const description = req.boxy.description;
+    const description = req.body.description;
 
     const note = new Note({
         title: title,
@@ -14,8 +18,8 @@ exports.postCreateNote = (req,res,next) =>{
         uploadedby: req.userId
     })
 
-    if(req.file){
-        note.file = req.file.path;
+    if(req.files){
+        note.files = req.files.map(file => file.path);
     }
 
     return note.save()
