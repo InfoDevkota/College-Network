@@ -7,13 +7,14 @@ const routes = [
       requiresAuth: true
     },
     children: [
-      { path: 'feed', name: 'feed', component: () => import('pages/user/Posts.vue') },
-      { path: 'feed/create', name: 'feed-create', component: () => import('pages/user/PostCreate.vue') },
-      { path: 'user/profile/:id/update', name: 'profile-update', props: true, component: () => import('pages/user/ProfileUpdate.vue') },
+      { path: '/search/:query', name: 'search', component: () => import('pages/search'), props: true },
+      { path: '/feed', name: 'feed', component: () => import('pages/user/Posts.vue') },
+      { path: '/feed/create', name: 'feed-create', component: () => import('pages/user/PostCreate.vue') },
+      { path: '/user/profile/:id/update', name: 'profile-update', props: true, component: () => import('pages/user/ProfileUpdate.vue') },
 
-      { path: 'feed/:id', name: 'feed-detail', props: true, component: () => import('pages/user/PostDetail.vue') },
+      { path: '/feed/:id', name: 'feed-detail', props: true, component: () => import('pages/user/PostDetail.vue') },
 
-      { path: 'user/profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
+      { path: '/user/profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
       { path: '/chats',
         name: 'chat-detail',
         component: () => import('pages/chat'),

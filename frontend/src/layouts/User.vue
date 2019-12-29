@@ -369,6 +369,15 @@ export default {
       ]
     };
   },
+  watch: {
+    searchText(value){
+      if(value) {
+        this.$router.push({name: "search", params: { query: value }})
+      } else {
+        this.$router.push({name: "feed"})
+      }
+    }
+  },
   mounted() {
     socket.on("connect", () => {
       var room = 'GlobalRoom';
