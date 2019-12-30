@@ -24,10 +24,17 @@ exports.postCreateNote = (req,res,next) =>{
 
     return note.save()
     .then(note =>{
-        res.status(201).json({
-            message: 'Note successfully Uploaded!',
-            note: note
-        });
+        User.findById(req.userId)
+        .then(user =>{
+            user.projects.push(project)
+            user.save();
+            return note;
+        }).then(note =>{
+            res.status(201).json({
+                message: 'Note successfully Uploaded!',
+                note: note
+            });
+        })
     })
     .catch(error => {
         if (!error.statusCode) {
@@ -49,6 +56,7 @@ exports.getNotes = (req,res,next) =>{
     })
     .then( ()=>{
         Note.find()
+        .populate('uploadedby', 'name _id')
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
         .then(notes =>{

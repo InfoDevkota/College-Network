@@ -81,7 +81,29 @@ const userSchema = new Schema({
     isTeacher:{
         type: Boolean,
         default: false
-    }
+    },
+    isStudent:{
+        type: Boolean,
+        default: false
+    },
+    projects:[{
+        type: Schema.Types.ObjectId,
+        ref="Project"
+    }],
+    notes:[{
+        type: Schema.Types.ObjectId,
+        ref= "Note"
+    }],
+    isVerified:{
+        type: Boolean,
+        default: false
+    },
+    verificationImage: {
+        type: String,
+        default: "static/verificationID.jpg"
+    },
+
+    //TODO DONE Notes
 });
 
 module.exports = mongoose.model('User', userSchema);

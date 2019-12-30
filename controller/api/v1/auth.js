@@ -16,6 +16,8 @@ exports.postSignup = (req,res,next) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+    const isStudent = req.body.isStudent;
+    const isTeacher = req.body.isTeacher;
 
     User.findOne({ email: email })
     .then(user => {
@@ -31,13 +33,21 @@ exports.postSignup = (req,res,next) => {
                 ]
             throw error;
         }
+        if(!isStudent && !isTeacher){ //TODO Need to check it may send two response back.
+            res.status(422).json({ message: "Email Already Exist" });
+            const error = new Error('Email Already Exist');
+            throw error;
+        }
         return  bcrypt.hash(password, 12);
     })
     .then(hashedPassword => {
         const user = new User({
             email: email,
             name: name,
-            password: hashedPassword
+            password: hashedPassword,
+            isTeacher: isTeacher,
+            isStudent: isStudent,
+            verificationImage: file.path
         });
         return user.save();
     })
