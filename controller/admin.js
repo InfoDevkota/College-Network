@@ -270,3 +270,40 @@ module.exports.verifyStudent = (req,res,next) =>{
         })
     })
 }
+
+module.exports.getUnverifiedTeachers = (req,res,next) =>{
+    User.find({
+        isVerified: false,
+        isTeacher: true
+    })
+    .then(teachers =>{
+        res.render('verifyTeacher', {
+            teachers,
+            error: "",
+            info: ""
+        })
+    })
+}
+
+module.exports.verifyTeacher = (req,res,next) =>{
+    let teacherId = req.params.userID;
+    User.findById(teacherId)
+    .then(user =>{
+        user.isVerified = true;
+        user
+        .save()
+        .then(user => {
+            User.find({
+                isVerified: false,
+                isTeacher: true
+            })
+            .then(teachers =>{
+                res.render('verifyTeacher', {
+                    teachers,
+                    error: "",
+                    info: "A Teacher Verified."
+                })
+            })
+        })
+    })
+}
