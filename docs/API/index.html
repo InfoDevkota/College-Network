@@ -1,0 +1,1706 @@
+<title>College Network</title>
+ <link rel="stylesheet" type="text/css" href="styles/production.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/custom.scss?top-bar=ffffff&right-sidebar=303030&highlight=ef5b25&">
+
+<div class="container-fluid no-gutter">
+        <div class="row no-gutter">
+          <div class="col-xs-12 info no-gutter"><div class="pm-persistent-notification-container"></div><div class="pm-global-notification-container"></div>
+            <div id="mobile-controls">
+    
+              <label>Environment</label>
+                <div class="environment-dropdown dropdown">
+                    <button class="btn pm-btn pm-btn-secondary dropdown-toggle" type="button" id="environment-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <div class="dropdown-button ellipsis active-environment" data-environment-id="0">No environment</div>
+                      <span class="pm-doc-sprite pm-doc-sprite-dropdown-caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="environment-dropdown">
+                        <li class="dropdown-menu-item" data-environment-id="0">No environment</li>
+                        <li class="dropdown-menu-seperator"></li>
+                        <li class="dropdown-menu-section">Shared Templates</li>
+                        <li class="dropdown-menu-item dropdown-menu-empty" data-environment-id="undefined-undefined">No shared environments</li>
+                        <li class="dropdown-menu-seperator"></li>
+                        <li class="dropdown-menu-section">Private Environments</li>
+                        <li class="dropdown-menu-item " data-environment-id="null-null"></li>
+                    </ul>
+                </div>
+    
+    
+            </div>
+    
+            <div id="error-view">
+            </div>
+    
+            <div id="doc-body" class="">  <div class="row row-no-padding row-eq-height" id="intro">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="collection-name">
+      <p>College Network</p>
+    </div>
+    <div class="collection-description"><p>Api for College Network</p>
+</div>
+  </div>
+</div>
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="language hidden-xs hidden-sm">
+      <div class="language-heading">Language</div>
+      <div class="language-selector-dropdown">
+  <select id="language-selector-dropdown" class="chosen-select" data-placeholder="Search Language" style="display: none;">
+      <option value="csharp - RestSharp - C#"> C# - RestSharp </option>
+      <option value="curl - cURL - cURL" selected=""> cURL - cURL </option>
+      <option value="go - Native - Go"> Go - Native </option>
+      <option value="http - HTTP - HTTP"> HTTP - HTTP </option>
+      <option value="java - OkHttp - Java"> Java - OkHttp </option>
+      <option value="java - Unirest - Java"> Java - Unirest </option>
+      <option value="javascript - Fetch - JavaScript"> JavaScript - Fetch </option>
+      <option value="javascript - jQuery - JavaScript"> JavaScript - jQuery </option>
+      <option value="javascript - XHR - JavaScript"> JavaScript - XHR </option>
+      <option value="c - libcurl - C"> C - libcurl </option>
+      <option value="nodejs - Native - NodeJs"> NodeJs - Native </option>
+      <option value="nodejs - Request - NodeJs"> NodeJs - Request </option>
+      <option value="nodejs - Unirest - NodeJs"> NodeJs - Unirest </option>
+      <option value="objective-c - NSURLSession - Objective-C"> Objective-C - NSURLSession </option>
+      <option value="ocaml - Cohttp - OCaml"> OCaml - Cohttp </option>
+      <option value="php - cURL - PHP"> PHP - cURL </option>
+      <option value="php - HTTP_Request2 - PHP"> PHP - HTTP_Request2 </option>
+      <option value="php - pecl_http - PHP"> PHP - pecl_http </option>
+      <option value="powershell - RestMethod - PowerShell"> PowerShell - RestMethod </option>
+      <option value="python - http.client - Python"> Python - http.client </option>
+      <option value="python - Requests - Python"> Python - Requests </option>
+      <option value="ruby - Net::HTTP - Ruby"> Ruby - Net::HTTP </option>
+      <option value="shell - Httpie - Shell"> Shell - Httpie </option>
+      <option value="shell - wget - Shell"> Shell - wget </option>
+      <option value="swift - URLSession - Swift"> Swift - URLSession </option>
+  </select><div class="chosen-container chosen-container-single" title="" id="language_selector_dropdown_chosen" style="width: 383px;"><a class="chosen-single">
+  <span> cURL - cURL </span>
+  <div><b></b></div>
+</a>
+<div class="chosen-drop">
+  <div class="chosen-search">
+    <input class="chosen-search-input" type="text" autocomplete="off" maxlength="100">
+  </div>
+  <ul class="chosen-results"></ul>
+</div></div>
+</div>
+      <i id="language-settings" class="pm-icon pm-icon-sm pm-icon-secondary language-settings">
+        <svg viewBox="0 0 16 16" fill="none">
+          <path fill-rule="evenodd" d="M16 9.6194c-.1621.5075-.3155 1.0093-.4892 1.5025a.2925.2925 0 0 1-.2403.0741 39.9207 39.9207 0 0 1-1.5111-.2167c-.1573-.049-.3279.0178-.4082.1597a9.128 9.128 0 0 1-.579.7954.389.389 0 0 0-.0463.5018c.275.4875.5182.9808.7758 1.5054l-1.3779 1.0007c-.4227-.4049-.8482-.7983-1.2564-1.206a.3541.3541 0 0 0-.4256-.0913c-.3474.1255-.7063.2253-1.0537.3536a.3178.3178 0 0 0-.1766.2052c-.11.5845-.2055 1.1747-.3126 1.7962H7.3038a.2093.2093 0 0 1-.1332-.1454 55.27 55.27 0 0 1-.2895-1.5966.2607.2607 0 0 0-.2113-.2452c-.3705-.1055-.7382-.2252-1.1058-.3478a.266.266 0 0 0-.3185.0741c-.411.4277-.8308.8553-1.2621 1.283L2.562 14.0214c.2518-.5075.4863-1.0121.7526-1.4997a.4031.4031 0 0 0-.0405-.5303c-.2229-.2622-.4226-.5445-.6224-.8239a.236.236 0 0 0-.2895-.1169c-.524.0912-1.0537.1625-1.5806.248a.2345.2345 0 0 1-.2003-.0224.2277.2277 0 0 1-.1065-.1686C.359 10.7113.2229 10.3207.081 9.9301a.2054.2054 0 0 1-.019-.188.2102.2102 0 0 1 .1434-.1256c.4719-.228.9264-.4846 1.3954-.7184a.2847.2847 0 0 0 .1881-.3136 13.5849 13.5849 0 0 1 0-1.0492c.0249-.1579-.0674-.3109-.22-.365C1.045 6.9253.5356 6.6543 0 6.3807c.1621-.5075.3155-1.0093.4892-1.4996a.2924.2924 0 0 1 .2403-.0742c.5066.0628 1.0103.1312 1.5111.2139.1558.049.3251-.0164.4053-.1568a8.273 8.273 0 0 1 .5964-.8126.3692.3692 0 0 0 .029-.4847c-.2664-.4932-.5125-.9836-.7701-1.5082l1.378-1.0007c.4255.4077.8481.7983 1.2592 1.206a.351.351 0 0 0 .4256.0913c.3473-.1255.7063-.2253 1.0537-.3536a.315.315 0 0 0 .1766-.2052c.11-.5845.2055-1.1747.3126-1.7962H8.702a.2122.2122 0 0 1 .1332.1454c.1042.5303.2026 1.0606.2895 1.5966a.2606.2606 0 0 0 .2113.248c.3705.1055.7382.2253 1.1058.3478a.2632.2632 0 0 0 .3156-.074c.411-.4277.8308-.8554 1.2592-1.283l1.4214 1.0007c-.2518.5103-.4921 1.012-.7497 1.5025a.389.389 0 0 0 .026.5245c.2345.2852.579.4078.6571.8554a.2918.2918 0 0 0 .2287.0969 50.5306 50.5306 0 0 0 1.6038-.2423.2348.2348 0 0 1 .206.0076.228.228 0 0 1 .1182.1663c.1158.4048.2548.804.3995 1.1974a.1831.1831 0 0 1 .022.17.1874.1874 0 0 1-.1291.1151c-.4747.2367-.9408.4932-1.4156.7299a.2847.2847 0 0 0-.1853.3136c0 .3507.0145.7013 0 1.0492-.0248.1578.0675.3108.2201.3649.5095.2423 1.0276.516 1.5603.7869zM10.7081 8c.0024-1.0787-.6556-2.0525-1.6668-2.4669-1.0113-.4144-2.1764-.1877-2.9517.5742-.7754.762-1.008 1.909-.5894 2.9058.4186.9968 1.406 1.6469 2.5012 1.6469 1.4894-.0077 2.6957-1.1932 2.7067-2.66z" fill="#A9A9A9"></path>
+        </svg>
+      </i>
+    </div>
+
+  <div class="hidden-xs hidden-sm sidebar-error">
+    <p class="heading">Could not load examples for this collection</p>
+    <button class="btn btn-default retry-button" id="retryLoadingExamples">Retry</button>
+  </div>
+  <div class="hidden-xs hidden-sm sidebar-loader spinner"></div>
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="bd0e29b7-c7b2-4c27-9c54-76ec50d4d83a">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="POST method" title="POST">POST</span>
+        localhost:4080/api/v1/signup
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/signup</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper language-javascript"><code class="body-block is-highlighted language-javascript"><span class="token punctuation">{</span>
+	<span class="token string">"email"</span><span class="token punctuation">:</span><span class="token string">"test@test.com"</span><span class="token punctuation">,</span>
+	<span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"Sagar Devkota"</span><span class="token punctuation">,</span>
+	<span class="token string">"password"</span><span class="token punctuation">:</span><span class="token string">"thisisPass"</span>
+<span class="token punctuation">}</span></code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/signup</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="bd0e29b7-c7b2-4c27-9c54-76ec50d4d83a_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper  language-javascript"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_bd0e29b7-c7b2-4c27-9c54-76ec50d4d83a" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class=" is-highlighted language-javascript" id="curl_0_bd0e29b7-c7b2-4c27-9c54-76ec50d4d83a">curl <span class="token operator">--</span>location <span class="token operator">--</span>request POST <span class="token string">'localhost:4080/api/v1/signup'</span> \
+<span class="token operator">--</span>header <span class="token string">'Content-Type: application/json'</span> \
+<span class="token operator">--</span>data<span class="token operator">-</span>raw '<span class="token punctuation">{</span>
+	<span class="token string">"email"</span><span class="token punctuation">:</span><span class="token string">"test@test.com"</span><span class="token punctuation">,</span>
+	<span class="token string">"name"</span><span class="token punctuation">:</span><span class="token string">"Sagar Devkota"</span><span class="token punctuation">,</span>
+	<span class="token string">"password"</span><span class="token punctuation">:</span><span class="token string">"thisisPass"</span>
+<span class="token punctuation">}</span>'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_bd0e29b7-c7b2-4c27-9c54-76ec50d4d83a" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="06a3bb87-b08d-4c98-ad24-49aedbd7bf6d">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="POST method" title="POST">POST</span>
+        localhost:4080/api/v1/login
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4000/api/v1/login</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper language-javascript"><code class="body-block language-javascript">{
+	"email": "test@test.com",
+	"password":"thisisPass"
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/login</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="06a3bb87-b08d-4c98-ad24-49aedbd7bf6d_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper language-javascript"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_06a3bb87-b08d-4c98-ad24-49aedbd7bf6d" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_06a3bb87-b08d-4c98-ad24-49aedbd7bf6d">curl --location --request POST 'localhost:4000/api/v1/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"email": "test@test.com",
+	"password":"thisisPass"
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_06a3bb87-b08d-4c98-ad24-49aedbd7bf6d" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="1ca26819-41e7-4add-bcb3-418ac5f09d1b">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="POST method" title="POST">POST</span>
+        localhost:4080/api/v1/createPost
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/createPost</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"content": "Hello This is sagar."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/createPost</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="1ca26819-41e7-4add-bcb3-418ac5f09d1b_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_1ca26819-41e7-4add-bcb3-418ac5f09d1b" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_1ca26819-41e7-4add-bcb3-418ac5f09d1b">curl --location --request POST 'localhost:4080/api/v1/createPost' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"content": "Hello This is sagar."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_1ca26819-41e7-4add-bcb3-418ac5f09d1b" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="9b270011-47b8-4a57-9a47-1617165a26a8">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4080/api/v1/getPosts?size=2&amp;page=3
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/getPosts?size=10&amp;page=1</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+      <div class="query-params">
+        <div class="heading">PARAMS</div>
+        <hr>
+            <div class="param row">
+              <div class="name col-md-3 col-xs-12">size</div>
+              <div class="value col-md-9 col-xs-12">10</div>
+            </div>
+            <div class="param row">
+              <div class="name col-md-3 col-xs-12">page</div>
+              <div class="value col-md-9 col-xs-12">1</div>
+            </div>
+      </div>
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"content": "Hello This is sagar."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/getPosts?size=2&amp;page=3</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="9b270011-47b8-4a57-9a47-1617165a26a8_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_9b270011-47b8-4a57-9a47-1617165a26a8" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_9b270011-47b8-4a57-9a47-1617165a26a8">curl --location --request GET 'localhost:4080/api/v1/getPosts?size=10&amp;page=1' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"content": "Hello This is sagar."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_9b270011-47b8-4a57-9a47-1617165a26a8" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="d9d9e9ec-df43-4424-8ae3-c82f680ff4fc">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4080/api/v1/profile/InfoDev
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/profile/InfoDev</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"content": "Hello This is sagar."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/profile/InfoDev</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="d9d9e9ec-df43-4424-8ae3-c82f680ff4fc_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_d9d9e9ec-df43-4424-8ae3-c82f680ff4fc" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_d9d9e9ec-df43-4424-8ae3-c82f680ff4fc">curl --location --request GET 'localhost:4080/api/v1/profile/InfoDev' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"content": "Hello This is sagar."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_d9d9e9ec-df43-4424-8ae3-c82f680ff4fc" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="1ebbfb3f-4840-414e-8aee-28c3b6d06c80">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4080/api/v1/me
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/me</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"content": "Hello This is sagar."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/me</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="1ebbfb3f-4840-414e-8aee-28c3b6d06c80_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_1ebbfb3f-4840-414e-8aee-28c3b6d06c80" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_1ebbfb3f-4840-414e-8aee-28c3b6d06c80">curl --location --request GET 'localhost:4080/api/v1/me' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"content": "Hello This is sagar."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_1ebbfb3f-4840-414e-8aee-28c3b6d06c80" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="5494ad1b-9520-4382-b6bc-a5e6e51d3c7a">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4080/api/v1/profileById/5d136e829bab1434a71b155d
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/profileById/5d136e829bab1434a71b155d</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"name":"Sagar Devkota",
+	"userName": "Test",
+	"email":""
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/profileById/5d136e829bab1434a71b155d</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="5494ad1b-9520-4382-b6bc-a5e6e51d3c7a_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_5494ad1b-9520-4382-b6bc-a5e6e51d3c7a" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_5494ad1b-9520-4382-b6bc-a5e6e51d3c7a">curl --location --request GET 'localhost:4080/api/v1/profileById/5d136e829bab1434a71b155d' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"name":"Sagar Devkota",
+	"userName": "Test",
+	"email":""
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_5494ad1b-9520-4382-b6bc-a5e6e51d3c7a" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="a0751d49-b008-48ab-a1b9-b46019f5a113">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="PUT method" title="PUT">PUT</span>
+        localhost:4080/api/v1/me
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/me</div>
+    <div class="description"><p>Remember you need to send all the previous data.</p>
+</div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"name":"Sagar Devkota",
+	"userName": "InfoDev",
+	"email":"test@test.com"
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/me</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="a0751d49-b008-48ab-a1b9-b46019f5a113_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_a0751d49-b008-48ab-a1b9-b46019f5a113" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_a0751d49-b008-48ab-a1b9-b46019f5a113">curl --location --request PUT 'localhost:4080/api/v1/me' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"name":"Sagar Devkota",
+	"userName": "InfoDev",
+	"email":"test@test.com"
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_a0751d49-b008-48ab-a1b9-b46019f5a113" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="0b0e6344-6b08-48da-ac6a-57dc742d4545">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4080/api/v1/addInfo
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/addInfo</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"name":"Sagar Devkota",
+	"userName": "Test",
+	"email":""
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/addInfo</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="0b0e6344-6b08-48da-ac6a-57dc742d4545_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_0b0e6344-6b08-48da-ac6a-57dc742d4545" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_0b0e6344-6b08-48da-ac6a-57dc742d4545">curl --location --request GET 'localhost:4080/api/v1/addInfo' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"name":"Sagar Devkota",
+	"userName": "Test",
+	"email":""
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_0b0e6344-6b08-48da-ac6a-57dc742d4545" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="debf96ee-1236-4f5a-b92a-b10299fa7f36">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="PUT method" title="PUT">PUT</span>
+        localhost:4080/api/v1/profilePic
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/profilePic</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">formdata</span></div>
+            <hr>
+              <div class="param row">
+                <div class="name col-md-3 col-xs-12">image</div>
+                <div class="value col-md-9 col-xs-12"></div>
+              </div>
+
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/profilePic</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="debf96ee-1236-4f5a-b92a-b10299fa7f36_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_debf96ee-1236-4f5a-b92a-b10299fa7f36" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_debf96ee-1236-4f5a-b92a-b10299fa7f36">curl --location --request PUT 'localhost:4080/api/v1/profilePic' \
+--header 'Content-Type: application/json' \
+--form 'image=@/path/to/file'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_debf96ee-1236-4f5a-b92a-b10299fa7f36" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="8a4da75f-0a6a-4e7b-abcc-a85cba2afd1b">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4080/api/v1/post/5d1f4451a246cd15d4678577
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4000/api/v1/post/5d1f4451a246cd15d4678577</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/post/5d1f4451a246cd15d4678577</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="8a4da75f-0a6a-4e7b-abcc-a85cba2afd1b_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_8a4da75f-0a6a-4e7b-abcc-a85cba2afd1b" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_8a4da75f-0a6a-4e7b-abcc-a85cba2afd1b">curl --location --request GET 'localhost:4000/api/v1/post/5d1f4451a246cd15d4678577' \
+--header 'Content-Type: application/json' \
+--data-raw ''</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_8a4da75f-0a6a-4e7b-abcc-a85cba2afd1b" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="2b5651e3-6140-434f-bcc2-6b69fc8223bd">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="PUT method" title="PUT">PUT</span>
+        localhost:4080/api/v1/post/5d1f4451a246cd15d4678577
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/post/5d1f4451a246cd15d4678577</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"content": "Hello This is sagar333."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/post/5d1f4451a246cd15d4678577</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="2b5651e3-6140-434f-bcc2-6b69fc8223bd_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_2b5651e3-6140-434f-bcc2-6b69fc8223bd" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_2b5651e3-6140-434f-bcc2-6b69fc8223bd">curl --location --request PUT 'localhost:4080/api/v1/post/5d1f4451a246cd15d4678577' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"content": "Hello This is sagar333."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_2b5651e3-6140-434f-bcc2-6b69fc8223bd" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="e786b20b-af68-4abb-8bad-67908ad4ec2a">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="PUT method" title="PUT">PUT</span>
+        localhost:4080/api/v1/like/5d1f6b24e4c3b1545379827e
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/like/5d1f6b24e4c3b1545379827e</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/like/5d1f6b24e4c3b1545379827e</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="e786b20b-af68-4abb-8bad-67908ad4ec2a_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_e786b20b-af68-4abb-8bad-67908ad4ec2a" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_e786b20b-af68-4abb-8bad-67908ad4ec2a">curl --location --request PUT 'localhost:4080/api/v1/like/5d1f6b24e4c3b1545379827e' \
+--header 'Content-Type: application/json' \
+--data-raw ''</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_e786b20b-af68-4abb-8bad-67908ad4ec2a" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="500ab291-bb3c-431f-ad0d-b22d49783815">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="PUT method" title="PUT">PUT</span>
+        localhost:4080/api/v1/unlike/5d1f6b24e4c3b1545379827e
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/unlike/5d1f6b24e4c3b1545379827e</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/unlike/5d1f6b24e4c3b1545379827e</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="500ab291-bb3c-431f-ad0d-b22d49783815_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_500ab291-bb3c-431f-ad0d-b22d49783815" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_500ab291-bb3c-431f-ad0d-b22d49783815">curl --location --request PUT 'localhost:4080/api/v1/unlike/5d1f6b24e4c3b1545379827e' \
+--header 'Content-Type: application/json' \
+--data-raw ''</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_500ab291-bb3c-431f-ad0d-b22d49783815" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="93f9ead9-24bf-4dfc-8085-f7cceb2dd62f">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="DELETE method" title="DELETE">DEL</span>
+        localhost:4080/api/v1/post/5d1f6b24e4c3b1545379827e
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/post/5d1f6b24e4c3b1545379827e</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/post/5d1f6b24e4c3b1545379827e</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="93f9ead9-24bf-4dfc-8085-f7cceb2dd62f_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_93f9ead9-24bf-4dfc-8085-f7cceb2dd62f" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_93f9ead9-24bf-4dfc-8085-f7cceb2dd62f">curl --location --request DELETE 'localhost:4080/api/v1/post/5d1f6b24e4c3b1545379827e' \
+--header 'Content-Type: application/json' \
+--data-raw ''</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_93f9ead9-24bf-4dfc-8085-f7cceb2dd62f" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="d2d88d1b-1d24-43ef-b198-fe57eeee533e">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="POST method" title="POST">POST</span>
+        localhost:4080/api/v1/post/5d1f4451a246cd15d4678577/comment
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/post/5d1f4451a246cd15d4678577/comment</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"comment": "I like this post thrice."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/post/5d1f4451a246cd15d4678577/comment</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="d2d88d1b-1d24-43ef-b198-fe57eeee533e_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_d2d88d1b-1d24-43ef-b198-fe57eeee533e" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_d2d88d1b-1d24-43ef-b198-fe57eeee533e">curl --location --request POST 'localhost:4080/api/v1/post/5d1f4451a246cd15d4678577/comment' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"comment": "I like this post thrice."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_d2d88d1b-1d24-43ef-b198-fe57eeee533e" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="afa9aa0b-55a7-4327-85dd-930fc47feecc">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="PUT method" title="PUT">PUT</span>
+        localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"comment": "I edit this comment."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="afa9aa0b-55a7-4327-85dd-930fc47feecc_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_afa9aa0b-55a7-4327-85dd-930fc47feecc" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_afa9aa0b-55a7-4327-85dd-930fc47feecc">curl --location --request PUT 'localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"comment": "I edit this comment."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_afa9aa0b-55a7-4327-85dd-930fc47feecc" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="b72be672-11a5-40eb-814a-43427551aed0">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="DELETE method" title="DELETE">DEL</span>
+        localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"comment": "I edit this comment."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="b72be672-11a5-40eb-814a-43427551aed0_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_b72be672-11a5-40eb-814a-43427551aed0" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_b72be672-11a5-40eb-814a-43427551aed0">curl --location --request DELETE 'localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"comment": "I edit this comment."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_b72be672-11a5-40eb-814a-43427551aed0" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="556863a9-0c3a-4070-96a8-ed486b7c64cf">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4000/api/v1/chat/5d2d4c86cc0d3519e80e6aa0
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4000/api/v1/chat/5d2d78e7ae479b4d26165460</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/json</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">raw</span></div>
+          <hr>
+          <div class="raw-body code-snippet">
+            <pre class="body-block click-to-expand-wrapper is-snippet-wrapper"><code class="body-block language-javascript">{
+	"content": "Hello This is sagar."
+}</code></pre>
+          </div>
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4000/api/v1/chat/5d2d4c86cc0d3519e80e6aa0</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="556863a9-0c3a-4070-96a8-ed486b7c64cf_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_556863a9-0c3a-4070-96a8-ed486b7c64cf" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_556863a9-0c3a-4070-96a8-ed486b7c64cf">curl --location --request GET 'localhost:4000/api/v1/chat/5d2d78e7ae479b4d26165460' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+	"content": "Hello This is sagar."
+}'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_556863a9-0c3a-4070-96a8-ed486b7c64cf" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="c218cc79-61b0-4920-abc3-567270f80d05">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4000/api/v1/departments
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4000/api/v1/departments</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/x-www-form-urlencoded</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">formdata</span></div>
+            <hr>
+              <div class="param row">
+                <div class="name col-md-3 col-xs-12">image</div>
+                <div class="value col-md-9 col-xs-12"></div>
+              </div>
+
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4000/api/v1/departments</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="c218cc79-61b0-4920-abc3-567270f80d05_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_c218cc79-61b0-4920-abc3-567270f80d05" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_c218cc79-61b0-4920-abc3-567270f80d05">curl --location --request GET 'localhost:4000/api/v1/departments' \
+--form 'image=@/path/to/file'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_c218cc79-61b0-4920-abc3-567270f80d05" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="bbd97f96-0692-419f-92a1-d9a4230979d6">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4000/api/v1/department/5d170f71278e965b96f1b61f
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4000/api/v1/department/5d170f71278e965b96f1b61f</div>
+    <div class="description"></div>
+
+      <div class="headers">
+        <div class="heading">HEADERS</div>
+        <hr>
+          <div class="param row">
+            <div class="name col-md-3 col-xs-12">Content-Type</div>
+            <div class="value col-md-9 col-xs-12">application/x-www-form-urlencoded</div>
+          </div>
+      </div>
+
+
+
+      <div class="request-body">
+        <div class="body-heading">BODY <span class="body-type">formdata</span></div>
+            <hr>
+              <div class="param row">
+                <div class="name col-md-3 col-xs-12">image</div>
+                <div class="value col-md-9 col-xs-12"></div>
+              </div>
+
+
+      </div>
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4000/api/v1/department/5d170f71278e965b96f1b61f</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="bbd97f96-0692-419f-92a1-d9a4230979d6_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_bbd97f96-0692-419f-92a1-d9a4230979d6" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_bbd97f96-0692-419f-92a1-d9a4230979d6">curl --location --request GET 'localhost:4000/api/v1/department/5d170f71278e965b96f1b61f' \
+--form 'image=@/path/to/file'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_bbd97f96-0692-419f-92a1-d9a4230979d6" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+    <div class="row row-no-padding row-eq-height" id="90c113c1-f214-420c-9213-f8d11adc3aba">
+  <div class="col-md-6 col-xs-12 section">
+  <div class="api-information">
+    <div class="heading">
+      <div class="name">
+        <span class="GET method" title="GET">GET</span>
+        localhost:4001/api/v1/search?term=sagar
+          <span class="lock-icon"></span>
+      </div>
+    </div>
+    <div class="url">localhost:4001/api/v1/search?term=sagar</div>
+    <div class="description"><p>search with query</p>
+</div>
+
+
+      <div class="query-params">
+        <div class="heading">PARAMS</div>
+        <hr>
+            <div class="param row">
+              <div class="name col-md-3 col-xs-12">term</div>
+              <div class="value col-md-9 col-xs-12">sagar</div>
+            </div>
+      </div>
+
+
+
+  </div>
+  <br><br>
+</div>
+
+
+  <div class="col-md-6 col-xs-12 examples">
+    <div class="sample-request">
+      <div class="heading"><span>Example Request</span></div>
+
+      <div class="responses-index">
+          <div class="response-name"><span>localhost:4001/api/v1/search?term=sagar</span></div>
+      </div>
+    </div>
+
+    <div class="request code-snippet">
+          <div class="formatted-requests is-default" data-lang="curl" data-id="90c113c1-f214-420c-9213-f8d11adc3aba_0">
+            <pre class="click-to-expand-wrapper is-snippet-wrapper"><button class="btn btn-sm pull-right copy-request copy-request-modal" data-clipboard-target="#curl_0_90c113c1-f214-420c-9213-f8d11adc3aba" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button><code class="language-javascript" id="curl_0_90c113c1-f214-420c-9213-f8d11adc3aba">curl --location --request GET 'localhost:4001/api/v1/search?term=sagar'</code></pre>
+            <!-- Button over the expand overlay -->
+            <button class="btn btn-sm pull-right copy-request" data-clipboard-target="#curl_0_90c113c1-f214-420c-9213-f8d11adc3aba" data-before-copy="Copy to Clipboard" data-after-copy="Copied"></button>
+          </div>
+    </div>
+
+</div>
+
+</div>
+</div>
+          </div>
+          <div class="no-gutter phantom-sidebar"></div>
+          <div class="no-gutter sidebar" id="nav-sidebar"><div class="collection-heading">
+  <p class="heading">College Network</p>
+</div>
+<ul class="nav navbar-nav" id="navbar-example">
+  <li class="request intro">
+  <a class="nav-link dropdown-item" href="#intro">
+    <div class="request-name">Introduction</div>
+  </a>
+</li>
+<li class="toc">
+  <ul></ul>
+</li>
+      <li class="request">
+  <div class="POST method" title="POST">
+  <span>POST</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/signup">
+  <a class="nav-link dropdown-item" href="#bd0e29b7-c7b2-4c27-9c54-76ec50d4d83a">
+    <span>localhost:4080/api/v1/signup</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="POST method" title="POST">
+  <span>POST</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/login">
+  <a class="nav-link dropdown-item" href="#06a3bb87-b08d-4c98-ad24-49aedbd7bf6d">
+    <span>localhost:4080/api/v1/login</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="POST method" title="POST">
+  <span>POST</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/createPost">
+  <a class="nav-link dropdown-item" href="#1ca26819-41e7-4add-bcb3-418ac5f09d1b">
+    <span>localhost:4080/api/v1/createPost</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/getPosts?size=2&amp;page=3">
+  <a class="nav-link dropdown-item" href="#9b270011-47b8-4a57-9a47-1617165a26a8">
+    <span>localhost:4080/api/v1/getPosts?size=2&amp;page=3</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/profile/InfoDev">
+  <a class="nav-link dropdown-item" href="#d9d9e9ec-df43-4424-8ae3-c82f680ff4fc">
+    <span>localhost:4080/api/v1/profile/InfoDev</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/me">
+  <a class="nav-link dropdown-item" href="#1ebbfb3f-4840-414e-8aee-28c3b6d06c80">
+    <span>localhost:4080/api/v1/me</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/profileById/5d136e829bab1434a71b155d">
+  <a class="nav-link dropdown-item" href="#5494ad1b-9520-4382-b6bc-a5e6e51d3c7a">
+    <span>localhost:4080/api/v1/profileById/5d136e829bab1434a71b155d</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="PUT method" title="PUT">
+  <span>PUT</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/me">
+  <a class="nav-link dropdown-item" href="#a0751d49-b008-48ab-a1b9-b46019f5a113">
+    <span>localhost:4080/api/v1/me</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/addInfo">
+  <a class="nav-link dropdown-item" href="#0b0e6344-6b08-48da-ac6a-57dc742d4545">
+    <span>localhost:4080/api/v1/addInfo</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="PUT method" title="PUT">
+  <span>PUT</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/profilePic">
+  <a class="nav-link dropdown-item" href="#debf96ee-1236-4f5a-b92a-b10299fa7f36">
+    <span>localhost:4080/api/v1/profilePic</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/post/5d1f4451a246cd15d4678577">
+  <a class="nav-link dropdown-item" href="#8a4da75f-0a6a-4e7b-abcc-a85cba2afd1b">
+    <span>localhost:4080/api/v1/post/5d1f4451a246cd15d4678577</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="PUT method" title="PUT">
+  <span>PUT</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/post/5d1f4451a246cd15d4678577">
+  <a class="nav-link dropdown-item" href="#2b5651e3-6140-434f-bcc2-6b69fc8223bd">
+    <span>localhost:4080/api/v1/post/5d1f4451a246cd15d4678577</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="PUT method" title="PUT">
+  <span>PUT</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/like/5d1f6b24e4c3b1545379827e">
+  <a class="nav-link dropdown-item" href="#e786b20b-af68-4abb-8bad-67908ad4ec2a">
+    <span>localhost:4080/api/v1/like/5d1f6b24e4c3b1545379827e</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="PUT method" title="PUT">
+  <span>PUT</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/unlike/5d1f6b24e4c3b1545379827e">
+  <a class="nav-link dropdown-item" href="#500ab291-bb3c-431f-ad0d-b22d49783815">
+    <span>localhost:4080/api/v1/unlike/5d1f6b24e4c3b1545379827e</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="DELETE method" title="DELETE">
+  <span>DEL</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/post/5d1f6b24e4c3b1545379827e">
+  <a class="nav-link dropdown-item" href="#93f9ead9-24bf-4dfc-8085-f7cceb2dd62f">
+    <span>localhost:4080/api/v1/post/5d1f6b24e4c3b1545379827e</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="POST method" title="POST">
+  <span>POST</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/post/5d1f4451a246cd15d4678577/comment">
+  <a class="nav-link dropdown-item" href="#d2d88d1b-1d24-43ef-b198-fe57eeee533e">
+    <span>localhost:4080/api/v1/post/5d1f4451a246cd15d4678577/comment</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="PUT method" title="PUT">
+  <span>PUT</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd">
+  <a class="nav-link dropdown-item" href="#afa9aa0b-55a7-4327-85dd-930fc47feecc">
+    <span>localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="DELETE method" title="DELETE">
+  <span>DEL</span>
+</div>
+<div class="request-name" title="localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd">
+  <a class="nav-link dropdown-item" href="#b72be672-11a5-40eb-814a-43427551aed0">
+    <span>localhost:4080/api/v1/comment/5d245cde7964b72214bc74fd</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4000/api/v1/chat/5d2d4c86cc0d3519e80e6aa0">
+  <a class="nav-link dropdown-item" href="#556863a9-0c3a-4070-96a8-ed486b7c64cf">
+    <span>localhost:4000/api/v1/chat/5d2d4c86cc0d3519e80e6aa0</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4000/api/v1/departments">
+  <a class="nav-link dropdown-item" href="#c218cc79-61b0-4920-abc3-567270f80d05">
+    <span>localhost:4000/api/v1/departments</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4000/api/v1/department/5d170f71278e965b96f1b61f">
+  <a class="nav-link dropdown-item" href="#bbd97f96-0692-419f-92a1-d9a4230979d6">
+    <span>localhost:4000/api/v1/department/5d170f71278e965b96f1b61f</span>
+  </a>
+</div>
+</li>
+      <li class="request">
+  <div class="GET method" title="GET">
+  <span>GET</span>
+</div>
+<div class="request-name" title="localhost:4001/api/v1/search?term=sagar">
+  <a class="nav-link dropdown-item" href="#90c113c1-f214-420c-9213-f8d11adc3aba">
+    <span>localhost:4001/api/v1/search?term=sagar</span>
+  </a>
+</div>
+</li>
+</ul></div>
+        </div>
+      </div>
