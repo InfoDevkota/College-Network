@@ -101,7 +101,11 @@ exports.postLogin = (req, res, next) => {
                                 email: user.email,
                                 userId: user._id.toString(),
                                 name: user.name,
-                                profileImage: user.profileImage
+                                profileImage: user.profileImage,
+                                isStudent: user.isStudent,
+                                isTeacher: user.isTeacher,
+                                isProfileUpdated: user.isProfileUpdated,
+                                ishod: user.ishod
                             },
                             'ThisIsASecretKeyAndKey'
                         );
