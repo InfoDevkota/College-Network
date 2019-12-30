@@ -217,7 +217,6 @@
 import jwtDecode from "jwt-decode";
 export default {
   name: "search",
-  props: ["query"],
   data() {
     return {
       posts: [],
@@ -226,9 +225,12 @@ export default {
     };
   },
   watch: {
-    query(value) {
-      if (value) {
-        this.getSearchNotesAndPosts();
+    '$route.query.search': {
+      immediate: true,
+      handler(value) {
+        if (value) {
+          this.getSearchNotesAndPosts();
+        }
       }
     }
   },
@@ -257,7 +259,7 @@ export default {
     },
     getSearchNotesAndPosts() {
       this.$axios
-        .get("/api/v1/search", { params: { term: this.query } })
+        .get("/api/v1/search", { params: { term: this.$route.query.search } })
         .then(response => {
           this.notes = response.data.results.notes.map(note => ({
             files: note.files,

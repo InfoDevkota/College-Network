@@ -7,7 +7,7 @@ const routes = [
       requiresAuth: true
     },
     children: [
-      { path: '/search/:query', name: 'search', component: () => import('pages/search'), props: true },
+      { path: '/search', name: 'search', component: () => import('pages/search'), props: true },
       { 
         path: '/feed',
         component: () => import('layouts/Feed.vue'),

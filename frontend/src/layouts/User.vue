@@ -372,13 +372,16 @@ export default {
   watch: {
     searchText(value){
       if(value) {
-        this.$router.push({name: "search", params: { query: value }})
+        this.$router.push({name: "search", query: { search: value }})
       } else {
         this.$router.push({name: "feed-posts"})
       }
     }
   },
   mounted() {
+    if(this.$route.query.search) {
+      this.searchText = this.$route.query.search
+    }
     socket.on("connect", () => {
       var room = 'GlobalRoom';
       var user = this.getAuthUser
