@@ -1,0 +1,23 @@
+<% if(error) {%>
+    <p style="color: red;"><%= error %></p>
+<%}%>
+<% if(info) {%>
+    <p style="color: green;"><%= info %></p>
+<%}%>
+<h2>Unverified Teachers</h2>
+<div>
+    <% if(teachers.length > 0) { %>
+        <% for(let teacher of teachers) { %>
+            <p>Student Name: <b><%= teacher.name %></b></p>
+            Verification Images:
+           <br>
+            <% for(let image of teacher.verificationImages) { %>
+                <img src="/<%= image %>" alt="">
+            <%}%>
+            <a href="/admin/verifyTeacher/<%= teacher._id %>"><button>Verify</button></a>
+            <hr>
+        <%}%>
+    <%} else {%>
+        <p>No Teachers to Verify in System</p>  
+    <%}%>
+</div>

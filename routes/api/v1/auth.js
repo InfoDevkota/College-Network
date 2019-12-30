@@ -30,7 +30,8 @@ router.post(
     [
         body('email')
             .isEmail()
-            .withMessage('Invalid Email'),
+            .withMessage('Invalid Email')
+            .normalizeEmail(),
         body('password')
             .trim()
             .isLength({min:8})

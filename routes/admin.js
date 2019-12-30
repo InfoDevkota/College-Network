@@ -18,5 +18,8 @@ router.post('/addHOD', isAuth, adminController.postAddHOD);
 router.get('/verifyStudents', isAuth, adminController.getUnverifiedStudents);
 router.get('/verifyStudent/:studentId', isAuth, adminController.verifyStudent);
 
+router.get('/verifyTeachers', isAuth, adminController.getUnverifiedTeachers);
+router.get('/verifyTeacher/:userID', isAuth, adminController.verifyTeacher);
+
 
 module.exports = router;

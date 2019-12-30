@@ -72,6 +72,7 @@ exports.postSignup = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
+    console.log("Here in Login Controller");
     //TODO if not verified no login message your account is under verification
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -100,7 +101,11 @@ exports.postLogin = (req, res, next) => {
                                 email: user.email,
                                 userId: user._id.toString(),
                                 name: user.name,
-                                profileImage: user.profileImage
+                                profileImage: user.profileImage,
+                                isStudent: user.isStudent,
+                                isTeacher: user.isTeacher,
+                                isProfileUpdated: user.isProfileUpdated,
+                                ishod: user.ishod
                             },
                             'ThisIsASecretKeyAndKey'
                         );

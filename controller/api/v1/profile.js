@@ -185,9 +185,11 @@ exports.putMe = (req,res,next) =>{
 }
 
 exports.putProfilePic = (req,res,next) =>{
+    console.log("Here in Profile controller putProfile Pic");
     let imageLink = "";
-    if(req.file){
-        imageLink = req.file.path;
+    console.log(req.files);
+    if(req.files){
+        imageLink = req.files[0].path;
     }
     User.findById(req.userId)
     .select('-posts -password -messageBoxUser')
