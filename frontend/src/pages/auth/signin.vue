@@ -89,7 +89,7 @@ export default {
             })
             setTimeout(() => {
               this.isLogin = false
-              this.$router.push({ name: 'feed' })
+              this.$router.push({ name: 'feed-posts' })
             }, 1000)
           })
           .catch(error => {

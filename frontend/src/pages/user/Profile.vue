@@ -86,7 +86,7 @@
                   <q-item>
                     <q-item-section class="text-weight-light">
                       Department
-                      <router-link v-if="userDetail.user.department" :to="{ name: 'department-detail', params: { id:  userDetail.user.department.value} }">
+                      <router-link v-if="userDetail.user.department" :to="{ name: 'department-detail', params: { department_id:  userDetail.user.department._id} }">
                         {{userDetail.user.department.name}}
                       </router-link>
                     </q-item-section>

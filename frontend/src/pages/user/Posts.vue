@@ -1,14 +1,14 @@
 <template>
   <q-infinite-scroll @load="onLoad" :offset="250">
-    <!-- <q-btn
+    <q-btn
             color="primary"
             size="sm"
             rounded
             icon="post_add"
             label="New Post"
-            class="q-mb-sm"
+            class="q-ma-sm"
             @click="$router.push({ name: 'feed-create' })"
-          /> -->
+          />
     <q-card
       v-for="(item, index) in items"
       :key="index"

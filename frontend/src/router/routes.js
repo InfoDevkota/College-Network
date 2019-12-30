@@ -32,7 +32,7 @@ const routes = [
           props: true
         }]
       },
-      { path: '/department/:id', props: true, name: 'department-detail', component: () => import('pages/department/index') }
+      { path: '/department/:department_id', props: true, name: 'department-detail', component: () => import('pages/department/index') }
     ]
   },
   {
