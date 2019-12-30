@@ -19,7 +19,7 @@
       <div v-if="errors.clientError">{{ errors.clientError }}</div>
     </q-banner>
     <q-card class="caption" style="margin-bottom: 10px" bordered flat>
-      <q-card-section>
+      <q-card-section class="q-pa-xs">
         <file-upload v-model="noteList">
           <div slot="activator">
             <q-chip
