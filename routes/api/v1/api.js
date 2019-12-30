@@ -8,6 +8,7 @@ const departmentRoutes = require('./department'); // here ./ starts from this di
 const conversationRoutes = require('./conversation')
 const noteRoutes = require("./note");
 const searchRoutes = require("./search");
+const projectRoutes = require("./project")
 
 const router = express.Router();
 
@@ -29,6 +30,7 @@ router.use(messengerRoutes);
 router.use(conversationRoutes);
 router.use(departmentRoutes);
 router.use(noteRoutes);
+router.use(projectRoutes);
 
 router.use((error, req,res,next)=>{
     console.log(error);
