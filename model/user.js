@@ -88,20 +88,19 @@ const userSchema = new Schema({
     },
     projects:[{
         type: Schema.Types.ObjectId,
-        ref="Project"
+        ref: "Project"
     }],
     notes:[{
         type: Schema.Types.ObjectId,
-        ref= "Note"
+        ref: "Note"
     }],
     isVerified:{
         type: Boolean,
         default: false
     },
-    verificationImage: {
-        type: String,
-        default: "static/verificationID.jpg"
-    },
+    verificationImages: [{
+        type: String
+    }],
 
     //TODO DONE Notes
 });
