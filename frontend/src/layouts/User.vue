@@ -49,7 +49,7 @@
           flat
           size="sm"
           icon="home"
-          @click="$router.push({ name: 'feed' })"
+          @click="$router.push({ name: 'feed-posts' })"
         />
         <q-btn
           flat
