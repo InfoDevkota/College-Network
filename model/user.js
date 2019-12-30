@@ -101,7 +101,12 @@ const userSchema = new Schema({
     verificationImages: [{
         type: String
     }],
+    isProfileUpdated:{
+        type: Boolean,
+        default: false
+    }
 
+    //TODO ProfileCompleted
     //TODO DONE Notes
 });
 

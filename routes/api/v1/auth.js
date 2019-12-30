@@ -16,7 +16,8 @@ router.post(
             .normalizeEmail(),
         body('password')
             .trim()
-            .isLength({min:8}),
+            .isLength({min:8})
+            .withMessage("Password should be more than 8 Characters."),
         body('name')
             .trim()
             .not()

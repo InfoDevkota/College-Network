@@ -15,5 +15,8 @@ router.post('/section', isAuth, adminController.postSection);
 router.post('/userType', isAuth, adminController.postUserType);
 router.post('/addHOD', isAuth, adminController.postAddHOD);
 
+router.get('/verifyStudents', isAuth, adminController.getUnverifiedStudents);
+router.get('/verifyStudent/:studentId', isAuth, adminController.verifyStudent);
+
 
 module.exports = router;
