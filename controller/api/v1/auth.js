@@ -46,9 +46,13 @@ exports.postSignup = (req,res,next) => {
             name: name,
             password: hashedPassword,
             isTeacher: isTeacher,
-            isStudent: isStudent,
-            verificationImage: file.path
+            isStudent: isStudent
         });
+
+        if(req.files){
+            user.verificationImages = req.files.map(file => file.path);
+        }
+
         return user.save();
     })
     .then(result=>{
