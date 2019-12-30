@@ -75,103 +75,78 @@
         />
       </q-card-section>
     </q-card>
+    
     <q-card
-      v-for="(item, index) in items"
-      :key="index"
-      class="caption"
-      style="margin-bottom: 10px"
-      bordered
-      flat
-    >
-      <q-card-section>
-        <q-list>
-          <q-item>
-            <q-item-section avatar>
-              <q-avatar>
-                <img :src="$axios.defaults.baseURL" />
-              </q-avatar>
-            </q-item-section>
+          v-for="(item, index) in items"
+          :key="index"
+          class="caption"
+          style="margin-bottom: 10px"
+        >
+          <q-card-section class="q-pa-none">
+            <!-- <q-list>
+              <q-item>
+                <q-item-section avatar>
+                  <q-avatar>
+                    <img
+                      :src="
+                        $axios.defaults.baseURL + item.uploadedBy.profileImage
+                      "
+                    />
+                  </q-avatar> 
+                </q-item-section>
 
-            <!-- <q-item-section>
-              <router-link
-                tag="span"
-                class="cursor-pointer"
-                :to="{
-                  name: 'user-profile',
-                  params: { id: item.postedBy.id }
-                }"
+                <q-item-section>
+                  <router-link
+                    tag="span"
+                    class="cursor-pointer"
+                    :to="{
+                      name: 'user-profile',
+                      params: { id: item.uploadedBy._id }
+                    }"
+                  >
+                    <q-item-label class="text-subtitle2">
+                      {{ item.uploadedBy.name }}
+                    </q-item-label>
+                  </router-link>
+                  <q-item-label caption lines="1">
+                    date
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list> -->
+            <q-list>
+              <q-item>
+                {{ item.title }}
+              </q-item>
+            </q-list>
+            <q-list>
+              <q-item-label header class="q-py-xs">Notes</q-item-label>
+
+              <q-item
+                border
+                clickable
+                @click="handleDownloadNote(file)"
+                v-for="(file, index) in item.files"
+                :key="index"
               >
-                <q-item-label class="text-subtitle2" v-if="item.postedBy">
-                  {{
-                  item.postedBy.name
-                  }}
-                </q-item-label>
-              </router-link>
-              <q-item-label caption lines="1">
-                {{
-                item.date | fromNow
-                }}
-              </q-item-label>
-            </q-item-section> -->
+                <q-item-section avatar>
+                  <q-avatar
+                    icon="cloud_download"
+                    color="primary"
+                    text-color="white"
+                  />
+                </q-item-section>
 
-            <q-item-section side>
-              <q-btn size="sm" color="grey-7" round flat icon="more_vert">
-                <q-menu
-                  square
-                  dense
-                  transition-show="flip-right"
-                  anchor="bottom right"
-                  self="top left"
-                  transition-hide="flip-left"
-                  auto-close
-                >
-                  <!-- <q-list dense>
-                    <q-item
-                      :clickable="item.postedBy.id === getCurrentUser.userId"
-                      @click="handleRemovePost(item.id, index)"
-                    >
-                      <q-item-section>Remove Post</q-item-section>
-                    </q-item>
-                    <q-item
-                      :clickable="item.postedBy.id === getCurrentUser.userId"
-                      @click="handleUpdatePost(item, index)"
-                    >
-                      <q-item-section>Edit Post</q-item-section>
-                    </q-item>
-                  </q-list> -->
-                </q-menu>
-              </q-btn>
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <q-list bordered>
-          <q-item-label header>Files</q-item-label>
-
-          <q-item
-            border
-            clickable
-            @click="handleDownloadNote(file)"
-            v-for="(file, index) in item.files"
-            :key="index"
-          >
-            <q-item-section avatar>
-              <q-avatar
-                icon="cloud_download"
-                color="primary"
-                text-color="white"
-              />
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label lines="1">{{
-                file.substring(file.lastIndexOf("/") + 1)
-              }}</q-item-label>
-              <q-item-label caption>date</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card-section>
-    </q-card>
+                <q-item-section>
+                  <q-item-label lines="1">{{
+                    file.substring(file.lastIndexOf("/") + 1)
+                  }}</q-item-label>
+                  <q-item-label caption>date</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
     <template v-slot:loading>
       <div class="row justify-center q-my-md">
         <q-spinner-dots
