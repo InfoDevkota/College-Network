@@ -4,15 +4,15 @@
     :style="{ flexDirection: 'row', background: 'linear-gradient(150deg,#00bcd4,#009688,#673ab7)' }"
   >
     <div class="q-pa-xl" :style="{ width: 100 + '%' }">
-      <q-form @submit="onSubmit" @reset="onReset" >
-        <q-input dark :disable="isLogin" rounded standout bottom-slots v-model="name" label="Name" type="text" counter>          <template v-slot:prepend>
+      <q-form dense @submit="onSubmit" @reset="onReset" >
+        <q-input dense dark :disable="isLogin" rounded standout bottom-slots v-model="name" label="Name" type="text" counter>          <template v-slot:prepend>
             <q-icon name="person" />
           </template>
           <template v-slot:append>
             <q-icon name="close" @click="text = ''" class="cursor-pointer" />
           </template>
         </q-input>
-        <q-input dark :disable="isLogin" rounded standout bottom-slots v-model="email" label="Email" type="email" counter>          <template v-slot:prepend>
+        <q-input dense dark :disable="isLogin" rounded standout bottom-slots v-model="email" label="Email" type="email" counter>          <template v-slot:prepend>
             <q-icon name="email" />
           </template>
           <template v-slot:append>
@@ -21,6 +21,7 @@
         </q-input>
         <q-input
           dark
+          dense
           rounded
           :disable="isLogin"
           style="bg-color: 'black'"
@@ -44,13 +45,13 @@
         <q-toggle v-model="accept" label="I accept the license and terms" />
 
         <div>
-          <q-btn label="Register"  :loading="isLogin"  type="submit" color="primary">
+          <q-btn size="sm" label="Register"  :loading="isLogin"  type="submit" color="primary">
              <template v-slot:loading>
                 <q-spinner-facebook />
               </template>
           </q-btn>
           <router-link :to="{name: 'signin'}">
-          <q-btn flat color="white q-mx-md" label="Already a Member ?" />
+          <q-btn size="sm" flat color="white q-mx-md" label="Already a Member ?" />
           </router-link>
         </div>
       </q-form>
