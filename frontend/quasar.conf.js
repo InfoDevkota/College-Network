@@ -1,6 +1,6 @@
 // Configuration for your app
 // https://quasar.dev/quasar-cli/quasar-conf-js
-
+const envparser = require('./config/envparser')
 module.exports = function (ctx) {
   return {
     // app boot file (/src/boot)
@@ -115,6 +115,7 @@ module.exports = function (ctx) {
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
+      env: ctx.dev ? { ...envparser() } : { BASEURL: JSON.stringify(process.env.BASEURL) },
       // vueCompiler: true,
       // gzip: true,
       // analyze: true,
