@@ -56,6 +56,7 @@ exports.getNotes = (req,res,next) =>{
     })
     .then( ()=>{
         Note.find()
+        .populate('uploadedby', 'name _id')
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
         .then(notes =>{
