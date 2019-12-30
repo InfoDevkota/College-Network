@@ -56,7 +56,7 @@ exports.getNotes = (req,res,next) =>{
     })
     .then( ()=>{
         Note.find()
-        .populate('uploadedby', 'name _id')
+        .populate('uploadedby', 'name _id profileImage')
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
         .then(notes =>{
@@ -72,7 +72,7 @@ exports.getNotes = (req,res,next) =>{
 exports.getNote = (req,res,next) =>{
     let noteId = req.params.noteId;
     Note.findById(noteId)
-    .populate('uploadedby', 'name _id')
+    .populate('uploadedby', 'name _id profileImage')
     .then(note=>{
         res.status(200).json({
             message: 'note fetched successfully.',
