@@ -4,6 +4,7 @@ const Post = require('../../../model/post');
 exports.getDepartmentById = (req,res,next) =>{
     const depId = req.params.departmentId;
     Department.findById(depId)
+    .populate("hod")
     .then(department =>{
         if(department){
             res.status(200).json({
@@ -20,6 +21,7 @@ exports.getDepartmentById = (req,res,next) =>{
 
 exports.getDepartments = (req,res,next) =>{
     Department.find()
+    .populate("hod")
     .then(departments =>{
         res.status(200).json({
             message: 'Departments Fetched',
