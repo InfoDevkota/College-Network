@@ -14,6 +14,7 @@ exports.postCreatePost = (req,res,next) =>{
     let date = new Date();
     
     const content = req.body.content;
+    const public = req.body.public;
     const post = new Post({
         content: content,
         postedBy: req.userId,
@@ -22,6 +23,15 @@ exports.postCreatePost = (req,res,next) =>{
     if(req.files){
         post.imageUrl = req.files.map(file => file.path);
     }
+
+    if(public){
+        post.visibilityPublic = true;
+    } else {
+        post.visibilityPublic = false;
+        department = req.departmentId; // TODO make sure this user Profile is Updated
+        //We can use a middelware to validate if is updated
+    }
+
     return post.save()
     .then(post =>{
         User.findById(req.userId)
@@ -49,14 +59,29 @@ exports.getPosts = (req,res,next) =>{
     const perPage =  parseInt(req.query.size) || 10;
     let totalPosts;
     
-    Post.find()
+    Post.find( // WHY or in the doc count too? So there will no false info for front end 
+        {
+            $or:[
+                {visibilityPublic: true},
+                {department: req.departmentId}
+            ]
+        }
+    )
+    // .or([{ visibilityPublic: true }, { department: req.departmentId }])
     .countDocuments()
     .then(postNumbers => {
         totalPosts = postNumbers;
         return true;
     })
     .then(bool =>{
-        Post.find()
+        Post.find(
+            {
+                $or:[
+                    {visibilityPublic: true},
+                    {department: req.departmentId}
+                ]
+            }
+        )
         .sort({date:-1})
         .skip((currentPage - 1) * perPage)
         .limit(perPage)

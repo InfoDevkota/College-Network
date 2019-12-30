@@ -18,9 +18,17 @@ exports.getSearch = async (req,res,next) =>{
         
     })
 
-    await Post.find({content:{
-        $regex: new RegExp(term, "ig")
-    }})
+    await Post.find(
+        {
+            content:{
+                $regex: new RegExp(term, "ig"),
+            },
+            $or:[ //Note Tested should work
+                {visibilityPublic: true},
+                {department: req.departmentId}
+            ]
+        }
+    )
     .select('')
     .populate('postedBy', 'name _id profileImage')
     .then(posts =>{
@@ -86,6 +94,10 @@ exports.getSearchByPost = (req,res,next) =>{
     query.content = {
         $regex: new RegExp(term, "ig")
     }
+    query.$or = [ //Note Tested should work
+        {visibilityPublic: true},
+        {department: req.departmentId}
+    ]
 
     Post.find(query)
     .populate('postedBy', 'name _id profileImage')
