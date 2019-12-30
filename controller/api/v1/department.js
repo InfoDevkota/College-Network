@@ -1,5 +1,6 @@
 const Department = require('../../../model/department');
 const Post = require('../../../model/post');
+const User = require('../../../model/user') //TODO DONE send all users related to this department
 
 exports.getDepartmentById = (req,res,next) =>{
     const depId = req.params.departmentId;
@@ -7,10 +8,16 @@ exports.getDepartmentById = (req,res,next) =>{
     .populate("hod")
     .then(department =>{
         if(department){
-            res.status(200).json({
-                message: 'Department fetch successfully!',
-                department //ie department: department
-            });
+            User.find({
+                department: depId
+            })
+            .then(depMambers =>{
+                res.status(200).json({
+                    message: 'Department fetch successfully!',
+                    department, //ie department: department
+                    members: depMambers
+                });
+            })
         }else {
             res.status(404).json({
                 message: 'Department not found',

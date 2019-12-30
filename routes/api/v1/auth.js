@@ -2,11 +2,13 @@ const express = require('express');
 const { body } = require('express-validator');
 
 const authController = require("../../../controller/api/v1/auth");
+const uploadController = require("../../../controller/api/v1/upload");
 
 const router = express.Router();
 
 router.post(
     '/signup',
+    uploadController.multipleUpload,
     [
         body('email')
             .isEmail()

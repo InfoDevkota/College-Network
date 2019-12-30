@@ -93,8 +93,17 @@ const userSchema = new Schema({
     notes:[{
         type: Schema.Types.ObjectId,
         ref= "Note"
-    }]
-    //TODO Notes
+    }],
+    isVerified:{
+        type: Boolean,
+        default: false
+    },
+    verificationImage: {
+        type: String,
+        default: "static/verificationID.jpg"
+    },
+
+    //TODO DONE Notes
 });
 
 module.exports = mongoose.model('User', userSchema);
