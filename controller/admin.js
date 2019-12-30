@@ -233,3 +233,40 @@ function displayAdmin(res, info, error){
         })
     })
 }
+
+module.exports.getUnverifiedStudents = (req,res,next) =>{
+    User.find({
+        isVerified: false,
+        isStudent: true
+    })
+    .then(students =>{
+        res.render('verifyStudents', {
+            students,
+            error: "",
+            info: ""
+        })
+    })
+}
+
+module.exports.verifyStudent = (req,res,next) =>{
+    let studentId = req.params.studentId;
+    User.findById(studentId)
+    .then(user =>{
+        user.isVerified = true;
+        user
+        .save()
+        .then(user => {
+            User.find({
+                isVerified: false,
+                isStudent: true
+            })
+            .then(students =>{
+                res.render('verifyStudents', {
+                    students,
+                    error: "",
+                    info: "A User Verified."
+                })
+            })
+        })
+    })
+}

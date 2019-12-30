@@ -33,7 +33,7 @@ router.use(noteRoutes);
 router.use(projectRoutes);
 
 router.use((error, req,res,next)=>{
-    console.log(error);
+    console.log("ERROR on routes/v1/api.js" . error);
     const status = error.statusCode || 500;
     const message = error.message;
     const data = error.data;
