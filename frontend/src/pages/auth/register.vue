@@ -104,7 +104,12 @@ export default {
         payload.append('name', this.name)
         payload.append('email', this.email)
         payload.append('password', this.password)
-        payload.append('files', this.documentsForVerification)
+        console.log(this.documentsForVerification)
+        if(this.documentsForVerification && this.documentsForVerification.length > 0) {          
+          for(let i=0; i<this.documentsForVerification.length; i++) {
+            payload.append('files', this.documentsForVerification[i])  
+          }
+        }
         if(this.userType === 'teacher') {
           payload.append('isTeacher', true)
         }
