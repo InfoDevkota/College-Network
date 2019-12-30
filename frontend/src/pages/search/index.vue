@@ -2,7 +2,17 @@
   <q-page padding>
     <div class="row justify-center">
       <div class="col-12 col-md-6">
-        <h6 class="q-my-sm">Posts</h6>
+        <q-tabs
+          dense
+          align="left"
+          inline-label
+          class="text-white shadow-1"
+          style="background: rgba(0, 0, 0, 0) linear-gradient(50deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+          shrink
+          stretch
+        >
+            <q-tab icon="post_add" name="posts" label="Posts" exact />
+        </q-tabs>
         <q-card
           v-for="(item, index) in posts"
           :key="index"
@@ -38,6 +48,15 @@
                   date
                 </q-item-label>
               </q-item-section>
+              <q-item-section side>
+                <router-link
+                  tag="span"
+                  class="cursor-pointer"
+                  :to="{ name: 'feed-detail', params: { id: item.id } }"
+                >
+                  <q-icon size="sm" name="remove_red_eye" color="primary" />
+                </router-link>
+              </q-item-section>
             </q-item>
           </q-list>
           <q-card-section v-html="item.content"> </q-card-section>
@@ -52,7 +71,8 @@
             >
               <template v-slot:error>
                 <div
-                  class="absolute-full flex flex-center bg-negative text-white"
+                  style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+                  class="absolute-full flex flex-center text-white"
                 >
                   N/A
                 </div>
@@ -60,17 +80,29 @@
             </q-img>
           </q-card-section>
         </q-card>
-        <q-banner v-show="!posts.length" dense class="bg-grey-3">
+        <q-card v-show="!posts.length" class="shadow-none q-mb-md">
+          <q-banner  dense class="">
           <template v-slot:avatar>
             <q-icon name="post_add" color="primary" />
           </template>
           <i>no posts found.</i>
         </q-banner>
+        </q-card>
       </div>
     </div>
     <div class="row justify-center">
       <div class="col-12 col-md-6">
-        <h6 class="q-my-sm">Users</h6>
+        <q-tabs
+          dense
+          align="left"
+          inline-label
+          class="text-white shadow-1"
+          style="background: rgba(0, 0, 0, 0) linear-gradient(50deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+          shrink
+          stretch
+        >
+            <q-tab icon="person_pin" name="users" label="Users" exact />
+        </q-tabs>
         <q-card
           v-for="(item, index) in users"
           :key="index"
@@ -79,7 +111,7 @@
           bordered
           flat
         >
-          <q-item clickable v-ripple>
+          <q-item clickable v-ripple @click="$router.push({name: 'user-profile',params: { id: item.id } })">
             <q-item-section avatar>
               <q-avatar>
                 <img :src="$axios.defaults.baseURL + item.profileImage" />
@@ -123,26 +155,36 @@
             </q-item-section>
           </q-item>
         </q-card>
-        <q-banner v-show="!users.length" dense class="bg-grey-3">
+        <q-card v-show="!users.length" class="shadow-none q-mb-md">
+        <q-banner dense class="">
           <template v-slot:avatar>
             <q-icon name="person_pin" color="primary" />
           </template>
           <i>no users found.</i>
         </q-banner>
+        </q-card>
       </div>
     </div>
     <div class="row justify-center">
       <div class="col-12 col-md-6">
-        <h6 class="q-my-sm">Notes</h6>
+        <q-tabs
+          dense
+          align="left"
+          inline-label
+          class="text-white shadow-1"
+          style="background: rgba(0, 0, 0, 0) linear-gradient(50deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+          shrink
+          stretch
+        >
+            <q-tab icon="note" name="notes" label="Notes" exact />
+        </q-tabs>
         <q-card
           v-for="(item, index) in notes"
           :key="index"
           class="caption"
           style="margin-bottom: 10px"
-          bordered
-          flat
         >
-          <q-card-section>
+          <q-card-section class="q-pa-none">
             <q-list>
               <q-item>
                 <q-item-section avatar>
@@ -174,9 +216,13 @@
                 </q-item-section>
               </q-item>
             </q-list>
-            <q-list bordered>
-              {{ item.title }}
-              <q-item-label header>Files</q-item-label>
+            <q-list>
+              <q-item>
+                {{ item.title }}
+              </q-item>
+            </q-list>
+            <q-list>
+              <q-item-label header class="q-py-xs">Notes</q-item-label>
 
               <q-item
                 border
@@ -203,12 +249,14 @@
             </q-list>
           </q-card-section>
         </q-card>
-        <q-banner v-show="!notes.length" dense class="bg-grey-3">
+        <q-card v-show="!notes.length" class="shadow-none q-mb-md">
+        <q-banner v-show="!notes.length" dense class="">
           <template v-slot:avatar>
             <q-icon name="note" color="primary" />
           </template>
           <i>no notes found.</i>
         </q-banner>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -277,7 +325,7 @@ export default {
             isStudent: user.isStudent
           }));
           this.posts = response.data.results.posts.map(post => ({
-            id: post.id,
+            id: post._id,
             content: post.content,
             updatedAt: post.updatedAt,
             images: post.imageUrl,

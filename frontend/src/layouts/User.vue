@@ -381,6 +381,8 @@ export default {
   mounted() {
     if(this.$route.query.search) {
       this.searchText = this.$route.query.search
+    } else {
+      this.searchText = ""
     }
     socket.on("connect", () => {
       var room = 'GlobalRoom';
