@@ -133,16 +133,16 @@ export default {
             // }, 1000)
           })
           .catch(error => {
-            let mssg = ''
-            error.response.data.data.map(error => {
-              mssg = mssg + ' ' + error.param
-            })
+            let mssg = error.response.data.data.map(error => error.msg + ", ")
             this.$q.notify({
               color: 'red-5',
               textColor: 'white',
               icon: 'fas fa-exclamation-triangle',
-              message: mssg + ' is required.'
+              message: mssg
             })
+            // this.isLogin = false
+          })
+          .finally(() => {
             this.isLogin = false
           })
       }
