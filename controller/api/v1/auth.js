@@ -72,6 +72,7 @@ exports.postSignup = (req, res, next) => {
 }
 
 exports.postLogin = (req, res, next) => {
+    console.log("Here in Login Controller");
     //TODO if not verified no login message your account is under verification
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
