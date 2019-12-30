@@ -49,7 +49,7 @@
           flat
           size="sm"
           icon="home"
-          @click="$router.push({ name: 'feed' })"
+          @click="$router.push({ name: 'feed-posts' })"
         />
         <q-btn
           flat
@@ -372,13 +372,18 @@ export default {
   watch: {
     searchText(value){
       if(value) {
-        this.$router.push({name: "search", params: { query: value }})
+        this.$router.push({name: "search", query: { search: value }})
       } else {
         this.$router.push({name: "feed-posts"})
       }
     }
   },
   mounted() {
+    if(this.$route.query.search) {
+      this.searchText = this.$route.query.search
+    } else {
+      this.searchText = ""
+    }
     socket.on("connect", () => {
       var room = 'GlobalRoom';
       var user = this.getAuthUser

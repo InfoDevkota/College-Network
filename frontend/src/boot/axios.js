@@ -2,7 +2,7 @@ import axios from 'axios'
 import { SessionStorage } from 'quasar'
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:4001/' // TODO Change this URL to Database URL
+  baseURL: 'http://localhost:5001/' // TODO Change this URL to Database URL
 })
 
 /*

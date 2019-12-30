@@ -4,15 +4,20 @@
     :style="{ flexDirection: 'row', background: 'linear-gradient(150deg,#00bcd4,#009688,#673ab7)' }"
   >
     <div class="q-pa-xl" :style="{ width: 100 + '%' }">
-      <q-form @submit="onSubmit" @reset="onReset" >
-        <q-input dark :disable="isLogin" rounded standout bottom-slots v-model="name" label="Name" type="text" counter>          <template v-slot:prepend>
+      <q-form dense @submit="onSubmit" @reset="onReset" >
+        <q-input dense dark :disable="isLogin" rounded standout bottom-slots v-model="name" label="Name" type="text" counter>          <template v-slot:prepend>
             <q-icon name="person" />
           </template>
           <template v-slot:append>
             <q-icon name="close" @click="text = ''" class="cursor-pointer" />
           </template>
         </q-input>
-        <q-input dark :disable="isLogin" rounded standout bottom-slots v-model="email" label="Email" type="email" counter>          <template v-slot:prepend>
+        <div class="q-gutter-sm q-mb-sm">
+          <span class="text-white q-mr-sm">Are you - </span>
+          <q-radio dark left-label v-model="userType" color="white" class="text-white q-ma-none" val="student" label="Student" />
+          <q-radio dark left-label v-model="userType" color="white" class="text-white q-ma-none" val="teacher" label="Teacher" />
+        </div>
+        <q-input dense dark :disable="isLogin" rounded standout bottom-slots v-model="email" label="Email" type="email" counter>          <template v-slot:prepend>
             <q-icon name="email" />
           </template>
           <template v-slot:append>
@@ -21,6 +26,7 @@
         </q-input>
         <q-input
           dark
+          dense
           rounded
           :disable="isLogin"
           style="bg-color: 'black'"
@@ -41,16 +47,26 @@
             />
           </template>
         </q-input>
+        <q-input
+          @input="val => { documentsForVerification = val }"
+          multiple
+          dark
+          standout
+          dense
+          rounded
+          type="file"
+          hint="Native file (multiple)"
+        />
         <q-toggle v-model="accept" label="I accept the license and terms" />
 
         <div>
-          <q-btn label="Register"  :loading="isLogin"  type="submit" color="primary">
+          <q-btn size="sm" label="Register"  :loading="isLogin"  type="submit" color="primary">
              <template v-slot:loading>
                 <q-spinner-facebook />
               </template>
           </q-btn>
           <router-link :to="{name: 'signin'}">
-          <q-btn flat color="white q-mx-md" label="Already a Member ?" />
+          <q-btn size="sm" flat color="white q-mx-md" label="Already a Member ?" />
           </router-link>
         </div>
       </q-form>
@@ -66,9 +82,11 @@ export default {
       name: '',
       email: '',
       password: '',
+      documentsForVerification: null,
       accept: false,
       isPwd: true,
-      isLogin: false
+      isLogin: false,
+      userType: "student",
     }
   },
   methods: {
@@ -82,11 +100,18 @@ export default {
         })
       } else {
         this.isLogin = true
-        this.$axios.post('/api/v1/signup', {
-          name: this.name,
-          email: this.email,
-          password: this.password
-        })
+        let payload = new FormData()
+        payload.append('name', this.name)
+        payload.append('email', this.email)
+        payload.append('password', this.password)
+        payload.append('files', this.documentsForVerification)
+        if(this.userType === 'teacher') {
+          payload.append('isTeacher', true)
+        }
+        if(this.userType ===  'student') {
+          payload.append('isStudent', true)
+        }        
+        this.$axios.post('/api/v1/signup', payload)
           .then(response => {
             this.$router.push({ name: 'signin' })
             // this.$q.sessionStorage.set('token', response.data.token)

@@ -23,7 +23,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img :src="$axios.defaults.baseURL" />
+                  <img :src="$axios.defaults.baseURL + getCurrentUser.profileImage" />
                 </q-avatar>
               </q-item-section>
 
@@ -32,14 +32,14 @@
                   tag="span"
                   class="cursor-pointer"
                   :to="{
-                    name: 'user-profile'
+                    name: 'user-profile',
+                    params: { id: getCurrentUser.userId }
                   }"
                 >
                   <q-item-label class="text-subtitle2">
-                    sagar
+                    {{getCurrentUser.name}}
                   </q-item-label>
                 </router-link>
-                <q-item-label caption lines="1">today</q-item-label>
               </q-item-section>
 
               <q-item-section side> </q-item-section>
@@ -120,6 +120,8 @@
   </q-page>
 </template>
 <script>
+import jwtDecode from 'jwt-decode'
+
 import FileUpload from '../../components/FileUpload'
 export default {
   name: "post-create",
@@ -132,6 +134,11 @@ export default {
         console.log(files)
       },
       deep: true
+    }
+  },
+  computed: {
+    getCurrentUser() {
+      return jwtDecode(this.$q.sessionStorage.getItem("token"));
     }
   },
   data() {
@@ -185,6 +192,8 @@ export default {
             message: 'New Post Created.'
           })
           this.$router.push({ name: "feed" })
+        } else {
+          console.log(data)
         }
       } catch (error) {
         if(error.response) {

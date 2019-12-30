@@ -7,7 +7,7 @@ const routes = [
       requiresAuth: true
     },
     children: [
-      { path: '/search/:query', name: 'search', component: () => import('pages/search'), props: true },
+      { path: '/search', name: 'search', component: () => import('pages/search'), props: true },
       { 
         path: '/feed',
         component: () => import('layouts/Feed.vue'),
@@ -32,7 +32,7 @@ const routes = [
           props: true
         }]
       },
-      { path: '/department/:id', props: true, name: 'department-detail', component: () => import('pages/department/index') }
+      { path: '/department/:department_id', props: true, name: 'department-detail', component: () => import('pages/department/index') }
     ]
   },
   {
