@@ -1,14 +1,14 @@
 <template>
   <q-infinite-scroll @load="onLoad" :offset="250">
     <q-btn
-            color="primary"
-            size="sm"
-            rounded
-            icon="post_add"
-            label="New Post"
-            class="q-ma-sm"
-            @click="$router.push({ name: 'feed-create' })"
-          />
+      color="primary"
+      size="sm"
+      rounded
+      icon="post_add"
+      label="New Post"
+      class="q-ma-sm"
+      @click="$router.push({ name: 'feed-create' })"
+    />
     <q-card
       v-for="(item, index) in items"
       :key="index"
@@ -94,7 +94,10 @@
               class="rounded-borders"
             >
               <template v-slot:error>
-                <div class="absolute-full flex flex-center text-white" style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;">
+                <div
+                  class="absolute-full flex flex-center text-white"
+                  style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+                >
                   N/A
                 </div>
               </template>

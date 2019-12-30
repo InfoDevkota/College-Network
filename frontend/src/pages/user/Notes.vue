@@ -143,21 +143,32 @@
               </q-btn>
             </q-item-section>
           </q-item>
-           </q-list>
-          <q-list bordered>
+        </q-list>
+        <q-list bordered>
           <q-item-label header>Files</q-item-label>
 
-          <q-item border clickable @click="handleDownloadNote(file)" v-for="(file, index) in item.files" :key="index">
+          <q-item
+            border
+            clickable
+            @click="handleDownloadNote(file)"
+            v-for="(file, index) in item.files"
+            :key="index"
+          >
             <q-item-section avatar>
-              <q-avatar icon="cloud_download" color="primary" text-color="white" />
+              <q-avatar
+                icon="cloud_download"
+                color="primary"
+                text-color="white"
+              />
             </q-item-section>
 
             <q-item-section>
-              <q-item-label lines="1">{{file.substring(file.lastIndexOf('/')+1)}}</q-item-label>
+              <q-item-label lines="1">{{
+                file.substring(file.lastIndexOf("/") + 1)
+              }}</q-item-label>
               <q-item-label caption>date</q-item-label>
             </q-item-section>
           </q-item>
-         
         </q-list>
       </q-card-section>
     </q-card>
@@ -245,28 +256,28 @@ export default {
   },
   created() {},
   methods: {
-      handleDownloadNote(file) {
-        //   var blob = new Blob([data], {type: 'text/csv'});
-        // if(window.navigator.msSaveOrOpenBlob) {
-        //     window.navigator.msSaveBlob(blob, filename);
-        // }
-        // else{
-        //     var elem = window.document.createElement('a');
-        //     elem.href = window.URL.createObjectURL(blob);
-        //     elem.download = filename;        
-        //     document.body.appendChild(elem);
-        //     elem.click();        
-        //     document.body.removeChild(elem);
-        // }
-        // const blob = new Blob([file])
-        const link = document.createElement('a')
-        // link.href = URL.createObjectURL(blob)
-        link.href = file
-        link.setAttribute('target', "_blank");
-        link.setAttribute('download', file.substring(file.lastIndexOf('/')+1));
-        link.click()
-        URL.revokeObjectURL(link.href)
-      },
+    handleDownloadNote(file) {
+      //   var blob = new Blob([data], {type: 'text/csv'});
+      // if(window.navigator.msSaveOrOpenBlob) {
+      //     window.navigator.msSaveBlob(blob, filename);
+      // }
+      // else{
+      //     var elem = window.document.createElement('a');
+      //     elem.href = window.URL.createObjectURL(blob);
+      //     elem.download = filename;
+      //     document.body.appendChild(elem);
+      //     elem.click();
+      //     document.body.removeChild(elem);
+      // }
+      // const blob = new Blob([file])
+      const link = document.createElement("a");
+      // link.href = URL.createObjectURL(blob)
+      link.href = file;
+      link.setAttribute("target", "_blank");
+      link.setAttribute("download", file.substring(file.lastIndexOf("/") + 1));
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
     clearErrors(errors) {
       errors.responseError = "";
       errors.requestError = "";
