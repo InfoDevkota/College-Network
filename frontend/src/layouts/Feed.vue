@@ -22,8 +22,8 @@
               <q-item
                 clickable
                 v-ripple
-                :active="$route.name === 'chat-message-detail'"
-                :to="{ name: 'chat-message-detail' }"
+                :active="$route.name === 'chats'"
+                :to="{ name: 'chats' }"
                 active-class="my-menu-link"
               >
                 <q-item-section avatar>

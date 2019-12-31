@@ -75,9 +75,10 @@
                 </q-list>
               </q-card>
               <q-card class="q-mb-md">
+                <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">Current Affiliation</q-toolbar-title>
+              </q-toolbar>
                 <q-list dense class="rounded-borders">
-                  <q-item-label header class="text-caption q-py-sm">Current Affiliation</q-item-label>
-                  <q-separator/>
                   <q-item>
                     <q-item-section class="text-weight-light">
                       College {{userDetail.user.college}}
@@ -109,9 +110,10 @@
                 </q-list>
               </q-card>
               <q-card class="q-mb-md">
+                <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">About</q-toolbar-title>
+                </q-toolbar>
                 <q-list dense class="rounded-borders">
-                  <q-item-label header class="text-caption q-py-sm">About</q-item-label>
-                  <q-separator/>
                   <q-item>
                     <q-item-section class="text-weight-light">
                       Born on  {{userDetail.user.bornOn}}
