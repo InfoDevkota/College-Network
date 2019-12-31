@@ -8,7 +8,7 @@ const routes = [
     },
     children: [
       { path: '/search', name: 'search', component: () => import('pages/search'), props: true },
-      { 
+      {
         path: '/feed',
         component: () => import('layouts/Feed.vue'),
         children: [
@@ -22,14 +22,23 @@ const routes = [
       { path: '/feed/:id', name: 'feed-detail', props: true, component: () => import('pages/user/PostDetail.vue') },
 
       { path: '/user/profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
-      { path: '/chats',
+      {
+        path: '/chats',
+        props: true,
         component: () => import('pages/chat'),
-        children: [{
-          path: ':conversationId',
-          name: 'chat-message-detail',
-          component: () => import('pages/chat/chatDetail'),
-          props: true
-        }]
+        children: [
+          {
+            path: '',
+            name: 'chats',
+            component: () => import('pages/chat/chatIndex'),
+            props: true
+          },
+          {
+            path: ':conversationId',
+            name: 'chat-message-detail',
+            component: () => import('pages/chat/chatDetail'),
+            props: true
+          }]
       },
       { path: '/department/:department_id', props: true, name: 'department-detail', component: () => import('pages/department/index') }
     ]

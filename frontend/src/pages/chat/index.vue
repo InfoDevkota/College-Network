@@ -103,20 +103,20 @@
           <router-view></router-view>
       </q-page-container>
 
-      <q-footer class="bg-grey-3">
+      <q-footer class="bg-grey-3" v-if="$route.name === 'chat-message-detail'">
         <q-chip removable v-for="(file, index) in fileList.files" :key="index" class="shadow-2" size="sm" text-color="white"  @remove="deleteFile(index)" color="primary">
           <q-avatar>
             <img :src="getImage(file)">>
           </q-avatar>
           {{file.name}}
         </q-chip>
-        <q-toolbar class="bg-grey-3 text-black row">
+        <q-toolbar class="bg-grey-3 text-black row" >
           <!-- <q-btn round flat icon="insert_emoticon" class="q-mr-sm" /> -->
-          <q-input rounded outlined dense class="WAL__field col-grow q-mr-sm" bg-color="white" v-model="message" placeholder="Type a message" />
-          <q-btn round flat icon="fas fa-paper-plane" @click.prevent="handleSubmitMessage"/>
+          <q-input rounded outlined dense class="WAL__field col-grow q-mr-sm" bg-color="white" v-model="message" @keyup.enter.native="handleSubmitMessage" placeholder="Type a message" />
+          <q-btn round flat size="sm" icon="fas fa-paper-plane" @click.prevent="handleSubmitMessage"/>
           <file-upload v-model="fileList">
             <div slot="activator">
-              <q-btn round flat icon="fas fa-paperclip" @click.prevent="handleSubmitMessage"/>
+              <q-btn round size="sm" flat icon="fas fa-paperclip" @click.prevent="handleSubmitMessage"/>
             </div>
           </file-upload>
         </q-toolbar>
@@ -326,6 +326,7 @@ export default {
     // })  
   },
   mounted () {
+    this.currentConversationId = this.$route.params.conversationId
     this.getCurrentUserConversations()
     // this.socket = socketIO
     // this.$axios.get(`/api/v1/chat/users`)
@@ -524,7 +525,7 @@ export default {
       }
     },
     onMessageReceived () {
-      alert('')
+      
     },
     handleOnConversationSelect (conversation, index) {
       console.log(conversation)
@@ -563,7 +564,7 @@ export default {
     },
     handleSubmitMessage () {
       if(this.message) {
-        this.$axios.post(`api/v1/chat/message/${this.currentConversationId}/`, {
+        this.$axios.post(`api/v1/chat/message/${this.$route.params.conversationId}/`, {
         message: this.message,
         user: this.getCurrentUser.userId
       })
