@@ -1,5 +1,59 @@
 <template>
-  <q-page padding v-scroll>
+<div>
+  <q-header elevated>
+        <q-toolbar class="bg-grey-3 text-black">
+          <q-btn
+            round
+            flat
+            icon="keyboard_arrow_left"
+            class="WAL__drawer-open q-mr-sm"
+          />
+          <q-btn round flat v-for="(participant, index) of conversationDetail.participants" :key="index" @click="$router.push({name: 'user-profile', params: { id: participant._id }})">
+            <q-avatar>              
+              <img :src="$axios.defaults.baseURL + participant.profileImage">
+            </q-avatar>
+            <q-tooltip>
+              {{participant.name}}
+            </q-tooltip>
+          </q-btn>
+
+          <span class="q-subtitle-1 q-pl-md" v-if="conversationDetail.conversation_name">
+            {{ conversationDetail.conversation_name }}
+          </span>
+
+          <!--<q-space/>
+
+          <q-btn round flat icon="search" />
+          <q-btn round flat>
+            <q-icon name="attachment" class="rotate-135" />
+          </q-btn>
+          <q-btn round flat icon="more_vert">
+            <q-menu auto-close :offset="[110, 0]">
+              <q-list style="min-width: 150px">
+                <q-item clickable>
+                  <q-item-section>Contact data</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section>Block</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section>Select messages</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section>Silence</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section>Clear messages</q-item-section>
+                </q-item>
+                <q-item clickable>
+                  <q-item-section>Erase messages</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn> -->
+        </q-toolbar>
+      </q-header>
+      <q-page padding v-scroll>
     {{ chatMessenges }}
     <q-chat-message
       v-for="(chatMessenge, index) in chatMessenges"
@@ -101,6 +155,8 @@
       This is your first conversation
     </q-banner> -->
   </q-page>
+</div>
+  
 </template>
 <script>
 import jwtDecode from "jwt-decode";
@@ -111,7 +167,8 @@ export default {
   props: ["conversationId"],
   data() {
     return {
-      chatMessenges: []
+      chatMessenges: [],
+      conversationDetail: {}
     };
   },
   created() {
@@ -158,12 +215,15 @@ export default {
   },
   watch: {
     conversationId: {
-      handler() {
+      immediate: true,
+      handler(id) {
         // this.joinConversation()
-        this.$axios
-          .get(`/api/v1/chat/conversation/${this.conversationId}`)
+        if(id) {
+          this.$axios
+          .get(`/api/v1/chat/conversation/${id}`)
           .then(response => {
             if (response.data.hasOwnProperty("conversation")) {
+              this.conversationDetail = response.data.detail
               this.chatMessenges = response.data.conversation.map(message => {
                 return {
                   id: message._id,
@@ -178,9 +238,11 @@ export default {
               });
             } else {
               this.chatMessenges = [];
+              this.conversationDetail = null
             }
             console.log(response.data);
           });
+        }
       }
     }
   },

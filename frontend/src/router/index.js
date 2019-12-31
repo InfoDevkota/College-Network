@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { SessionStorage } from 'quasar'
-import jwtDecode from 'jwt-decode'
+
 import routes from './routes'
 
 Vue.use(VueRouter)
@@ -39,13 +39,5 @@ export default function (/* { store, ssrContext } */) {
       next()
     }
   })
-
-  // Router.beforeEach((to, from, next) => {
-  //   if (jwtDecode(SessionStorage.getItem('token'))) {
-  //     next()
-  //     return
-  //   }
-  //   next()
-  // })
   return Router
 }

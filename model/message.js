@@ -4,7 +4,8 @@ const mongoose = require('mongoose'),
   const MessageSchema = new Schema({  
     conversationId: {
       type: Schema.Types.ObjectId,
-      required: true
+      required: true,
+      ref: 'Conversation'
     },
     body: {
       type: String,

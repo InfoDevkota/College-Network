@@ -29,7 +29,7 @@ exports.getConversations = function(req, res, next) {
               res.send({ error: err });
               return next(err);
             }
-            fullConversations.push(message);
+            fullConversations.push({ ...message, conversationName: conversation.conversation_name});
             if(fullConversations.length === conversations.length) {
               return res.status(200).json({ conversations: fullConversations });
             }
@@ -38,8 +38,18 @@ exports.getConversations = function(req, res, next) {
   });
 }
 
-exports.getConversation = function(req, res, next) {  
-  Message.find({ conversationId: req.params.conversationId })
+exports.getConversation = function(req, res, next) { 
+  Conversation.findById(req.params.conversationId)
+  .select("participants conversation_name")
+  .populate({
+    path: "participants",
+    select: "name profileImage"
+  })
+  .then(conversation => {
+    return conversation
+  })
+  .then((conversationDetail)=>{
+    Message.find({ conversationId: req.params.conversationId })
     .select('createdAt body author')
     .sort('createdAt')
     .populate({
@@ -52,8 +62,9 @@ exports.getConversation = function(req, res, next) {
         return next(err);
       }
 
-      res.status(200).json({ conversation: messages });
+      res.status(200).json({ conversation: messages, detail: conversationDetail });
     });
+  })
   }
 
   exports.newConversation = function(req, res, next) { 
@@ -79,14 +90,14 @@ exports.getConversation = function(req, res, next) {
       participants: req.body.recipients
     });
     return conversation.save()
-    .then(newConversation => {
-      const message = new Message({
-        conversationId: newConversation._id,
-        body: req.body.message,
-        author: req.user
-      });
-      return message.save()
-    })
+    // .then(newConversation => {
+    //   const message = new Message({
+    //     conversationId: newConversation._id,
+    //     body: req.body.message,
+    //     author: req.user
+    //   });
+    //   return message.save()
+    // })
     .then(conversation =>{      
       res.status(201).json({
         status: true,

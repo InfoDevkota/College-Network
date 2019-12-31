@@ -1,58 +1,7 @@
 <template>
   <div class="WAL position-relative bg-grey-4" :style="style">
     <q-layout view="lHh Lpr lFf" class="WAL__layout shadow-3" container>
-      <q-header elevated>
-        <q-toolbar class="bg-grey-3 text-black">
-          <q-btn
-            round
-            flat
-            icon="keyboard_arrow_left"
-            class="WAL__drawer-open q-mr-sm"
-            @click="leftDrawerOpen = true"
-          />
-
-          <q-btn round flat>
-            <q-avatar>
-              <img :src="currentConversation.avatar" v-if="currentConversation">
-            </q-avatar>
-          </q-btn>
-
-          <span class="q-subtitle-1 q-pl-md" v-if="currentConversation">
-            {{ currentConversation.person }}
-          </span>
-
-          <q-space/>
-
-          <q-btn round flat icon="search" />
-          <q-btn round flat>
-            <q-icon name="attachment" class="rotate-135" />
-          </q-btn>
-          <q-btn round flat icon="more_vert">
-            <q-menu auto-close :offset="[110, 0]">
-              <q-list style="min-width: 150px">
-                <q-item clickable>
-                  <q-item-section>Contact data</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Block</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Select messages</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Silence</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Clear messages</q-item-section>
-                </q-item>
-                <q-item clickable>
-                  <q-item-section>Erase messages</q-item-section>
-                </q-item>
-              </q-list>
-            </q-menu>
-          </q-btn>
-        </q-toolbar>
-      </q-header>
+      
 
       <q-drawer
         v-model="leftDrawerOpen"
@@ -126,12 +75,12 @@
 
               <q-item-section>
                 <q-item-label lines="1">
-                  {{ conversation.author.name }}
+                  {{conversation.conversationName}}
                 </q-item-label>
                 <q-item-label class="conversation__summary" caption>
                   <!-- <q-icon name="check" v-if="conversation.sent" />
                   <q-icon name="fas fa-ban" v-if="conversation.deleted" /> -->
-                  {{ conversation.message }}
+                  <b>{{ conversation.author.name }}: </b> {{ conversation.message }}
                 </q-item-label>
               </q-item-section>
 
@@ -477,7 +426,8 @@ export default {
             id: conversation[0] ? conversation[0].conversationId : "",
             author: conversation[0] ? conversation[0].author: "",
             message: conversation[0] ? conversation[0].body: "",
-            date: conversation[0] ? conversation[0].updatedAt: ""
+            date: conversation[0] ? conversation[0].updatedAt: "",
+            conversationName: conversation.conversationName
             // id: user[0]._id,
             // person: user.name,
             // avatar: 'https://cdn.quasar.dev/img/avatar5.jpg',
@@ -497,7 +447,7 @@ export default {
       if (val) {
         this.$axios.get(`/api/v1/users/${val}`).then(response => {
           update(() => {
-            this.newGroup.data.memberOptions = response.data.users.map(user => {
+            this.newGroup.data.memberOptions = response.data.users.filter(user => user._id !== this.getCurrentUser.userId).map(user => {
               return {
                 id: user._id,
                 name: user.name,
@@ -517,18 +467,26 @@ export default {
         // this.clearErrors(this.errors)
         let payload = {
           name: this.newGroup.data.groupName,
-          recipients: this.newGroup.data.members,
+          recipients: [...this.newGroup.data.members, this.getCurrentUser.userId],
           message: 'Hello',
           user: this.getCurrentUser.userId
         }
         const {data, status} = await this.$axios.post('/api/v1/chat/conversation/new', payload)
         if(status === 201) {
+          this.conversations.push({
+            id: data.conversation._id,
+            author:  "",
+            message:  "",
+            conversationName: data.conversation.conversation_name,
+            date:  data.conversation.created_date
+          })
           this.$q.notify({
             color: 'teal',
             icon: 'post_add',
             position: 'bottom-right',
             message: `${this.newGroup.data.groupName} Group created.`
           })
+          this.newGroup.isVisible = false
           // this.$router.push({ name: "feed" })
         }
       } catch (error) {

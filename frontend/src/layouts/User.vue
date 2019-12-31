@@ -56,7 +56,7 @@
           round
           size="sm"
           icon="question_answer"
-          @click="$router.push({ name: 'chat-detail' })"
+          @click="$router.push({ name: 'chat-message-detail' })"
         />
         <q-btn dense size="sm" round flat icon="email">
           <q-badge dense size="sm" color="red" floating>

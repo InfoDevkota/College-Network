@@ -23,7 +23,6 @@ const routes = [
 
       { path: '/user/profile/:id', name: 'user-profile', props: true, component: () => import('pages/user/Profile.vue') },
       { path: '/chats',
-        name: 'chat-detail',
         component: () => import('pages/chat'),
         children: [{
           path: ':conversationId',
