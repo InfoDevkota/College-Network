@@ -12,4 +12,7 @@ router.post("/department/:departmentId/createPost", isAuth, departmentController
 router.put("/department/:departmentId/post/:postId", isAuth, departmentController.postCreatePost);
 router.delete("/department/:departmentId/post/:postId", isAuth, departmentController.postCreatePost);
 
+router.get("/department/students/:departmentId", isAuth, departmentController.getStudentsBySemesterAndSectionByDepartment);
+router.get("/department/teachers/:departmentId", isAuth, departmentController.getTeachersBySemesterAndSectionByDepartment);
+
 module.exports = router;

@@ -68,7 +68,7 @@ exports.postCreatePost = (req,res,next) =>{
                 })
             })
         } else {
-            res.status(200).json({
+            res.status(400).json({
                 message: 'Your are not allowed to create Post in this Department'
             })
         }
@@ -94,7 +94,7 @@ exports.putPost = (req,res,next) =>{
                 })
             })
         } else {
-            res.status(200).json({
+            res.status(400).json({
                 message: 'Your are not allowed to Edit this Post'
             })
         }
@@ -114,7 +114,7 @@ exports.deletePost = (req,res,next) =>{
                 });
             })
         } else {
-            res.status(200).json({
+            res.status(400).json({
                 message: 'Your are not allowed to Delete this Post'
             })
         }
@@ -140,4 +140,71 @@ exports.putDepartment = (req,res,next) =>{
             })
         })
     })
+}
+
+module.exports.getStudentsBySemesterAndSectionByDepartment = (req,res,next) =>{
+    const departmentId = req.params.departmentId; // host/departmentId
+    const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
+    const sectionId = req.query.sectionId;
+
+    query = {};
+    if(semesterId){
+        query.semester = semesterId;
+    }
+    if(sectionId){
+        query.section = sectionId;
+    }
+    query.isStudent = true;
+    query.department = departmentId;
+
+    Department.findById(departmentId)
+    .then(department =>{
+        if(department.hod == req.userId){
+            User.find(query)
+            .then(users =>{
+                res.status(200).json({
+                    message: 'All Students',
+                    students:users
+                })
+            })
+        } else {
+            res.status(451).json({
+                message: 'Not Allowed'
+            })
+        }
+    });
+}
+
+
+module.exports.getTeachersBySemesterAndSectionByDepartment = (req,res,next) =>{
+    const departmentId = req.params.departmentId; // host/departmentId
+    const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
+    const sectionId = req.query.sectionId;
+
+    query = {};
+    if(semesterId){
+        query.semester = semesterId;
+    }
+    if(sectionId){
+        query.section = sectionId;
+    }
+    query.isTeacher = true;
+    query.department = departmentId;
+
+    Department.findById(departmentId)
+    .then(department =>{
+        if(department.hod == req.userId){
+            User.find(query)
+            .then(users =>{
+                res.status(200).json({
+                    message: 'All Teachers',
+                    teachers:users
+                })
+            })
+        } else {
+            res.status(451).json({
+                message: 'Not Allowed'
+            })
+        }
+    });
 }
