@@ -50,7 +50,15 @@ const postSchema = new Schema(
         },
         liked:{
             type:Boolean
+        },
+        visibilityPublic:{
+            type: Boolean
+        },
+        department:{
+            type:Schema.Types.ObjectId,
+            ref: "Department"
         }
+
     },
     { timestamps: true }
 )

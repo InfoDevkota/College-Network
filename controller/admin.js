@@ -307,3 +307,14 @@ module.exports.verifyTeacher = (req,res,next) =>{
         })
     })
 }
+
+module.exports.getUsers = (req,res,next) =>{
+    User.find()
+    .then(users =>{
+        res.render('users', {
+            users,
+            error: "",
+            info: ""
+        })
+    })
+}

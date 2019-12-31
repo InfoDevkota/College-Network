@@ -21,5 +21,7 @@ router.get('/verifyStudent/:studentId', isAuth, adminController.verifyStudent);
 router.get('/verifyTeachers', isAuth, adminController.getUnverifiedTeachers);
 router.get('/verifyTeacher/:userID', isAuth, adminController.verifyTeacher);
 
+router.get('/allUsers', isAuth, adminController.getUsers);
+
 
 module.exports = router;

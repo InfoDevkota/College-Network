@@ -1,0 +1,31 @@
+<% if(error) {%>
+    <p style="color: red;"><%= error %></p>
+<%}%>
+<% if(info) {%>
+    <p style="color: green;"><%= info %></p>
+<%}%>
+<h2>All Users</h2>
+<div>
+    <% if(users.length > 0) { %>
+        <table border="1" style="width:100%">
+            <tr>
+                <th>Name</th>
+                <th>Is Teacher</th>
+                <th>Is Student</th>
+                <th>Is HOD</th>
+                <th>Is Verified</th>
+            </tr>
+            <% for(let user of users) { %>
+                <tr>
+                    <td><%= user.name %></td>
+                    <td><%= user.isTeacher %></td>
+                    <td><%= user.isStudent %></td>
+                    <td><%= user.ishod %></td>
+                    <td><%= user.isVerified %></td>
+                </tr>
+            <%}%>
+        </table>
+    <%} else {%>
+        <p>No Users in System</p>  
+    <%}%>
+</div>

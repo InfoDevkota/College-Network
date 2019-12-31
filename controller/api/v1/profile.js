@@ -164,9 +164,12 @@ exports.putMe = (req,res,next) =>{
         user.graduationOn = graduationOn;
         user.gender = gender;
         user.phone = phone;
-        user.isProfileUpdated = true;
+
+        user.isProfileUpdated = true; // Now can post
 
         req.user = user;
+        req.departmentId = department; //Update department
+
         return user.save();
     })
     .then(result =>{

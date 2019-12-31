@@ -105,7 +105,8 @@ exports.postLogin = (req, res, next) => {
                                 isStudent: user.isStudent,
                                 isTeacher: user.isTeacher,
                                 isProfileUpdated: user.isProfileUpdated,
-                                ishod: user.ishod
+                                ishod: user.ishod,
+                                depId: user.department
                             },
                             'ThisIsASecretKeyAndKey'
                         );

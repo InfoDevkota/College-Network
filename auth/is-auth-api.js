@@ -23,6 +23,7 @@ module.exports = (req,res,next) => {
         throw error;
     }
     req.userId = decodedToken.userId;
+    req.departmentId = decodedToken.depId;
     User.findById(decodedToken.userId)
     .then(user =>{
         if(user){
