@@ -90,18 +90,18 @@ exports.getConversation = function(req, res, next) {
       participants: req.body.recipients
     });
     return conversation.save()
-    // .then(newConversation => {
-    //   const message = new Message({
-    //     conversationId: newConversation._id,
-    //     body: req.body.message,
-    //     author: req.user
-    //   });
-    //   return message.save()
-    // })
-    .then(conversation =>{      
+    .then(newConversation => {
+      const message = new Message({
+        conversationId: newConversation._id,
+        body: req.body.message,
+        author: req.user
+      });
+      return message.save()
+    })
+    .then(conversation =>{
       res.status(201).json({
         status: true,
-        conversation                  
+        conversation               
     })});
   
     // conversation.save(function(err, newConversation) {

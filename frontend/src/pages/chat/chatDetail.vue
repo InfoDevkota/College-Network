@@ -15,12 +15,19 @@
             <q-tooltip>
               {{participant.name}}
             </q-tooltip>
+            <q-badge align="top" class="absolute-bottom" v-show="onlineUsers.includes(participant._id)" color="transparent">
+              <q-icon
+                name="fas fa-circle"
+                class="text-green"
+                style="font-size: 0.7em"
+              />
+            </q-badge>
+            
           </q-btn>
 
           <span class="q-subtitle-1 q-pl-md" v-if="conversationDetail.conversation_name">
             {{ conversationDetail.conversation_name }}
           </span>
-
           <!--<q-space/>
 
           <q-btn round flat icon="search" />
@@ -54,7 +61,6 @@
         </q-toolbar>
       </q-header>
       <q-page padding v-scroll>
-    {{ chatMessenges }}
     <q-chat-message
       v-for="(chatMessenge, index) in chatMessenges"
       :key="index"
@@ -168,15 +174,14 @@ export default {
   data() {
     return {
       chatMessenges: [],
-      conversationDetail: {}
+      conversationDetail: {},
+      onlineUsers: []
     };
   },
-  created() {
-    // socket = io("http://localhost:5000");
-  },
   computed: {
-    getCurrentUser() {
-      return jwtDecode(this.$q.sessionStorage.getItem("token"));
+    getAuthUser() {
+      const decodedUser = jwtDecode(this.$q.sessionStorage.getItem("token"));
+      return decodedUser;
     }
   },
   directives: {
@@ -191,18 +196,21 @@ export default {
     },
   },
   mounted() {
+    socket.on("onlineUser", (usersOnline) => {
+          this.onlineUsers = usersOnline.map(user => user.userId)
+        });
     console.log("receive message");
     socket.on("newMessage",(data) => {
       console.log(data);
       this.chatMessenges.push({
         id: data.room,
         name: data.sender.name,
-        avatar: "https://cdn.quasar.dev/img/avatar5.jpg",
+        avatar: this.$axios.defaults.baseURL + this.getAuthUser.profileImage,
         stamp: new Date(),
         text: data.text,
         textColor: "white",
         bgColor: "amber-7",
-        sent: data.sender.userId === this.getCurrentUser.userId
+        sent: data.sender.userId === this.getAuthUser.userId
       });
     });
   },
@@ -212,6 +220,8 @@ export default {
         .startOf("hour")
         .fromNow();
     }
+  },
+  created() {
   },
   watch: {
     conversationId: {
@@ -228,20 +238,23 @@ export default {
                 return {
                   id: message._id,
                   name: message.author.name,
-                  avatar: "https://cdn.quasar.dev/img/avatar5.jpg",
+                  avatar: this.$axios.defaults.baseURL + message.author.profileImage,
                   stamp: message.createdAt,
                   text: message.body,
                   textColor: "white",
                   bgColor: "amber-7",
-                  sent: message.author._id === this.getCurrentUser.userId
+                  sent: message.author._id === this.getAuthUser.userId
                 };
               });
             } else {
               this.chatMessenges = [];
               this.conversationDetail = null
             }
-            console.log(response.data);
-          });
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error.message)
+          })
         }
       }
     }

@@ -1,7 +1,6 @@
 <template>
   <div class="WAL position-relative bg-grey-4" :style="style">
-    <q-layout view="lHh Lpr lFf" class="WAL__layout shadow-3" container>
-      
+    <q-layout view="lHh Lpr lFf" class="WAL__layout shadow-3" container>     
 
       <q-drawer
         v-model="leftDrawerOpen"
@@ -10,14 +9,14 @@
         :breakpoint="690"
       >
         <q-toolbar class="bg-grey-3">
-          <q-avatar class="cursor-pointer" @click="$router.push({name: 'feed'})">
+          <!-- <q-avatar class="cursor-pointer" @click="$router.push({name: 'feed'})">
              <q-icon name="fas fa-arrow-circle-left" />
-          </q-avatar>
+          </q-avatar> -->
 
           <q-space />
 
-          <q-btn size="sm" round flat icon="message" />
-          <q-btn size="sm" round flat icon="more_vert">
+          <q-btn size="sm" round flat @click="newGroup.isVisible = true" icon="message" />
+          <!-- <q-btn size="sm" round flat icon="more_vert">
             <q-menu auto-close :offset="[110, 8]">
               <q-list dense style="min-width: 150px">
                 <q-item clickable @click="newGroup.isVisible = true">
@@ -40,7 +39,7 @@
                 </q-item>
               </q-list>
             </q-menu>
-          </q-btn>
+          </q-btn> -->
 
           <q-btn
             round
@@ -51,13 +50,13 @@
           />
         </q-toolbar>
 
-        <q-toolbar class="bg-grey-2">
+        <!-- <q-toolbar class="bg-grey-2">
           <q-input rounded outlined dense class="WAL__field full-width" bg-color="white" v-model="searchUser" placeholder="Search or start a new conversation">
             <template slot="prepend">
               <q-icon name="search" />
             </template>
           </q-input>
-        </q-toolbar>
+        </q-toolbar> -->
         <q-scroll-area style="height: calc(100% - 100px)">
           <q-list>
             <q-item
@@ -65,7 +64,9 @@
               :key="index"
               clickable
               v-ripple
+              :active="conversation.id === $route.params.conversationId"
               @click="handleOnConversationSelect(conversation, index)"
+              active-class="my-active-chat"
             >
               <q-item-section avatar>
                 <q-avatar>
@@ -123,6 +124,10 @@
     </q-layout>
      <q-dialog v-model="newGroup.isVisible" persistent>
       <q-card style="width: 650px; max-width: 40vw;">
+        <q-form
+            @submit="handleCreateNewConversation"
+            @reset="onReset"
+          >
         <q-toolbar>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
@@ -165,6 +170,8 @@
             @filter="remoteUsersToCreateNewGroup"
             map-options
             style="width: 250px"
+            lazy-rules
+            :rules="[ val => val && val.length > 0 || 'Please type something']"
           >
           <template v-slot:selected-item="scope">
             <q-chip
@@ -215,10 +222,12 @@
         <q-separator />
 
         <q-card-actions align="right">
-          <q-btn flat label="Create" color="primary" @click="handleCreateNewConversation" />
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Create" color="primary" type="submit" />
+          <q-btn flat label="Cancel" color="primary" type="reset" />
         </q-card-actions>
+        </q-form>
       </q-card>
+       
     </q-dialog>
   </div>
 </template>
@@ -443,6 +452,12 @@ export default {
 
       }
     },
+    onReset() {
+      this.newGroup.data.groupName = ""
+      this.newGroup.data.memberOptions = []
+      this.newGroup.data.members = []
+      this.newGroup.isVisible = false
+    },
     remoteUsersToCreateNewGroup (val, update, abort) {
       if (val) {
         this.$axios.get(`/api/v1/users/${val}`).then(response => {
@@ -468,17 +483,17 @@ export default {
         let payload = {
           name: this.newGroup.data.groupName,
           recipients: [...this.newGroup.data.members, this.getCurrentUser.userId],
-          message: 'Hello',
+          message: 'Hi',
           user: this.getCurrentUser.userId
         }
         const {data, status} = await this.$axios.post('/api/v1/chat/conversation/new', payload)
         if(status === 201) {
           this.conversations.push({
-            id: data.conversation._id,
-            author:  "",
-            message:  "",
-            conversationName: data.conversation.conversation_name,
-            date:  data.conversation.created_date
+            id: data.conversation.conversationId,
+            author:  data.conversation.author,
+            message:  data.conversation.body,
+            conversationName: this.newGroup.data.groupName,
+            date:  data.conversation.createdAt
           })
           this.$q.notify({
             color: 'teal',
@@ -512,6 +527,8 @@ export default {
       alert('')
     },
     handleOnConversationSelect (conversation, index) {
+      console.log(conversation)
+      console.log("-----------")
       this.$router.push({name: 'chat-message-detail', params: { conversationId: conversation.id }})
       this.currentConversationId = conversation.id
       this.joinConversation(conversation.id);
@@ -545,7 +562,8 @@ export default {
     //     })
     },
     handleSubmitMessage () {
-      this.$axios.post(`api/v1/chat/message/${this.currentConversationId}/`, {
+      if(this.message) {
+        this.$axios.post(`api/v1/chat/message/${this.currentConversationId}/`, {
         message: this.message,
         user: this.getCurrentUser.userId
       })
@@ -558,6 +576,7 @@ export default {
           this.message = ""
         })
       })
+      }
       
       // this.$axios.get(`/api/v1/chat/${this.conversations[this.currentConversationIndex].id}`)
       //   .then(response => {
@@ -650,4 +669,8 @@ export default {
 .conversation__more
   margin-top 0!important
   font-size 1.4rem
+
+.my-active-chat
+  color: white!important
+  background rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%
 </style>
