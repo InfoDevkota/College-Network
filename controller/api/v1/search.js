@@ -18,17 +18,29 @@ exports.getSearch = async (req,res,next) =>{
         
     })
 
-    await Post.find(
-        {
-            content:{
-                $regex: new RegExp(term, "ig"),
-            },
-            $or:[ //Note Tested should work
+    let query;
+
+    if(req.departmentId == undefined){
+        //user is verifired but had not updated profile
+        query = {
+            $or:[
+                {visibilityPublic: true}, // only show public posts
+            ]
+        }
+    } else {
+        query = {
+            $or:[
                 {visibilityPublic: true},
                 {department: req.departmentId}
             ]
         }
-    )
+    }
+
+    query.content = {
+        $regex: new RegExp(term, "ig"),
+    }
+
+    await Post.find(query)
     .select('')
     .populate('postedBy', 'name _id profileImage')
     .then(posts =>{
@@ -94,10 +106,17 @@ exports.getSearchByPost = (req,res,next) =>{
     query.content = {
         $regex: new RegExp(term, "ig")
     }
-    query.$or = [ //Note Tested should work
-        {visibilityPublic: true},
-        {department: req.departmentId}
-    ]
+    if(req.departmentId == undefined){
+        //user is verifired but had not updated profile
+        query.$or = [
+            {visibilityPublic: true}, // only show public posts
+        ]
+    } else {
+        query.$or = [
+            {visibilityPublic: true}, //show public and
+            {department: req.departmentId} // department post
+        ]
+    }
 
     Post.find(query)
     .populate('postedBy', 'name _id profileImage')

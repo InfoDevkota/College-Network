@@ -23,13 +23,20 @@ exports.postCreatePost = (req,res,next) =>{
     if(req.files){
         post.imageUrl = req.files.map(file => file.path);
     }
+    console.log(public);
+    console.log(req.departmentId);
 
-    if(public){
-        post.visibilityPublic = true;
+    if(public == undefined){
+        post.visibilityPublic = true;// in care note provided;
     } else {
-        post.visibilityPublic = false;
-        department = req.departmentId; // TODO make sure this user Profile is Updated
-        //We can use a middelware to validate if is updated
+        if(public){
+            post.visibilityPublic = true;
+        } else {
+            console.log(req.departmentId);
+            post.visibilityPublic = false;
+            post.department = req.departmentId; // TODO make sure this user Profile is Updated
+            //We can use a middelware to validate if is updated
+        }
     }
 
     return post.save()
@@ -58,15 +65,26 @@ exports.getPosts = (req,res,next) =>{
     const currentPage = parseInt(req.query.page) || 1;
     const perPage =  parseInt(req.query.size) || 10;
     let totalPosts;
-    
-    Post.find( // WHY or in the doc count too? So there will no false info for front end 
-        {
+    //console.log("On Post Controller get Posts Dep id" + req.departmentId);
+    let query;
+
+    if(req.departmentId == undefined){
+        //user is verifired but had not updated profile
+        query = {
+            $or:[
+                {visibilityPublic: true}, // only show public posts
+            ]
+        }
+    } else {
+        query = {
             $or:[
                 {visibilityPublic: true},
                 {department: req.departmentId}
             ]
         }
-    )
+    }
+    
+    Post.find(query)
     // .or([{ visibilityPublic: true }, { department: req.departmentId }])
     .countDocuments()
     .then(postNumbers => {
@@ -74,14 +92,7 @@ exports.getPosts = (req,res,next) =>{
         return true;
     })
     .then(bool =>{
-        Post.find(
-            {
-                $or:[
-                    {visibilityPublic: true},
-                    {department: req.departmentId}
-                ]
-            }
-        )
+        Post.find(query)
         .sort({date:-1})
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
