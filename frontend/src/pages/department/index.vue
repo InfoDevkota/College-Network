@@ -1,14 +1,13 @@
 <template>
   <q-page padding>
     <div class="row q-col-gutter-x-md q-col-gutter-y-md">
-      {{ departmentDetail }}kjkj
+      {{ departmentDetail }}
       <div class="col-md-12">
         <q-card>
           <q-card-section>
-            <q-avatar size="120px">
-              <q-icon name="fas fa-image" />
-            </q-avatar>
-            {{ departmentDetail.name }}
+            <h4 class="q-my-none">
+              {{ departmentDetail.name }}, {{ departmentDetail.id }}
+            </h4>
           </q-card-section>
         </q-card>
       </div>
@@ -21,7 +20,7 @@
                   <q-item>
                     <q-item-section avatar top>
                       <q-avatar>
-                        <img :src="`https://cdn.quasar.dev/img/avatar3.jpg`" />
+                        <img :src="$axios.defaults.baseURL + getCurrentUser.profileImage" />
                       </q-avatar>
                     </q-item-section>
                     <q-item-section>
@@ -44,7 +43,7 @@
                       />
                     </q-item-section>
                   </q-item>
-                  <q-item dense style="padding:0 15px 10px">
+                  <q-item>
                     <q-item-section> </q-item-section>
                     <q-item-section side>
                       <q-item-label>
@@ -61,7 +60,7 @@
                           push
                           color="primary"
                           v-else
-                          label="Share"
+                          label="Post"
                           @click="savePost"
                         />
                       </q-item-label>
@@ -72,81 +71,79 @@
             </q-card>
           </div>
           <div class="col-xs-12 col-md-4">
-            <q-card class="q-mb-md">
+            <q-card class="q-mb-md" v-if="departmentDetail.hod">
+              <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">HOD Details</q-toolbar-title>
+              </q-toolbar>
               <q-list class="rounded-borders">
                 <q-item>
-                  <q-item-section class="text-uppercase"
-                    >members</q-item-section
-                  >
-                  <q-item-section avatar>
-                    <q-btn
-                      rounded
-                      color="primary"
-                      size="sm"
-                      label="200 members"
+                  <q-item-section class="text-weight-light">
+                    <span>Name: <span v-if="departmentDetail.hod.name">
+                      <q-chip clickable @click="$router.push({name: 'user-profile', params: {id: departmentDetail.hod._id }})">
+                        <q-avatar>
+                          <img :src="$axios.defaults.baseURL + departmentDetail.hod.profileImage">
+                        </q-avatar>
+                        {{departmentDetail.hod.name}}
+                      </q-chip>
+                      </span></span>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section class="text-weight-light">
+                    <span>Email: <span v-if="departmentDetail.hod.email">
+                       <q-chip>
+                          <q-avatar icon="email" color="primary" text-color="white" />
+                          {{departmentDetail.hod.email}}
+                        </q-chip>                      
+                      </span></span>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card>
+            <q-card class="q-mb-md" v-if="departmentDetail.hod">
+              <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">SMS Notice Details</q-toolbar-title>
+              </q-toolbar>
+              <q-list class="rounded-borders">
+                <q-item dense>
+                  <q-item-section class="text-weight-light">
+                    <q-scroll-area style="height: 100px;">
+                      <q-list>
+                        <q-item>
+                          SMS1
+                        </q-item>
+                        <q-item>
+                          SMS1
+                        </q-item>
+                        <q-item>
+                          SMS1
+                        </q-item>
+                        <q-item>
+                          SMS1
+                        </q-item>
+                        <q-item>
+                          SMS1
+                        </q-item>                        
+                      </q-list>
+                    </q-scroll-area>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                 <q-item-section class="text-weight-light">
+                    <q-input
+                      outlined
+                      stack-label
+                      label="Message"
+                      border
+                      autogrow
+                      class=""
                     />
-                  </q-item-section>
+                 </q-item-section>             
                 </q-item>
                 <q-item>
-                  <q-item-section class="text-weight-light">
-                    <div class="row items-center">
-                      <div class="col">
-                        <q-btn size="md" round>
-                          <q-avatar size="38px">
-                            <img
-                              src="https://cdn.quasar.dev/app-icons/icon-128x128.png"
-                            />
-                          </q-avatar>
-                        </q-btn>
-                      </div>
-                      <div class="col">
-                        <q-btn size="md" round>
-                          <q-avatar size="38px">
-                            <img
-                              src="https://cdn.quasar.dev/app-icons/icon-128x128.png"
-                            />
-                          </q-avatar>
-                        </q-btn>
-                      </div>
-                      <div class="col">
-                        <q-btn size="md" round>
-                          <q-avatar size="38px">
-                            <img
-                              src="https://cdn.quasar.dev/app-icons/icon-128x128.png"
-                            />
-                          </q-avatar>
-                        </q-btn>
-                      </div>
-                      <div class="col">
-                        <q-btn size="md" round>
-                          <q-avatar size="38px">
-                            <img
-                              src="https://cdn.quasar.dev/app-icons/icon-128x128.png"
-                            />
-                          </q-avatar>
-                        </q-btn>
-                      </div>
-                      <div class="col">
-                        <q-btn size="md" round>
-                          <q-avatar size="38px">
-                            <img
-                              src="https://cdn.quasar.dev/app-icons/icon-128x128.png"
-                            />
-                          </q-avatar>
-                        </q-btn>
-                      </div>
-                    </div>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section class="text-uppercase"
-                    >Introduction</q-item-section
-                  >
-                </q-item>
-                <q-item>
-                  <q-item-section class="text-weight-light">
-                    is
-                  </q-item-section>
+                 <q-item-section class="text-weight-light">
+                  <q-btn color="primary" size="sm" label="Submit" />
+                 </q-item-section>
                 </q-item>
               </q-list>
             </q-card>
@@ -157,6 +154,8 @@
   </q-page>
 </template>
 <script>
+import jwtDecode from "jwt-decode";
+
 export default {
   name: "profile-update",
   props: ["department_id"],
@@ -247,6 +246,11 @@ export default {
   },
   created() {
     this.getDepartmentDetail();
+  },
+  computed: {
+    getCurrentUser() {
+      return jwtDecode(this.$q.sessionStorage.getItem("token"));
+    }
   },
   methods: {
     getDepartmentDetail() {
