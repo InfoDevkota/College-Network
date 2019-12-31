@@ -33,7 +33,7 @@
                 <q-item-section>Chats</q-item-section>
               </q-item>
               <q-separator spaced />
-              <q-item-label header>ALL Departments</q-item-label>
+              <q-item-label header>ALL Departments ({{departments.length}})</q-item-label>
               <q-item
                 v-for="(department, index) in departments"
                 :key="index"
@@ -79,7 +79,6 @@
         <router-view></router-view>
       </div>
       <div class="col-12 col-md-3">
-        sdf
       </div>
     </div>
   </q-page>

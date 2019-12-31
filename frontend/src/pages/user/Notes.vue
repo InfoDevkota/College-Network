@@ -19,8 +19,8 @@
       <div v-if="errors.clientError">{{ errors.clientError }}</div>
     </q-banner>
     <q-card class="caption" style="margin-bottom: 10px" bordered flat>
-      <q-card-section class="q-pa-xs">
-        <file-upload v-model="noteList">
+      <q-card-section class="q-pa-none">
+        <file-upload v-if="getCurrentUser.isProfileUpdated" v-model="noteList">
           <div slot="activator">
             <q-chip
               clickable
@@ -33,6 +33,12 @@
             />
           </div>
         </file-upload>
+        <q-banner v-else inline-actions class="text-white" style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;">
+          You have to update your profile first.
+          <template v-slot:action>
+            <q-btn outline size="sm" color="white" :to="{name: 'profile-update',params: {id: getCurrentUser.userId}}" label="Take me to profile" />
+          </template>
+        </q-banner>
       </q-card-section>
       <q-card-section v-show="noteList.files">
         <div>

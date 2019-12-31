@@ -1,17 +1,24 @@
 <template>
   <q-infinite-scroll @load="onLoad" :offset="250">
     <q-card class="caption" style="margin-bottom: 10px" bordered flat>
-      <q-card-section class="q-pa-xs">
+      <q-card-section class="q-pa-none">
         <q-chip
           clickable
+          v-if="getCurrentUser.isProfileUpdated"
           square
           style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
           class="shadow-2"
           text-color="white"
           icon="post_add"
-          @click="$router.push({ name: 'feed-create' })"
+          @click="createNewPost"
           label="New Post"
         />
+        <q-banner v-else inline-actions class="text-white" style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;">
+          You have to update your profile first.
+          <template v-slot:action>
+            <q-btn outline size="sm" color="white" :to="{name: 'profile-update',params: {id: getCurrentUser.userId}}" label="Take me to profile" />
+          </template>
+        </q-banner>
       </q-card-section>
     </q-card>
     <q-card
@@ -247,6 +254,13 @@ export default {
   },
   created() {},
   methods: {
+    createNewPost () {
+      if(this.getCurrentUser.isProfileUpdated) {
+        this.$router.push({name: "feed-create"})
+      } else {
+        this.$router.push({name: "profile-update", params: {id: this.getCurrentUser.userId}})
+      }
+    },
     insertImg() {
       // insertImg method
       const post = this.post;
