@@ -59,13 +59,11 @@ exports.postCreatePost = (req,res,next) =>{
             .then(post =>{
                 department.posts.push(post);
                 department.save()
-                return post
-                .then(post =>{
-                    res.status(201).json({
+                return res.status(201).json({
                         message: 'Post successfully Created',
                         post:post
-                    })
                 })
+                    
             })
         } else {
             res.status(400).json({
