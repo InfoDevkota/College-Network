@@ -91,7 +91,7 @@
           style="margin-bottom: 10px"
         >
           <q-card-section class="q-pa-none">
-            <!-- <q-list>
+            <q-list>
               <q-item>
                 <q-item-section avatar>
                   <q-avatar>
@@ -121,7 +121,7 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-            </q-list> -->
+            </q-list>
             <q-list>
               <q-item>
                 {{ item.title }}
@@ -237,6 +237,10 @@ export default {
   },
   created() {},
   methods: {
+    resetNoteForm() {
+      this.noteTitle = ""
+      this.noteList = {}
+    },
     handleDownloadNote(file) {
       //   var blob = new Blob([data], {type: 'text/csv'});
       // if(window.navigator.msSaveOrOpenBlob) {
@@ -289,7 +293,7 @@ export default {
             position: "bottom-right",
             message: "New Note Uploaded."
           });
-          this.$router.push({ name: "feed-notes" });
+          this.resetNoteForm()
         }
       } catch (error) {
         if (error.response) {
@@ -352,7 +356,8 @@ export default {
                 title: post.title,
                 files: post.files.map(
                   file => this.$axios.defaults.baseURL + file
-                )
+                ),
+                uploadedBy: post.uploadedby
                 // postedBy: {
                 //   id: post.postedBy._id,
                 //   name: post.postedBy.name,
