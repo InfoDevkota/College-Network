@@ -187,11 +187,9 @@
           size="40px"
           v-if="items.length < post_params.count"
         />
-        <q-card v-else class="block">
-          <q-banner dense>
-            <i>End of Post.</i>
-          </q-banner>
-        </q-card>
+        <span v-else class="block text-weight-thin">
+          <i>You reached the end of posts.</i>
+        </span>
       </div>
     </template>
   </q-infinite-scroll>

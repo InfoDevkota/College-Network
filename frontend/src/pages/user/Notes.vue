@@ -6,7 +6,7 @@
       inline-actions
       class="text-white bg-red"
     >
-      <div v-if="errors.responseError">
+      <div v-if="Array.isArray(errors.responseError) && errors.responseError.length > 0">
         Please fix following errors -
         <ul>
           <li v-for="(error, index) in errors.responseError" :key="index">
@@ -15,6 +15,8 @@
           </li>
         </ul>
       </div>
+      <div v-else v-html="errors.responseError">
+          </div>
       <div v-if="errors.requestError">{{ errors.requestError }}</div>
       <div v-if="errors.clientError">{{ errors.clientError }}</div>
     </q-banner>
@@ -160,11 +162,9 @@
           size="40px"
           v-if="items.length < post_params.count"
         />
-        <q-card v-else class="block">
-          <q-banner dense>
-            <i>End of Note.</i>
-          </q-banner>
-        </q-card>
+        <span v-else class="block text-weight-thin">
+          <i>You reached the end of notes.</i>
+        </span>
       </div>
     </template>
   </q-infinite-scroll>
@@ -185,9 +185,9 @@ export default {
   data() {
     return {
       errors: {
-        responseError: "",
-        requestError: "",
-        clientError: ""
+        responseError: null,
+        requestError: null,
+        clientError: null
       },
       noteTitle: "",
       noteList: {},
@@ -260,9 +260,9 @@ export default {
       URL.revokeObjectURL(link.href);
     },
     clearErrors(errors) {
-      errors.responseError = "";
-      errors.requestError = "";
-      errors.clientError = "";
+      errors.responseError = null;
+      errors.requestError = null;
+      errors.clientError = null;
     },
     async hanldeCreateNewNote() {
       try {
@@ -301,6 +301,8 @@ export default {
               message: "One or more fields have errors."
             });
             this.errors.responseError = error.response.data.errors;
+          } else {
+            this.errors.responseError = error.response.data.message
           }
         } else if (error.request) {
           this.errors.requestError = error.request;

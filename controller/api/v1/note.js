@@ -9,6 +9,9 @@ exports.postCreateNote = (req,res,next) =>{
     if(!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() })
     }
+    if(req.files.length === 0) {
+        return res.status(422).json({errors: "Note validation failed: files: Path `files` is required."})
+    }
     const title = req.body.title;
     const description = req.body.description;
 
@@ -26,7 +29,7 @@ exports.postCreateNote = (req,res,next) =>{
     .then(note =>{
         User.findById(req.userId)
         .then(user =>{
-            user.projects.push(project)
+            // user.projects.push(project)
             user.save();
             return note;
         }).then(note =>{

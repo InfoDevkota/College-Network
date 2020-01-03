@@ -73,7 +73,8 @@
                     <file-upload v-model="fileList">
                       <div slot="activator">
                         <div size="150px" class="grey lighten-3 mb-3">
-                          <q-chip clickable square style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;" class="shadow-2" text-color="white" icon="image" label="Image/Notes" />
+                          <q-chip clickable square style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;" class="shadow-2" text-color="white" icon="image" label="Images/Pics" />
+                          <i>Select image files to upload..</i>
                         </div>
                         <!-- <pre>{{fileList}}</pre>               -->
                       </div>
@@ -81,8 +82,8 @@
                   </div>
               </q-item-section>
             </q-item>
-            <q-separator v-if="fileList.hasOwnProperty('files')" />
-             <q-item class="q-pa-xs" v-if="fileList.hasOwnProperty('files')">
+            <q-separator v-if="fileList.hasOwnProperty('files') && fileList.files.length > 0" />
+             <q-item class="q-pa-xs" v-if="fileList.hasOwnProperty('files') && fileList.files.length > 0">
               <q-item-section>
                   <div>
                     <q-chip removable v-for="(file, index) in fileList.files" :key="index" class="shadow-2" size="sm" text-color="white"  @remove="deleteFile(index)" color="primary">
@@ -114,6 +115,7 @@
             <q-separator />
              <q-item class="q-pa-xs">
                 <q-chip clickable @click="handleCreatePost" square style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;" class="shadow-2" text-color="white" icon="post_add" label="Post" />
+                <q-chip clickable @click="$router.push({ name: 'feed-posts' })" square class="shadow-2" color="red" text-color="white" icon="cancel" label="Cancel" />
              </q-item>
           </q-list>
         </q-card>
@@ -193,7 +195,7 @@ export default {
             position: 'bottom-right',
             message: 'New Post Created.'
           })
-          this.$router.push({ name: "feed" })
+          this.$router.push({ name: "feed-posts" })
         } else {
           console.log(data)
         }
