@@ -29,7 +29,7 @@
       bordered
       flat
     >
-      <q-card-section>
+      <q-card-section class="q-pa-none">
         <q-list>
           <q-item>
             <q-item-section avatar>
@@ -88,13 +88,11 @@
             </q-item-section>
           </q-item>
           <q-item
-            style="padding: 5px"
-            clickable
-            @click="handleDetailPost(item.id)"
+            class="q-px-md"
           >
             <q-item-section v-html="item.content"> </q-item-section>
           </q-item>
-          <div class="q-gutter-sm row items-start">
+          <div class="q-gutter-xs q-px-md row items-start">
             <q-img
               transition="fade"
               v-for="(file, index) in item.files"
