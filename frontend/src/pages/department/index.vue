@@ -1,294 +1,317 @@
 <template>
   <q-page padding>
-    <div class="row q-col-gutter-x-md q-col-gutter-y-md">
-      {{ departmentDetail }}
-      <div class="col-md-12">
-        <q-card>
-          <q-card-section>
-            <h4 class="q-my-none">
-              {{ departmentDetail.name }}, {{ departmentDetail.id }}
-            </h4>
-          </q-card-section>
-        </q-card>
-      </div>
-      <div class="col-xs-12">
-        <div class="row q-col-gutter-x-md q-col-gutter-y-md">
-          <div class="col-xs-12 col-md-8">
-            <q-banner
-              v-if="
-                errors.responseError ||
-                  errors.requestError ||
-                  errors.clientError
-              "
-              dense
-              inline-actions
-              class="text-white bg-red"
-            >
-              <div
+    <q-infinite-scroll @load="onLoad" :offset="250">
+      <div class="row q-col-gutter-x-md q-col-gutter-y-md">
+        {{ departmentDetail }}
+        <div class="col-md-12">
+          <q-card>
+            <q-card-section>
+              <h4 class="q-my-none">
+                {{ departmentDetail.name }}, {{ departmentDetail.id }}
+              </h4>
+            </q-card-section>
+          </q-card>
+        </div>
+        <div class="col-xs-12">
+          <div class="row q-col-gutter-x-md q-col-gutter-y-md">
+            <div class="col-xs-12 col-md-8">
+              <q-banner
                 v-if="
-                  Array.isArray(errors.responseError) &&
-                    errors.responseError.length > 0
+                  errors.responseError ||
+                    errors.requestError ||
+                    errors.clientError
                 "
+                dense
+                inline-actions
+                class="text-white bg-red"
               >
-                Please fix following errors -
-                <ul>
-                  <li
-                    v-for="(error, index) in errors.responseError"
-                    :key="index"
-                  >
-                    <b>{{ error.param }}</b> - {{ error.msg }}
-                  </li>
-                </ul>
-              </div>
-              <div v-else v-html="errors.responseError"></div>
-              <div v-if="errors.requestError">
-                {{ errors.requestError }}
-              </div>
-              <div v-if="errors.clientError">
-                {{ errors.clientError }}
-              </div>
-            </q-banner>
-            <q-card style="width: 100%">
-              <q-card-section class="row items-center no-wrap">
-                <q-list :style="{ width: '100%' }">
-                  <q-item>
-                    <q-item-section avatar top>
-                      <q-avatar>
-                        <img
-                          :src="
-                            $axios.defaults.baseURL +
-                              getCurrentUser.profileImage
-                          "
-                        />
-                      </q-avatar>
-                    </q-item-section>
-                    <q-item-section>
-                      <q-list>
-                        <q-item>
-<q-editor
-                        :style="{ width: '100%' }"
-                        v-model="postDetail"
-                        :toolbar="[
-                          ['left', 'center', 'right', 'justify'],
-                          ['bold', 'italic', 'underline', 'strike'],
-                          [
-                            {
-                              label: $q.lang.editor.formatting,
-                              icon: $q.iconSet.editor.formatting,
-                              list: 'no-icons',
-                              options: ['p', 'h3', 'h4', 'h5', 'h6', 'code']
-                            }
-                          ],
-                          ['undo', 'redo']
-                        ]"
-                      />
-                        </q-item>
-                  <q-item>
-                    <q-item-section>
-                      <div>
-                        <file-upload v-model="fileList">
-                          <div slot="activator">
-                            <div size="150px" class="grey lighten-3 mb-3">
-                              <q-chip
-                                clickable
-                                square
-                                style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
-                                class="shadow-2 q-ml-none"
-                                text-color="white"
-                                icon="image"
-                                label="Images/Pics"
-                              />
-                              <i>Select image files to upload..</i>
-                            </div>
-                            <!-- <pre>{{fileList}}</pre>               -->
-                          </div>
-                        </file-upload>
-                      </div>
-                    </q-item-section>
-                  </q-item>
-                  <q-separator
-                    v-if="
-                      fileList.hasOwnProperty('files') &&
-                        fileList.files.length > 0
-                    "
-                  />
-                  <q-item
-                    class="q-pa-xs"
-                    v-if="
-                      fileList.hasOwnProperty('files') &&
-                        fileList.files.length > 0
-                    "
-                  >
-                    <q-item-section>
-                      <div class="q-gutter-xs q-px-md row items-start">
-            <q-img
-              transition="fade"
-              v-for="(file, index) in fileList.files"
-              :key="index"
-              :src="getImage(file)"
-              style="width: 176px"
-              ratio="1"
-              spinner-color="white"
-              class="rounded-borders"
-            >
-            <div class="absolute-top-right text-center" style="padding: 8px;background: none">
-        <q-btn round outline color="red" size="xs" icon="clear" @click="deleteFile(index)" />
-      </div>
-      <div class="absolute-bottom text-center" style="padding: 8px">
-            {{ file.name }}
-          </div>
-              <template v-slot:error>
                 <div
-                  class="absolute-full flex flex-center text-white"
-                  style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+                  v-if="
+                    Array.isArray(errors.responseError) &&
+                      errors.responseError.length > 0
+                  "
                 >
-                  N/A
+                  Please fix following errors -
+                  <ul>
+                    <li
+                      v-for="(error, index) in errors.responseError"
+                      :key="index"
+                    >
+                      <b>{{ error.param }}</b> - {{ error.msg }}
+                    </li>
+                  </ul>
                 </div>
-              </template>
-            </q-img>
-                      </div>
-        
-                    </q-item-section>
-                  </q-item>
-                      </q-list>
-                      
+                <div v-else v-html="errors.responseError"></div>
+                <div v-if="errors.requestError">
+                  {{ errors.requestError }}
+                </div>
+                <div v-if="errors.clientError">
+                  {{ errors.clientError }}
+                </div>
+              </q-banner>
+              <q-card style="width: 100%">
+                <q-card-section class="row items-center no-wrap">
+                  <q-list :style="{ width: '100%' }">
+                    <q-item>
+                      <q-item-section avatar top>
+                        <q-avatar>
+                          <img
+                            :src="
+                              $axios.defaults.baseURL +
+                                getCurrentUser.profileImage
+                            "
+                          />
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-list>
+                          <q-item>
+                            <q-editor
+                              :style="{ width: '100%' }"
+                              v-model="postDetail"
+                              :toolbar="[
+                                ['left', 'center', 'right', 'justify'],
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [
+                                  {
+                                    label: $q.lang.editor.formatting,
+                                    icon: $q.iconSet.editor.formatting,
+                                    list: 'no-icons',
+                                    options: [
+                                      'p',
+                                      'h3',
+                                      'h4',
+                                      'h5',
+                                      'h6',
+                                      'code'
+                                    ]
+                                  }
+                                ],
+                                ['undo', 'redo']
+                              ]"
+                            />
+                          </q-item>
+                          <q-item>
+                            <q-item-section>
+                              <div>
+                                <file-upload v-model="fileList">
+                                  <div slot="activator">
+                                    <div
+                                      size="150px"
+                                      class="grey lighten-3 mb-3"
+                                    >
+                                      <q-chip
+                                        clickable
+                                        square
+                                        style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+                                        class="shadow-2 q-ml-none"
+                                        text-color="white"
+                                        icon="image"
+                                        label="Images/Pics"
+                                      />
+                                      <i>Select image files to upload..</i>
+                                    </div>
+                                    <!-- <pre>{{fileList}}</pre>               -->
+                                  </div>
+                                </file-upload>
+                              </div>
+                            </q-item-section>
+                          </q-item>
+                          <q-separator
+                            v-if="
+                              fileList.hasOwnProperty('files') &&
+                                fileList.files.length > 0
+                            "
+                          />
+                          <q-item
+                            class="q-pa-xs"
+                            v-if="
+                              fileList.hasOwnProperty('files') &&
+                                fileList.files.length > 0
+                            "
+                          >
+                            <q-item-section>
+                              <div class="q-gutter-xs q-px-md row items-start">
+                                <q-img
+                                  transition="fade"
+                                  v-for="(file, index) in fileList.files"
+                                  :key="index"
+                                  :src="getImage(file)"
+                                  style="width: 176px"
+                                  ratio="1"
+                                  spinner-color="white"
+                                  class="rounded-borders"
+                                >
+                                  <div
+                                    class="absolute-top-right text-center"
+                                    style="padding: 8px;background: none"
+                                  >
+                                    <q-btn
+                                      round
+                                      outline
+                                      color="red"
+                                      size="xs"
+                                      icon="clear"
+                                      @click="deleteFile(index)"
+                                    />
+                                  </div>
+                                  <div
+                                    class="absolute-bottom text-center"
+                                    style="padding: 8px"
+                                  >
+                                    {{ file.name }}
+                                  </div>
+                                  <template v-slot:error>
+                                    <div
+                                      class="absolute-full flex flex-center text-white"
+                                      style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+                                    >
+                                      N/A
+                                    </div>
+                                  </template>
+                                </q-img>
+                              </div>
+                            </q-item-section>
+                          </q-item>
+                        </q-list>
+                      </q-item-section>
+                    </q-item>
+                    <q-item>
+                      <q-item-section> </q-item-section>
+                      <q-item-section side>
+                        <q-item-label>
+                          <q-btn
+                            size="md"
+                            push
+                            color="primary"
+                            v-if="isEdit"
+                            label="Update"
+                            @click="updatePost"
+                          />
+                          <q-btn
+                            size="md"
+                            push
+                            color="primary"
+                            v-else
+                            label="Post"
+                            @click="handleSavePost"
+                          />
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-card-section>
+              </q-card>
+            </div>
+            <div class="col-xs-12 col-md-4">
+              <q-card class="q-mb-md" v-if="departmentDetail.hod">
+                <q-toolbar class="bg-primary text-white shadow-2">
+                  <q-toolbar-title class="text-weight-light"
+                    >HOD Details</q-toolbar-title
+                  >
+                </q-toolbar>
+                <q-list class="rounded-borders">
+                  <q-item>
+                    <q-item-section class="text-weight-light">
+                      <span
+                        >Name:
+                        <span v-if="departmentDetail.hod.name">
+                          <q-chip
+                            clickable
+                            @click="
+                              $router.push({
+                                name: 'user-profile',
+                                params: { id: departmentDetail.hod._id }
+                              })
+                            "
+                          >
+                            <q-avatar>
+                              <img
+                                :src="
+                                  $axios.defaults.baseURL +
+                                    departmentDetail.hod.profileImage
+                                "
+                              />
+                            </q-avatar>
+                            {{ departmentDetail.hod.name }}
+                          </q-chip>
+                        </span></span
+                      >
                     </q-item-section>
                   </q-item>
                   <q-item>
-                    <q-item-section> </q-item-section>
-                    <q-item-section side>
-                      <q-item-label>
-                        <q-btn
-                          size="md"
-                          push
-                          color="primary"
-                          v-if="isEdit"
-                          label="Update"
-                          @click="updatePost"
-                        />
-                        <q-btn
-                          size="md"
-                          push
-                          color="primary"
-                          v-else
-                          label="Post"
-                          @click="handleSavePost"
-                        />
-                      </q-item-label>
+                    <q-item-section class="text-weight-light">
+                      <span
+                        >Email:
+                        <span v-if="departmentDetail.hod.email">
+                          <q-chip>
+                            <q-avatar
+                              icon="email"
+                              color="primary"
+                              text-color="white"
+                            />
+                            {{ departmentDetail.hod.email }}
+                          </q-chip>
+                        </span></span
+                      >
                     </q-item-section>
                   </q-item>
                 </q-list>
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="col-xs-12 col-md-4">
-            <q-card class="q-mb-md" v-if="departmentDetail.hod">
-              <q-toolbar class="bg-primary text-white shadow-2">
-                <q-toolbar-title class="text-weight-light"
-                  >HOD Details</q-toolbar-title
-                >
-              </q-toolbar>
-              <q-list class="rounded-borders">
-                <q-item>
-                  <q-item-section class="text-weight-light">
-                    <span
-                      >Name:
-                      <span v-if="departmentDetail.hod.name">
-                        <q-chip
-                          clickable
-                          @click="
-                            $router.push({
-                              name: 'user-profile',
-                              params: { id: departmentDetail.hod._id }
-                            })
-                          "
-                        >
-                          <q-avatar>
-                            <img
-                              :src="
-                                $axios.defaults.baseURL +
-                                  departmentDetail.hod.profileImage
-                              "
-                            />
-                          </q-avatar>
-                          {{ departmentDetail.hod.name }}
-                        </q-chip>
-                      </span></span
-                    >
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section class="text-weight-light">
-                    <span
-                      >Email:
-                      <span v-if="departmentDetail.hod.email">
-                        <q-chip>
-                          <q-avatar
-                            icon="email"
-                            color="primary"
-                            text-color="white"
-                          />
-                          {{ departmentDetail.hod.email }}
-                        </q-chip>
-                      </span></span
-                    >
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-card>
-            <q-card class="q-mb-md" v-if="departmentDetail.hod">
-              <q-toolbar class="bg-primary text-white shadow-2">
-                <q-toolbar-title class="text-weight-light"
-                  >SMS Notice Details</q-toolbar-title
-                >
-              </q-toolbar>
-              <q-list class="rounded-borders">
-                <q-item dense>
-                  <q-item-section class="text-weight-light">
-                    <q-scroll-area style="height: 100px;">
-                      <q-list>
-                        <q-item>
-                          SMS1
-                        </q-item>
-                        <q-item>
-                          SMS1
-                        </q-item>
-                        <q-item>
-                          SMS1
-                        </q-item>
-                        <q-item>
-                          SMS1
-                        </q-item>
-                        <q-item>
-                          SMS1
-                        </q-item>
-                      </q-list>
-                    </q-scroll-area>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section class="text-weight-light">
-                    <q-input
-                      outlined
-                      stack-label
-                      label="Message"
-                      border
-                      autogrow
-                      class=""
-                    />
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section class="text-weight-light">
-                    <q-btn color="primary" size="sm" label="Submit" />
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-card>
+              </q-card>
+              <q-card class="q-mb-md" v-if="departmentDetail.hod">
+                <q-toolbar class="bg-primary text-white shadow-2">
+                  <q-toolbar-title class="text-weight-light"
+                    >SMS Notice Details</q-toolbar-title
+                  >
+                </q-toolbar>
+                <q-list class="rounded-borders">
+                  <q-item dense>
+                    <q-item-section class="text-weight-light">
+                      <q-scroll-area style="height: 100px;">
+                        <q-list>
+                          <q-item>
+                            SMS1
+                          </q-item>
+                          <q-item>
+                            SMS1
+                          </q-item>
+                          <q-item>
+                            SMS1
+                          </q-item>
+                          <q-item>
+                            SMS1
+                          </q-item>
+                          <q-item>
+                            SMS1
+                          </q-item>
+                        </q-list>
+                      </q-scroll-area>
+                    </q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section class="text-weight-light">
+                      <q-input
+                        outlined
+                        stack-label
+                        label="Message"
+                        border
+                        autogrow
+                        class=""
+                      />
+                    </q-item-section>
+                  </q-item>
+                  <q-item>
+                    <q-item-section class="text-weight-light">
+                      <q-btn color="primary" size="sm" label="Submit" />
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-card>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </q-infinite-scroll>
   </q-page>
 </template>
 <script>
@@ -311,6 +334,12 @@ export default {
   },
   data() {
     return {
+      post_params: {
+        page: 1,
+        count: 1,
+        size: 5
+      },
+      items: [],
       departmentDetail: [],
       university: "",
       department: "",
@@ -409,14 +438,45 @@ export default {
     }
   },
   methods: {
+    onLoad(index, done) {
+      console.log(this.items.length, this.post_params.count);
+      if (this.items.length < this.post_params.count) {
+        this.post_params.page = index;
+        this.$axios
+          .get(`/api/v1/department/${this.department_id}/createPost`, { params: this.post_params })
+          .then(response => {
+            this.post_params.count = response.data.totalPosts;
+            var temp = response.data.posts.map(post => {
+              return {
+                id: post._id,
+                content: post.content,
+                files: post.imageUrl.map(
+                  file => this.$axios.defaults.baseURL + file
+                ),
+                postedBy: {
+                  id: post.postedBy._id,
+                  name: post.postedBy.name,
+                  profileImage: post.postedBy.profileImage
+                },
+                date: post.updatedAt,
+                liked: post.liked,
+                totalComments: post.totalComments,
+                totalLike: post.totalLike
+              };
+            });
+            this.items.push(...temp);
+            done();
+          });
+      }
+    },
     getImage(file) {
-      return URL.createObjectURL(file)
+      return URL.createObjectURL(file);
     },
     deleteFile(index) {
       this.fileList.files.splice(index, 1);
     },
     deleteFiles() {
-      this.fileList.files = []
+      this.fileList.files = [];
     },
     clearErrors(errors) {
       errors.responseError = null;

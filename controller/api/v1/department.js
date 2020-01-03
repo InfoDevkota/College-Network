@@ -60,8 +60,8 @@ exports.postCreatePost = (req,res,next) =>{
                 department.posts.push(post);
                 department.save()
                 return res.status(201).json({
-                        message: 'Post successfully Created',
-                        post:post
+                    message: 'Post successfully Created',
+                    post:post
                 })
                     
             })
