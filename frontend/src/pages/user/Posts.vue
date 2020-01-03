@@ -1,7 +1,7 @@
 <template>
   <q-infinite-scroll @load="onLoad" :offset="250">
     <q-card class="caption" style="margin-bottom: 10px" bordered flat>
-      <q-card-section class="q-pa-none">
+      <q-card-section class="q-pa-sm">
         <q-chip
           clickable
           v-if="getCurrentUser.isProfileUpdated"
@@ -71,16 +71,17 @@
                 >
                   <q-list dense>
                     <q-item
-                      :clickable="item.postedBy.id === getCurrentUser.userId"
+                      v-if="getCurrentUser.userId === item.postedBy.id"
+                      clickable
                       @click="handleRemovePost(item.id, index)"
                     >
                       <q-item-section>Remove Post</q-item-section>
                     </q-item>
                     <q-item
-                      :clickable="item.postedBy.id === getCurrentUser.userId"
-                      @click="handleUpdatePost(item, index)"
+                      clickable
+                      @click="handleDetailPost(item, index)"
                     >
-                      <q-item-section>Edit Post</q-item-section>
+                      <q-item-section>Detail Post</q-item-section>
                     </q-item>
                   </q-list>
                 </q-menu>
@@ -316,8 +317,8 @@ export default {
         this.editor = "";
       });
     },
-    handleDetailPost(postId) {
-      this.$router.push({ name: "feed-detail", params: { id: postId } });
+    handleDetailPost(item, index) {
+      this.$router.push({ name: "feed-detail", params: { id: item.id } });
     },
     handleUpdatePost(post, postIndex) {
       this.currentPostId = post.id;

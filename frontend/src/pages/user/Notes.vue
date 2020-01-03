@@ -21,7 +21,7 @@
       <div v-if="errors.clientError">{{ errors.clientError }}</div>
     </q-banner>
     <q-card class="caption" style="margin-bottom: 10px" bordered flat>
-      <q-card-section class="q-pa-none">
+      <q-card-section class="q-pa-sm">
         <file-upload v-if="getCurrentUser.isProfileUpdated" v-model="noteList">
           <div slot="activator">
             <q-chip
@@ -120,6 +120,11 @@
                     date
                   </q-item-label>
                 </q-item-section>
+                <q-item-section side>
+                  <div class="text-grey-8 q-gutter-xs">
+                    <q-btn class="gt-xs" size="12px" v-if="item.uploadedBy._id === getCurrentUser.userId" flat dense round icon="delete" @click="handleDeleteAllNote(item.id, index)" />
+                  </div>
+                </q-item-section>
               </q-item>
             </q-list>
             <q-list>
@@ -132,14 +137,13 @@
 
               <q-item
                 border
-                clickable
-                @click="handleDownloadNote(file)"
                 v-for="(file, index) in item.files"
                 :key="index"
               >
                 <q-item-section avatar>
                   <q-avatar
-                    icon="cloud_download"
+                    size="30px"
+                    icon="note"
                     color="primary"
                     text-color="white"
                   />
@@ -150,6 +154,11 @@
                     file.substring(file.lastIndexOf("/") + 1)
                   }}</q-item-label>
                   <q-item-label caption>date</q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <div class="text-grey-8 q-gutter-xs">
+                    <q-btn class="gt-xs" size="12px" flat dense round icon="cloud_download" @click="handleDownloadNote(file)" />
+                  </div>
                 </q-item-section>
               </q-item>
             </q-list>
@@ -237,6 +246,16 @@ export default {
   },
   created() {},
   methods: {
+    handleDeleteAllNote(noteId, noteIndex) {
+      this.$axios.delete(`/api/v1/note/${noteId}`).then(response => {
+        this.items.splice(noteIndex, 1);
+        this.post_params.count = this.post_params.count - 1;
+        this.$q.notify({
+          message: "Note Deleted",
+          color: "green"
+        });
+      });
+    },
     resetNoteForm() {
       this.noteTitle = ""
       this.noteList = {}

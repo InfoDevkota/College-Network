@@ -26,7 +26,9 @@ const noteSchema = new Schema({
     preview: {
         type: String,
         default: "static/notePlaceHolder.png"
-    },
-})
+    }
+},
+{ timestamps: true }
+)
 
 module.exports = mongoose.model("Note", noteSchema);

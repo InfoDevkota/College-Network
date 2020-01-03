@@ -93,7 +93,7 @@ exports.getPosts = (req,res,next) =>{
     })
     .then(bool =>{
         Post.find(query)
-        .sort({date:-1})
+        .sort({created_at:-1})
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
         .populate('postedBy', 'name _id profileImage')
@@ -247,16 +247,16 @@ exports.putUnLike = (req,res,next) =>{
 
 exports.deletePost = (req,res,next) =>{
     let postId = req.params.postId;
-    let imageURL;
+    let imageURLs;
     Post.findById(postId)
     .then(post=>{
-        imageURL = post.imageUrl;
+        imageURLs = post.imageUrl;
         if(post.postedBy != req.userId){
             res.status(405).json({
                 message: 'You have no permission to delete this post.'
             });
         } else {
-            clearImage(imageURL);
+            clearImages(imageURLs);
             Post.findByIdAndDelete(postId)
             .then(bool =>{
                 res.status(202).json({
@@ -267,7 +267,9 @@ exports.deletePost = (req,res,next) =>{
     })
 }
 
-const clearImage = filePath => {
-    filePath = path.join(__dirname, '..', filePath);
-    fs.unlink(filePath, err => console.log(err));
+const clearImages = filePaths => {
+    for(let i=0; i<filePaths.length; i++){
+        filePath = path.join(__dirname, '..', filePaths[i]);
+        fs.unlink(filePath, err => console.log(err));
+    }    
   };

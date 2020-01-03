@@ -4,7 +4,7 @@ const path = require('path');
 const Note = require("../../../model/note");
 const User = require('../../../model/user');
 const { validationResult } = require('express-validator');
-exports.postCreateNote = (req,res,next) =>{
+exports.noteCreateNote = (req,res,next) =>{
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() })
@@ -59,6 +59,7 @@ exports.getNotes = (req,res,next) =>{
     })
     .then( ()=>{
         Note.find()
+        .sort({date:-1})
         .populate('uploadedby', 'name _id profileImage')
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
@@ -83,3 +84,31 @@ exports.getNote = (req,res,next) =>{
         });
     })
 }
+exports.deleteNote = (req,res,next) =>{
+    let noteId = req.params.noteId;
+    let files;
+    Note.findById(noteId)
+    .then(note=>{
+        files = note.files;
+        if(note.uploadedby != req.userId){
+            res.status(405).json({
+                message: 'You have no permission to delete this note.'
+            });
+        } else {
+            clearFiles(files);
+            Note.findByIdAndDelete(noteId)
+            .then(bool =>{
+                res.status(202).json({
+                    message: 'note successfully deleted.'
+                });
+            })
+        }
+    })
+}
+
+const clearFiles = filePaths => {
+for(let i=0; i<filePaths.length; i++){
+    filePath = path.join(__dirname, '..', filePaths[i]);
+    fs.unlink(filePath, err => console.log(err));
+}    
+};
