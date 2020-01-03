@@ -3,13 +3,15 @@
     <div class="row justify-center">
       <div class="col-12 col-md-6">
         <q-banner v-if="errors.responseError || errors.requestError || errors.clientError" dense inline-actions class="text-white bg-red">
-          <div v-if="errors.responseError">
+          <div v-if="Array.isArray(errors.responseError) && errors.responseError.length > 0">
             Please fix following errors - 
             <ul>
               <li v-for="(error, index) in errors.responseError" :key="index">
                 <b>{{error.param}}</b> - {{error.msg}}
               </li>
             </ul>
+          </div>
+          <div v-else v-html="errors.responseError">
           </div>
           <div v-if="errors.requestError">
             {{errors.requestError}}
@@ -144,9 +146,9 @@ export default {
   data() {
     return {
       errors: {
-        responseError: "",
-        requestError: "",
-        clientError: ""
+        responseError: null,
+        requestError: null,
+        clientError: null
       },
       fileList: {},
       post: "",
@@ -168,9 +170,9 @@ export default {
       this.fileList.files = []
     },
     clearErrors (errors) {
-      errors.responseError = ""
-      errors.requestError = ""
-      errors.clientError = ""
+      errors.responseError = null
+      errors.requestError = null
+      errors.clientError = null
     },
     async handleCreatePost() {
       try {
@@ -204,7 +206,9 @@ export default {
             position: 'top-right',
             message: 'One or more fields have errors.'
           })
-            this.errors.responseError = error.response.data.errors;
+            this.errors.responseError = error.response.data.errors
+          } else {
+            this.errors.responseError = error.response.data.message
           }
         } else if(error.request) {
             this.errors.requestError = error.request;

@@ -15,9 +15,17 @@ const multipleUpload = async (req, res, next) => {
     console.log(error);
 
     if (error.code === "LIMIT_UNEXPECTED_FILE") {
-      return res.send("Too many files to upload.");
+      return res.status(422).json(
+        {
+          message: `Too many files to upload.`
+        }
+      );
     }
-    return res.send(`Error when trying upload many files: ${error}`);
+    return res.status(422).json(
+      {
+        message: `Error when trying upload many files: ${error}`
+      }
+    );
   }
 };
 
