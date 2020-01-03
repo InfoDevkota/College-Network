@@ -20,12 +20,20 @@ exports.postComment = (req,res,next) =>{
         Post.findById(postId)
         .populate({
             path: 'comments',
-            populate: {path: 'commentBy', select: 'name _id'}//multiple level population
+            populate: {path: 'commentBy', select: 'name _id profileImage'}//multiple level population
         })
         .then(post=>{
             post.totalComments++;
             post.comments.push(comment);
             post.save();
+
+            post.liked=false;
+            post.likes.forEach(user =>{
+                if(user == req.userId){
+                    post.liked = true;
+                }
+            })
+
             res.status(201).json({
                 message: 'Comment Successfully Posted!',
                 newComment: comment,

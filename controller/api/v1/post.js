@@ -133,7 +133,7 @@ exports.getPost = (req,res,next) =>{
     .populate('postedBy', 'name _id profileImage')
     .populate({
         path: 'comments',
-        populate: {path: 'commentBy', select: 'name _id'}
+        populate: {path: 'commentBy', select: 'name _id profileImage'}
     })
     .then(post =>{
         post.liked=false;
@@ -161,23 +161,21 @@ exports.putPost = (req,res,next) =>{
         path: 'comments',
         populate: {path: 'commentBy', select: 'name _id'}
     })
-    .then(post =>{
-        post.liked=false;
-        post.likes.forEach(user =>{
-            if(user == req.userId){
-                post.liked = true;
-            }
-        })
-        return post;
-    })
     .then(post=>{
-        if(post.postedBy != req.userId){
+        if(post.postedBy._id != req.userId){
             res.status(405).json({
                 message: 'You have no permission to edit this post.'
             });
         } else {
             post.content = content;
             post.save();
+            
+            post.liked=false;
+            post.likes.forEach(user =>{
+                if(user == req.userId){
+                    post.liked = true;
+                }
+            })
             res.status(201).json({
                 message: 'post successfully editted.',
                 post: post
