@@ -328,7 +328,6 @@
       </q-scroll-area>
     </q-drawer>
     <q-page-container style="background-color: #e9ebee;">
-      {{getAuthUser}}
       <router-view></router-view>
     </q-page-container>
   </q-layout>

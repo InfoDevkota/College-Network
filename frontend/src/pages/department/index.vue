@@ -431,6 +431,7 @@ export default {
   },
   created() {
     this.getDepartmentDetail();
+    this.getDepartmentPosts()
   },
   computed: {
     getAuthUser() {
@@ -530,6 +531,13 @@ export default {
           this.errors.clientError = error.message;
         }
       } finally {
+      }
+    },
+    async getDepartmentPosts() {
+      try{
+        const { data } = this.$axios.get(`/api/v1/department/${this.department_id}/posts/`)
+      } catch(error) {
+        console.log(error)
       }
     },
     getDepartmentDetail() {
