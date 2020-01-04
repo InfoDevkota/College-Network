@@ -79,7 +79,7 @@
                 <q-toolbar-title class="text-weight-light">Current Affiliation</q-toolbar-title>
               </q-toolbar>
                 <q-list dense class="rounded-borders">
-                  <q-item>
+                  <q-item v-if="userDetail.user.isStudent">
                     <q-item-section class="text-weight-light">
                       College {{userDetail.user.college}}
                     </q-item-section>
@@ -92,17 +92,17 @@
                       </router-link>
                     </q-item-section>
                   </q-item>
-                  <q-item>
+                  <q-item v-if="userDetail.user.isStudent">
                     <q-item-section class="text-weight-light">
                       Graduation on {{userDetail.user.graduationOn}}
                     </q-item-section>
                   </q-item>
-                  <q-item>
+                  <q-item v-if="userDetail.user.isStudent">
                     <q-item-section class="text-weight-light">
                       Semester <span v-if="userDetail.user.semester"> {{userDetail.user.semester.name}} </span>
                     </q-item-section>
                   </q-item>
-                  <q-item>
+                  <q-item v-if="userDetail.user.isStudent">
                     <q-item-section class="text-weight-light">
                       Section <span v-if="userDetail.user.section"> {{userDetail.user.section.name}} </span>
                     </q-item-section>

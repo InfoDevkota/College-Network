@@ -114,7 +114,7 @@
       <div class="row q-col-gutter-x-md q-col-gutter-y-md items-center">
         <div class="col-xs-12">
           <div class="row q-col-gutter-x-md q-col-gutter-y-md">
-            <div class="col-xs-12 col-md-6">
+            <div class="col-xs-12 col-md-6" v-if="userDetail.isStudent">
               <q-card class="my-card">
                 <q-toolbar class="bg-primary text-white shadow-2">
                   <q-toolbar-title class="text-weight-light"
@@ -210,7 +210,7 @@
                 </div>
               </q-card>
             </div>
-            <div class="col-xs-12 col-md-6">
+            <div :class="['col-xs-12', (userDetail.isStudent) ? 'col-md-6' : 'col-md-12']">
               <q-card class="my-card">
                 <q-toolbar class="bg-primary text-white shadow-2">
                   <q-toolbar-title class="text-weight-light"
@@ -465,6 +465,9 @@ export default {
         college,
         phone,
         department,
+        isStudent,
+        ishod,
+        isTeacher,
         gender,
         graduationOn,
         livesIn,
@@ -478,13 +481,16 @@ export default {
         email,
         name,
         college,
-        department: department._id,
+        department: (department) ? department._id : '',
         gender,
         graduationOn,
         bornOn,
+        isStudent,
+        ishod,
+        isTeacher,
         livesIn,
-        section: section._id,
-        semester: semester._id,
+        section: (section) ? section._id : '',
+        semester: (semester) ? semester._id : '',
         phone
       };
     });
@@ -552,8 +558,9 @@ export default {
         })
       } else {
       this.clearErrors(this.errors);
-      this.$axios
-        .put("/api/v1/me", {
+      let payload = {}
+      if(this.userDetail.isStudent) {
+        payload = {
           name: this.userDetail.name,
           email: this.userDetail.email,
           college: this.userDetail.college,
@@ -565,7 +572,21 @@ export default {
           livesIn: this.userDetail.livesIn,
           phone: this.userDetail.phone,
           gender: this.userDetail.gender
-        })
+        }
+      }
+      if(this.userDetail.ishod || this.userDetail.isTeacher) {
+        payload = {
+          name: this.userDetail.name,
+          email: this.userDetail.email,
+          department: this.userDetail.department,
+          bornOn: this.userDetail.bornOn,
+          livesIn: this.userDetail.livesIn,
+          phone: this.userDetail.phone,
+          gender: this.userDetail.gender
+        }
+      }
+      this.$axios
+        .put("/api/v1/me", payload)
         .then(response => {
           if (response.status === 201) {
             this.$q.notify({
