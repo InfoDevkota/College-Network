@@ -140,7 +140,7 @@ exports.getProfileUpdate = (req,res,next) =>{
 
 exports.putMe = async (req,res,next) =>{
     let hashedPassword;
-    bool passwordChanged = false;
+    let passwordChanged = false;
     const name = req.body.name;
     const email = req.body.email;
     const semester = req.body.semester;
