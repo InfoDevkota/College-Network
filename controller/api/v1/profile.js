@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const User = require('../../../model/user');
 const Department = require('../../../model/department');
 const Semester = require('../../../model/semester');
@@ -136,7 +138,9 @@ exports.getProfileUpdate = (req,res,next) =>{
     
 }
 
-exports.putMe = (req,res,next) =>{
+exports.putMe = async (req,res,next) =>{
+    let hashedPassword;
+    let passwordChanged = false;
     const name = req.body.name;
     const email = req.body.email;
     const semester = req.body.semester;
@@ -148,6 +152,12 @@ exports.putMe = (req,res,next) =>{
     const livesIn = req.body.livesIn;
     const graduationOn = req.body.graduationOn;
     const gender = req.body.gender;
+    const password = req.body.password;
+
+    if(password){
+        hashedPassword = await bcrypt.hash(password, 12);
+        passwordChanged = true;
+    }
 
     User.findById(req.userId)
     .select('-posts -password -messageBoxUser')
@@ -170,12 +180,17 @@ exports.putMe = (req,res,next) =>{
         req.user = user;
         req.departmentId = department; //Update department
 
+        if(passwordChanged){
+            req.password = hashedPassword;
+        }
+
         return user.save();
     })
     .then(result =>{
         res.status(201).json({
             message: 'profile updated successfully!',
-            user: result
+            user: result,
+            passwordChanged
         });
     })
     .catch(error => {
