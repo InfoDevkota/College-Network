@@ -107,8 +107,8 @@ exports.deleteNote = (req,res,next) =>{
 }
 
 const clearFiles = filePaths => {
-for(let i=0; i<filePaths.length; i++){
-    filePath = path.join(__dirname, '..', filePaths[i]);
-    fs.unlink(filePath, err => console.log(err));
-}    
+    for(let i=0; i<filePaths.length; i++){
+        filePath = path.join(__dirname, '..', filePaths[i]);
+        fs.unlink(filePath, err => console.log(err));
+    }    
 };
