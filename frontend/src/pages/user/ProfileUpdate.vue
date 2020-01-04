@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
-    {{ userDetail }}
-    <q-form @submit="onSubmit" @reset="onReset">
+    <q-form @submit="onSubmit">
       <div class="row q-col-gutter-x-md q-col-gutter-y-md q-mb-md">
         <div class="col-md-2">
           <q-card class="fit">
@@ -37,8 +36,50 @@
         </div>
         <div class="col-md-10">
           <q-card class="fit">
+            <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">Account Detail</q-toolbar-title>
+              </q-toolbar>
             <q-card-section>
-              user name email detail
+              <div class="row q-col-gutter-x-md q-col-gutter-y-md">
+                <div class="col-md-4 col-sm-12">
+                  <q-input
+                    v-model="userDetail.name"
+                    label="Name *"
+                    filled
+                    type="text"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please type something'
+                    ]"
+                    hint="Your name"
+                  />
+                </div>
+                <div class="col-md-4 col-sm-12">
+                  <q-input
+                    v-model="userDetail.email"
+                    label="Email *"
+                    filled
+                    type="text"
+                    lazy-rules
+                    :rules="[
+                      val =>
+                        (val && val.length > 0) || 'Please type something'
+                    ]"
+                    hint="Your email"
+                  />
+                </div>
+                <div class="col-md-4 col-sm-12">
+                  <q-input
+                    v-model="userDetail.password"
+                    label="Password *"
+                    filled
+                    type="text"
+                    lazy-rules
+                    hint="Your Password"
+                  />
+                </div>
+              </div>
             </q-card-section>
           </q-card>
         </div>
@@ -48,17 +89,9 @@
           <div class="row q-col-gutter-x-md q-col-gutter-y-md">
             <div class="col-xs-12 col-md-6">
               <q-card class="my-card">
-                <q-item>
-                  <q-item-section avatar>
-                    <q-avatar>
-                      <q-icon name="fas fa-university" />
-                    </q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label>Current Affiliation</q-item-label>
-                  </q-item-section>
-                </q-item>
+                <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">Current Affiliation</q-toolbar-title>
+              </q-toolbar>
                 <q-separator />
                 <div class="row q-pa-md">
                   <div class="col-xs-12">
@@ -150,17 +183,9 @@
             </div>
             <div class="col-xs-12 col-md-6">
               <q-card class="my-card">
-                <q-item>
-                  <q-item-section avatar>
-                    <q-avatar>
-                      <q-icon name="fas fa-university" />
-                    </q-avatar>
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label>About</q-item-label>
-                  </q-item-section>
-                </q-item>
+               <q-toolbar class="bg-primary text-white shadow-2">
+                <q-toolbar-title class="text-weight-light">Personal Detail</q-toolbar-title>
+              </q-toolbar>
                 <q-separator />
                 <div class="row q-pa-md">
                   <div class="col-xs-12">
@@ -377,13 +402,13 @@ export default {
         email,
         name,
         college,
-        department,
+        department: department._id,
         gender,
         graduationOn,
         bornOn,
         livesIn,
-        section,
-        semester,
+        section: section._id,
+        semester: semester._id,
         phone
       };
     });

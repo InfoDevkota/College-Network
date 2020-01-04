@@ -40,7 +40,7 @@
     }),
     props: {
     // Use "value" to enable using v-model
-      value: Object,
+      value: Array,
       multiple: Boolean
     },
     methods: {
