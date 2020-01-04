@@ -195,6 +195,8 @@
 </template>
 <script>
 // import moment from 'moment'
+import jwtDecode from "jwt-decode";
+
 export default {
   name: 'profile-update',
   props: ['id'],
@@ -332,6 +334,13 @@ export default {
         gender: this.userDetail.gender
       })
         .then(response => {
+          // console.log(jwtDecode(this.$q.sessionStorage.getItem("token")))
+          // if(response.data.user.hasOwnProperty('isProfileUpdated')) {
+          //   let authUser = jwtDecode(this.$q.sessionStorage.getItem("token"))
+          //   authUser.isProfileUpdated = response.data.user.isProfileUpdated
+          //   this.$q.sessionStorage.setItem("token", authUser)
+          // }
+          // console.log(jwtDecode(this.$q.sessionStorage.getItem("token")))
           this.$router.push({ name: 'user-profile', params: { id: response.data.user._id } })
           console.log(response)
         })
