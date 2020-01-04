@@ -597,13 +597,9 @@ export default {
               message: "Your Profile is successfully updated."
             });
           }
-          // console.log(jwtDecode(this.$q.sessionStorage.getItem("token")))
-          // if(response.data.user.hasOwnProperty('isProfileUpdated')) {
-          //   let authUser = jwtDecode(this.$q.sessionStorage.getItem("token"))
-          //   authUser.isProfileUpdated = response.data.user.isProfileUpdated
-          //   this.$q.sessionStorage.setItem("token", authUser)
-          // }
-          // console.log(jwtDecode(this.$q.sessionStorage.getItem("token")))
+          let authUserDetail = Object.assign({}, this.$q.sessionStorage.getItem("authUser"));
+          authUserDetail.isProfileUpdated = true
+          this.$q.sessionStorage.set('authUser',authUserDetail)
           this.$router.push({
             name: "user-profile",
             params: { id: response.data.user._id }

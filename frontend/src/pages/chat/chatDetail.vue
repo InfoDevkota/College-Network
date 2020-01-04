@@ -179,9 +179,8 @@ export default {
     };
   },
   computed: {
-    getAuthUser() {
-      const decodedUser = jwtDecode(this.$q.sessionStorage.getItem("token"));
-      return decodedUser;
+   getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
     }
   },
   directives: {

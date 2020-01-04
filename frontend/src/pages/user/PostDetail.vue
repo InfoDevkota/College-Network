@@ -69,13 +69,13 @@
               >
                 <q-list>
                   <q-item
-                    :clickable="post.postedBy.id === getCurrentUser.userId"
+                    :clickable="post.postedBy.id === getAuthUser.userId"
                     @click="handleRemovePost(post.id, index)"
                   >
                     <q-item-section>Remove Post</q-item-section>
                   </q-item>
                   <q-item
-                    :clickable="post.postedBy.id === getCurrentUser.userId"
+                    :clickable="post.postedBy.id === getAuthUser.userId"
                     @click="handleUpdatePost(post, index)"
                   >
                     <q-item-section>Edit Post</q-item-section>
@@ -192,9 +192,9 @@ export default {
     }
   },
   computed: {
-    getCurrentUser () {
-      return jwtDecode(this.$q.sessionStorage.getItem('token'))
-    }
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
+    },
   },
   created () {},
   mounted () {

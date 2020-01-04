@@ -113,12 +113,15 @@ exports.postLogin = (req, res, next) => {
                         if (user.isVerified) {
                             res.status(200).json({
                                 token: token,
+                                email: user.email,
+                                profileImage: user.profileImage,
                                 userId: user._id.toString(),
                                 name: user.name,
                                 isStudent: user.isStudent,
                                 isTeacher: user.isTeacher,
                                 isProfileUpdated: user.isProfileUpdated,
-                                ishod: user.ishod
+                                ishod: user.ishod,
+                                depId: user.department
                             });
                         } else {
                             res.status(401).json({ message: "Your account is under verification." });

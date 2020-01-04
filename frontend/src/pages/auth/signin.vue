@@ -80,7 +80,9 @@ export default {
           password: this.password
         })
           .then(response => {
-            this.$q.sessionStorage.set('token', response.data.token)
+            let {token, ...authUserDetail} = response.data
+            this.$q.sessionStorage.set('token', token)            
+            this.$q.sessionStorage.set('authUser',authUserDetail)
             // const decodedUser = jwtDecode(response.data.token)
             this.$q.notify({
               color: 'green-4',

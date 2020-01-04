@@ -328,6 +328,7 @@
       </q-scroll-area>
     </q-drawer>
     <q-page-container style="background-color: #e9ebee;">
+      {{getAuthUser}}
       <router-view></router-view>
     </q-page-container>
   </q-layout>
@@ -399,8 +400,7 @@ export default {
   },
   computed: {
     getAuthUser() {
-      const decodedUser = jwtDecode(this.$q.sessionStorage.getItem("token"));
-      return decodedUser;
+      return this.$q.sessionStorage.getItem("authUser");
     }
   },
   methods: {

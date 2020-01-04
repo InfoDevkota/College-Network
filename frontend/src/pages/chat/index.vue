@@ -378,8 +378,8 @@ export default {
     // })
   },
   computed: {
-    getCurrentUser () {
-      return jwtDecode(this.$q.sessionStorage.getItem('token'))
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
     },
     currentConversation () {
       if (this.conversations) {
@@ -428,7 +428,7 @@ export default {
     },
     async getCurrentUserConversations() {
       try {
-        const { data } = await this.$axios.get(`/api/v1/chat/conversations/${this.getCurrentUser.userId}`)
+        const { data } = await this.$axios.get(`/api/v1/chat/conversations/${this.getAuthUser.userId}`)
         console.log(data)
         if(data && data.hasOwnProperty("conversations")) {
           this.conversations = data.conversations.map(conversation => {
@@ -463,7 +463,7 @@ export default {
       if (val) {
         this.$axios.get(`/api/v1/users/${val}`).then(response => {
           update(() => {
-            this.newGroup.data.memberOptions = response.data.users.filter(user => user._id !== this.getCurrentUser.userId).map(user => {
+            this.newGroup.data.memberOptions = response.data.users.filter(user => user._id !== this.getAuthUser.userId).map(user => {
               return {
                 id: user._id,
                 name: user.name,
@@ -483,9 +483,9 @@ export default {
         // this.clearErrors(this.errors)
         let payload = {
           name: this.newGroup.data.groupName,
-          recipients: [...this.newGroup.data.members, this.getCurrentUser.userId],
+          recipients: [...this.newGroup.data.members, this.getAuthUser.userId],
           message: 'Hi',
-          user: this.getCurrentUser.userId
+          user: this.getAuthUser.userId
         }
         const {data, status} = await this.$axios.post('/api/v1/chat/conversation/new', payload)
         if(status === 201) {
@@ -553,7 +553,7 @@ export default {
     //             text: message.body,
     //             textColor: 'white',
     //             bgColor: 'amber-7',
-    //             sent: message.author._id === this.getCurrentUser.userId
+    //             sent: message.author._id === this.getAuthUser.userId
     //           }
     //         })
     //       } else {
@@ -566,13 +566,13 @@ export default {
       if(this.message) {
         this.$axios.post(`api/v1/chat/message/${this.$route.params.conversationId}/`, {
         message: this.message,
-        user: this.getCurrentUser.userId
+        user: this.getAuthUser.userId
       })
       .then(response => {
         socket.emit('createMessage', {
           room: this.currentConversationId,
           text: this.message,
-          sender: this.getCurrentUser
+          sender: this.getAuthUser
         },() =>{
           this.message = ""
         })
@@ -591,7 +591,7 @@ export default {
       //           text: message.message,
       //           textColor: 'white',
       //           bgColor: 'amber-7',
-      //           sent: message.from._id === this.getCurrentUser.userId
+      //           sent: message.from._id === this.getAuthUser.userId
       //         }
       //       })
       //     } else {

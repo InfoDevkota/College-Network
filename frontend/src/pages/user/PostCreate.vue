@@ -25,7 +25,7 @@
             <q-item>
               <q-item-section avatar>
                 <q-avatar>
-                  <img :src="$axios.defaults.baseURL + getCurrentUser.profileImage" />
+                  <img :src="$axios.defaults.baseURL + getAuthUser.profileImage" />
                 </q-avatar>
               </q-item-section>
 
@@ -35,11 +35,11 @@
                   class="cursor-pointer"
                   :to="{
                     name: 'user-profile',
-                    params: { id: getCurrentUser.userId }
+                    params: { id: getAuthUser.userId }
                   }"
                 >
                   <q-item-label class="text-subtitle2">
-                    {{getCurrentUser.name}}
+                    {{getAuthUser.name}}
                   </q-item-label>
                 </router-link>
               </q-item-section>
@@ -141,9 +141,9 @@ export default {
     }
   },
   computed: {
-    getCurrentUser() {
-      return jwtDecode(this.$q.sessionStorage.getItem("token"));
-    }
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
+    },
   },
   data() {
     return {

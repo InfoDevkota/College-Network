@@ -22,7 +22,7 @@
     </q-banner>
     <q-card class="caption" style="margin-bottom: 10px" bordered flat>
       <q-card-section class="q-pa-sm">
-        <file-upload v-if="getCurrentUser.isProfileUpdated" v-model="noteList">
+        <file-upload v-if="getAuthUser.isProfileUpdated" v-model="noteList">
           <div slot="activator">
             <q-chip
               clickable
@@ -38,7 +38,7 @@
         <q-banner v-else inline-actions class="text-white" style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;">
           You have to update your profile first.
           <template v-slot:action>
-            <q-btn outline size="sm" color="white" :to="{name: 'profile-update',params: {id: getCurrentUser.userId}}" label="Take me to profile" />
+            <q-btn outline size="sm" color="white" :to="{name: 'profile-update',params: {id: getAuthUser.userId}}" label="Take me to profile" />
           </template>
         </q-banner>
       </q-card-section>
@@ -122,7 +122,7 @@
                 </q-item-section>
                 <q-item-section side>
                   <div class="text-grey-8 q-gutter-xs">
-                    <q-btn class="gt-xs" size="12px" v-if="item.uploadedBy._id === getCurrentUser.userId" flat dense round icon="delete" @click="handleDeleteAllNote(item.id, index)" />
+                    <q-btn class="gt-xs" size="12px" v-if="item.uploadedBy._id === getAuthUser.userId" flat dense round icon="delete" @click="handleDeleteAllNote(item.id, index)" />
                   </div>
                 </q-item-section>
               </q-item>
@@ -240,9 +240,9 @@ export default {
     }
   },
   computed: {
-    getCurrentUser() {
-      return jwtDecode(this.$q.sessionStorage.getItem("token"));
-    }
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
+    },
   },
   created() {},
   methods: {

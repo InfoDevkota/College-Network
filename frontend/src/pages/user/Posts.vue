@@ -4,7 +4,7 @@
       <q-card-section class="q-pa-sm">
         <q-chip
           clickable
-          v-if="getCurrentUser.isProfileUpdated"
+          v-if="getAuthUser.isProfileUpdated"
           square
           style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
           class="shadow-2"
@@ -16,7 +16,7 @@
         <q-banner v-else inline-actions class="text-white" style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;">
           You have to update your profile first.
           <template v-slot:action>
-            <q-btn outline size="sm" color="white" :to="{name: 'profile-update',params: {id: getCurrentUser.userId}}" label="Take me to profile" />
+            <q-btn outline size="sm" color="white" :to="{name: 'profile-update',params: {id: getAuthUser.userId}}" label="Take me to profile" />
           </template>
         </q-banner>
       </q-card-section>
@@ -71,7 +71,7 @@
                 >
                   <q-list dense>
                     <q-item
-                      v-if="getCurrentUser.userId === item.postedBy.id"
+                      v-if="getAuthUser.userId === item.postedBy.id"
                       clickable
                       @click="handleRemovePost(item.id, index)"
                     >
@@ -245,17 +245,17 @@ export default {
     }
   },
   computed: {
-    getCurrentUser() {
-      return jwtDecode(this.$q.sessionStorage.getItem("token"));
-    }
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
+    },
   },
   created() {},
   methods: {
     createNewPost () {
-      if(this.getCurrentUser.isProfileUpdated) {
+      if(this.getAuthUser.isProfileUpdated) {
         this.$router.push({name: "feed-create"})
       } else {
-        this.$router.push({name: "profile-update", params: {id: this.getCurrentUser.userId}})
+        this.$router.push({name: "profile-update", params: {id: this.getAuthUser.userId}})
       }
     },
     insertImg() {

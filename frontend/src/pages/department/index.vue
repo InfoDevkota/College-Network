@@ -58,7 +58,7 @@
                           <img
                             :src="
                               $axios.defaults.baseURL +
-                                getCurrentUser.profileImage
+                                getAuthUser.profileImage
                             "
                           />
                         </q-avatar>
@@ -433,9 +433,9 @@ export default {
     this.getDepartmentDetail();
   },
   computed: {
-    getCurrentUser() {
-      return jwtDecode(this.$q.sessionStorage.getItem("token"));
-    }
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
+    },
   },
   methods: {
     onLoad(index, done) {
