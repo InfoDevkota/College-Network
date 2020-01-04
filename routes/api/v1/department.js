@@ -16,4 +16,7 @@ router.delete("/department/:departmentId/post/:postId", isAuth, departmentContro
 router.get("/department/students/:departmentId", isAuth, departmentController.getStudentsBySemesterAndSectionByDepartment);
 router.get("/department/teachers/:departmentId", isAuth, departmentController.getTeachersBySemesterAndSectionByDepartment);
 
+router.get("/department/semestersAndSections", isAuth, departmentController.getSectionsAndSemesters);
+router.post("/department/:departmentId", isAuth, departmentController.postSendSMS); //department/{depId}?semesterId={id}?sectionId={id}
+
 module.exports = router;
