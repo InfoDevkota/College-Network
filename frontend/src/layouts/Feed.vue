@@ -39,14 +39,17 @@
                 :key="index"
                 clickable
                 v-ripple
-                :active="link === 'settings'"
+                :active="getAuthUser.depId === department.id"
                 :to="{
                   name: 'department-detail',
                   params: { department_id: department.id }
                 }"
-                active-class="my-menu-link"
+                active-class="active-department"
               >
                 <q-item-section>{{ department.name }}</q-item-section>
+                <q-item-section side v-if="getAuthUser.depId === department.id ">
+                  <q-icon size="xs" name="fas fa-check-circle" style="color: #7a94d5;" />
+                </q-item-section>
               </q-item>
             </q-list>
           </q-card-section>
@@ -93,6 +96,11 @@ export default {
   mounted() {
     this.getAllDepartments();
   },
+  computed: {
+    getAuthUser() {
+      return this.$q.sessionStorage.getItem("authUser");
+    }
+  },
   methods: {
     async getAllDepartments() {
       try {
@@ -110,3 +118,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.active-department {
+  background: #10878f;
+}
+</style>
