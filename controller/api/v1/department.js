@@ -1,6 +1,16 @@
+const sparrow = require('sms-sparrow');
+require('dotenv/config');
+
+let token = process.env.SPARROW_TOKEN
+let identity = process.env.SPARROW_IDENTITY
+sparrow.init(token,identity);
+//All above for sms;
+
 const Department = require('../../../model/department');
 const Post = require('../../../model/post');
 const User = require('../../../model/user') //TODO DONE send all users related to this department
+const Section = require('../../../model/section');
+const Semester = require('../../../model/semester');
 
 exports.getDepartmentById = (req,res,next) =>{
     const depId = req.params.departmentId;
@@ -205,4 +215,85 @@ module.exports.getTeachersBySemesterAndSectionByDepartment = (req,res,next) =>{
             })
         }
     });
+}
+
+module.exports.postSendSMS = (req,res,next) => {
+    const departmentId = req.params.departmentId; // host/departmentId
+    const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
+    const sectionId = req.query.sectionId;
+    const message = req.body.message;
+
+    let numbers = "";
+
+    Department.findById(departmentId)
+    .then(department =>{
+        if(department.hod == req.userId){
+            User.find({
+                department: departmentId,
+                semester: semesterId,
+                section: sectionId
+            })
+            .then(users =>{
+                for(let i = 0; i < users.length; i++){
+                    if(i != length-1){
+                        numbers = numbers + users[i].phone + ", ";
+                    } else {
+                        numbers = numbers + users[i].phone;
+                    }
+                }
+                return true;
+            })
+            .then(bool =>{
+                console.log("###############");
+                console.log("Message: - '" + message + "'");
+                console.log("Will be send to::- '" + numbers + "'");
+                console.log("##################");
+                res.status(200).json({
+                    message: "success",
+                    testMessage : message,
+                    testNumbers : numbers
+                })
+                // sparrow
+                // .sendSMS("Message", "to")
+                // .then(response =>{
+                //     if(response.error){
+                //         res.status(401).json({
+                //             message:response.message
+                //         })
+                //     } else {
+                //         res.status(200).json({
+                //             count: count,
+                //             message: response,
+                //             message_id: message_id,
+                //             credit_consumed: credit_consumed,
+                //             credit_available: credit_available,
+                //         })
+                //     }
+                // })
+            })
+        } else {
+            res.status(403).json({
+                message: 'Not Allowed'
+            })
+        }
+    });
+}
+
+module.exports.getSectionsAndSemesters = (req,res,next) =>{
+    let sections;
+    let semesters;
+    Semester.find()
+    .then(allSems =>{
+        semesters = allSems;
+        Section.find()
+        .then(allSec =>{
+            sections = allSec;
+            
+            res.status(200).json({
+                message: "All sections and Semesters",
+                sections : sections,
+                semesters : semesters
+            })
+        })
+    })
 }
