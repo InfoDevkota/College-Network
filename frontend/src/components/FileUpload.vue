@@ -8,7 +8,7 @@
     <input type="file"
        ref="file"
        :name="uploadFieldName"
-       multiple="multiple"
+       :multiple="multiple"
        @change="onFileChange(
           $event.target.name, $event.target.files)"
        style="display:none">
@@ -40,7 +40,8 @@
     }),
     props: {
     // Use "value" to enable using v-model
-      value: Object,
+      value: Array,
+      multiple: Boolean
     },
     methods: {
       launchFilePicker(){
@@ -51,7 +52,10 @@
         let imageFile = files[0]
         if (files.length>0) {
             for(let i=0; i<files.length; i++) {
-                this.files.push(files[i])
+                if(!this.multiple) {
+                  this.files = []
+                }
+                this.files.push(files[i])   
                 let size = files[i].size / maxSize / maxSize
                 if (!files[i].type.match('image.*')) {
                    this.errorText = 'Please choose an image file' 
