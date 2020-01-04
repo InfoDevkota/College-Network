@@ -1,6 +1,33 @@
 <template>
   <q-page padding>
     <q-form @submit="onSubmit">
+      <q-banner
+        v-if="errors.responseError || errors.requestError || errors.clientError"
+        dense
+        inline-actions
+        class="text-white bg-red"
+      >
+        <div
+          v-if="
+            Array.isArray(errors.responseError) &&
+              errors.responseError.length > 0
+          "
+        >
+          Please fix following errors -
+          <ul>
+            <li v-for="(error, index) in errors.responseError" :key="index">
+              <b>{{ error.param }}</b> - {{ error.msg }}
+            </li>
+          </ul>
+        </div>
+        <div v-else v-html="errors.responseError"></div>
+        <div v-if="errors.requestError">
+          {{ errors.requestError }}
+        </div>
+        <div v-if="errors.clientError">
+          {{ errors.clientError }}
+        </div>
+      </q-banner>
       <div class="row q-col-gutter-x-md q-col-gutter-y-md q-mb-md">
         <div class="col-md-2">
           <q-card class="fit">
@@ -37,8 +64,10 @@
         <div class="col-md-10">
           <q-card class="fit">
             <q-toolbar class="bg-primary text-white shadow-2">
-                <q-toolbar-title class="text-weight-light">Account Detail</q-toolbar-title>
-              </q-toolbar>
+              <q-toolbar-title class="text-weight-light"
+                >Account Detail</q-toolbar-title
+              >
+            </q-toolbar>
             <q-card-section>
               <div class="row q-col-gutter-x-md q-col-gutter-y-md">
                 <div class="col-md-4 col-sm-12">
@@ -49,8 +78,7 @@
                     type="text"
                     lazy-rules
                     :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please type something'
+                      val => (val && val.length > 0) || 'Please type something'
                     ]"
                     hint="Your name"
                   />
@@ -63,8 +91,7 @@
                     type="text"
                     lazy-rules
                     :rules="[
-                      val =>
-                        (val && val.length > 0) || 'Please type something'
+                      val => (val && val.length > 0) || 'Please type something'
                     ]"
                     hint="Your email"
                   />
@@ -90,8 +117,10 @@
             <div class="col-xs-12 col-md-6">
               <q-card class="my-card">
                 <q-toolbar class="bg-primary text-white shadow-2">
-                <q-toolbar-title class="text-weight-light">Current Affiliation</q-toolbar-title>
-              </q-toolbar>
+                  <q-toolbar-title class="text-weight-light"
+                    >Current Affiliation</q-toolbar-title
+                  >
+                </q-toolbar>
                 <q-separator />
                 <div class="row q-pa-md">
                   <div class="col-xs-12">
@@ -183,9 +212,11 @@
             </div>
             <div class="col-xs-12 col-md-6">
               <q-card class="my-card">
-               <q-toolbar class="bg-primary text-white shadow-2">
-                <q-toolbar-title class="text-weight-light">Personal Detail</q-toolbar-title>
-              </q-toolbar>
+                <q-toolbar class="bg-primary text-white shadow-2">
+                  <q-toolbar-title class="text-weight-light"
+                    >Personal Detail</q-toolbar-title
+                  >
+                </q-toolbar>
                 <q-separator />
                 <div class="row q-pa-md">
                   <div class="col-xs-12">
@@ -277,8 +308,8 @@
               <div>
                 <q-btn label="Update" type="submit" color="primary" />
                 <q-btn
-                  label="Reset"
-                  type="reset"
+                  label="Cancel"
+                  @click="handleCancel"
                   color="primary"
                   flat
                   class="q-ml-sm"
@@ -307,13 +338,58 @@ export default {
       handler(filesObject) {
         // this.userDetail.profileImage = this.getImage(filesObject.files[0])
         if (filesObject.files) {
-          this.userDetail.profileImage = this.getImage(filesObject.files[0]);
+          this.clearErrors(this.errors);
+          let payload = new FormData();
+          for (let i = 0; i < filesObject.files.length; i++) {
+            payload.append("files", filesObject.files[i]);
+          }
+          this.$axios
+            .put("/api/v1/profilePic", payload)
+            .then(response => {
+              console.log(response);
+              if (response.status === 201) {
+                this.$q.notify({
+                  color: "green-4",
+                  textColor: "white",
+                  icon: "fas fa-check-circle",
+                  position: "top-right",
+                  message: "Your Profile pic is successfully updated."
+                });
+              }
+              this.userDetail.profileImage =
+                this.$axios.defaults.baseURL + response.data.user.profileImage;
+            })
+            .catch(error => {
+              if (error.response) {
+                if (error.response.data.hasOwnProperty("errors")) {
+                  this.$q.notify({
+                    color: "negative",
+                    icon: "report_problem",
+                    position: "top-right",
+                    message: "One or more fields have errors."
+                  });
+                  this.errors.responseError = error.response.data.errors;
+                } else {
+                  this.errors.responseError = error.response.data.message;
+                }
+              } else if (error.request) {
+                this.errors.requestError = error.request;
+              } else {
+                this.errors.clientError = error.message;
+              }
+            });
+          // this.userDetail.profileImage = this.getImage(filesObject.files[0]);
         }
       }
     }
   },
   data() {
     return {
+      errors: {
+        responseError: null,
+        requestError: null,
+        clientError: null
+      },
       fileList: [],
       selected_file: "",
       name: "",
@@ -436,6 +512,11 @@ export default {
     });
   },
   methods: {
+    clearErrors(errors) {
+      errors.responseError = null;
+      errors.requestError = null;
+      errors.clientError = null;
+    },
     getImage(file) {
       return URL.createObjectURL(file);
     },
@@ -455,7 +536,22 @@ export default {
             this.$axios.defaults.baseURL + response.data.user.profileImage;
         });
     },
+    handleCancel() {
+      this.$router.push({
+        name: "user-profile",
+        params: { id: this.id }
+      });
+    },
     onSubmit() {
+      if (this.accept !== true) {
+        this.$q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-triangle',
+          message: 'You need to accept provied details are genuine'
+        })
+      } else {
+      this.clearErrors(this.errors);
       this.$axios
         .put("/api/v1/me", {
           name: this.userDetail.name,
@@ -471,6 +567,15 @@ export default {
           gender: this.userDetail.gender
         })
         .then(response => {
+          if (response.status === 201) {
+            this.$q.notify({
+              color: "green-4",
+              textColor: "white",
+              icon: "fas fa-check-circle",
+              position: "top-right",
+              message: "Your Profile is successfully updated."
+            });
+          }
           // console.log(jwtDecode(this.$q.sessionStorage.getItem("token")))
           // if(response.data.user.hasOwnProperty('isProfileUpdated')) {
           //   let authUser = jwtDecode(this.$q.sessionStorage.getItem("token"))
@@ -483,7 +588,27 @@ export default {
             params: { id: response.data.user._id }
           });
           console.log(response);
+        })
+        .catch(error => {
+          if (error.response) {
+            if (error.response.data.hasOwnProperty("errors")) {
+              this.$q.notify({
+                color: "negative",
+                icon: "report_problem",
+                position: "top-right",
+                message: "One or more fields have errors."
+              });
+              this.errors.responseError = error.response.data.errors;
+            } else {
+              this.errors.responseError = error.response.data.message;
+            }
+          } else if (error.request) {
+            this.errors.requestError = error.request;
+          } else {
+            this.errors.clientError = error.message;
+          }
         });
+      }
     },
     factoryFn(files) {
       let fd = new FormData();
