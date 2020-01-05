@@ -87,6 +87,7 @@
   </q-page>
 </template>
 <script>
+import socket from '../util/socket/socket'
 export default {
   data() {
     return {
@@ -95,6 +96,7 @@ export default {
   },
   mounted() {
     this.getAllDepartments();
+    
   },
   computed: {
     getAuthUser() {

@@ -181,6 +181,7 @@
 <script>
 import jwtDecode from "jwt-decode";
 import moment from "moment";
+import socket from '../../util/socket/socket'
 
 const offline = [
   {
@@ -314,6 +315,10 @@ export default {
           });
           this.resetNoteForm()
         }
+        socket.emit('createFeed', {
+            user: this.getAuthUser,
+            message: "added new note."
+          })
       } catch (error) {
         if (error.response) {
           if (error.response.data.hasOwnProperty("errors")) {

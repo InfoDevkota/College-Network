@@ -125,7 +125,7 @@
 </template>
 <script>
 import jwtDecode from 'jwt-decode'
-
+import socket from '../../util/socket/socket'
 import FileUpload from '../../components/FileUpload'
 export default {
   name: "post-create",
@@ -194,6 +194,10 @@ export default {
             icon: 'post_add',
             position: 'bottom-right',
             message: 'New Post Created.'
+          })
+          socket.emit('createFeed', {
+            user: this.getAuthUser,
+            message: "added new post."
           })
           this.$router.push({ name: "feed-posts" })
         } else {

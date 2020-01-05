@@ -16,5 +16,11 @@ module.exports = function(io) {
             });
             callback();
         })
+
+        socket.on('createFeed', (message) => { 
+            //sent new post note create message to all clients in particular room
+            socket.broadcast.to("GlobalRoom").emit("newFeed", message)
+        })
+        
     })
 }

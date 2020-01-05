@@ -396,6 +396,9 @@ export default {
     socket.on("onlineUser", (usersOnline) => {
       this.onlineUsers = usersOnline;
     });
+    socket.on("newFeed", (message) => {
+      this.showNewFeedNotification(message)
+    });
   },
   computed: {
     getAuthUser() {
@@ -403,6 +406,15 @@ export default {
     }
   },
   methods: {
+    showNewFeedNotification(message){
+      this.$q.notify({
+        message: `<b>${message.user.name}</b> ${message.message}.`,
+        color: 'grey',
+        html: true,
+        position: "bottom-left",
+        avatar: this.$axios.defaults.baseURL + message.user.profileImage
+      })
+    },
     handleProfileDetail() {
       this.$router.push({
         name: "user-profile",
