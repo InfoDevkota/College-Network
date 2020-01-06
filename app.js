@@ -151,7 +151,8 @@ app.use('/admin', adminRoutes);
 app.use(authRoutes);
 
 app.use((req,res,next) => {
-    console.log("404 not Found.");
+    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    console.log("404 not Found. For URL: " + fullUrl);
     res.write(`
         <h1>404 Not Found</h1>
     `);
