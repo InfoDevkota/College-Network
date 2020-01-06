@@ -203,9 +203,9 @@ exports.putMe = async (req,res,next) =>{
 }
 
 exports.putProfilePic = (req,res,next) =>{
-    console.log("Here in Profile controller putProfile Pic");
+    //console.log("Here in Profile controller putProfile Pic");
     let imageLink = "";
-    console.log(req.files);
+    //console.log(req.files);
     if(req.files){
         imageLink = req.files[0].path;
     }

@@ -10,6 +10,8 @@ router.get("/department/:departmentId", isAuth, departmentController.getDepartme
 router.put("/department/:departmentId", isAuth, departmentController.getDepartmentById)
 router.get("/departments", isAuth, departmentController.getDepartments);
 router.post("/department/:departmentId/createPost", isAuth, uploadController.multipleUpload, departmentController.postCreatePost);
+router.get("/department/:departmentId/posts", isAuth, departmentController.getDepartmentPosts);
+
 router.put("/department/:departmentId/post/:postId", isAuth, departmentController.postCreatePost);
 router.delete("/department/:departmentId/post/:postId", isAuth, departmentController.postCreatePost);
 
