@@ -14,7 +14,7 @@ exports.postCreatePost = (req,res,next) =>{
     let date = new Date();
     
     const content = req.body.content;
-    const public = req.body.public;
+    const public = req.body.isPublic;
     const post = new Post({
         content: content,
         postedBy: req.userId,
@@ -23,20 +23,21 @@ exports.postCreatePost = (req,res,next) =>{
     if(req.files){
         post.imageUrl = req.files.map(file => file.path);
     }
-    console.log(public);
-    console.log(req.departmentId);
+    //console.log(public);
+    //console.log(req.departmentId);
 
-    if(public == undefined){
-        post.visibilityPublic = true;// in care note provided;
+    // if(public == undefined){
+    //     console.log("Public undefined")
+    //     post.visibilityPublic = true;// in care note provided;
+    // } else {
+    if(public == 'true'){
+        post.visibilityPublic = true;
+        console.log("Is Public Post.");
     } else {
-        if(public){
-            post.visibilityPublic = true;
-        } else {
-            console.log(req.departmentId);
-            post.visibilityPublic = false;
-            post.department = req.departmentId; // TODO make sure this user Profile is Updated
-            //We can use a middelware to validate if is updated
-        }
+        console.log("New Post Visibility to Dep only " + req.departmentId);
+        post.visibilityPublic = false;
+        post.department = req.departmentId; // TODO make sure this user Profile is Updated
+        //We can use a middelware to validate if is updated
     }
 
     return post.save()
