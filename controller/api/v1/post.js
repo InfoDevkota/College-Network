@@ -99,7 +99,7 @@ exports.getPosts = (req,res,next) =>{
     })
     .then(bool =>{
         Post.find(query)
-        .sort({created_at:-1})
+        .sort({createdAt:-1})
         .skip((currentPage - 1) * perPage)
         .limit(perPage)
         .populate('postedBy', 'name _id profileImage')
