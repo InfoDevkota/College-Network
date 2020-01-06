@@ -297,3 +297,62 @@ module.exports.getSectionsAndSemesters = (req,res,next) =>{
         })
     })
 }
+
+module.exports.getDepartmentPosts = (req,res,next) =>{
+    const departmentId = req.params.departmentId;
+    const currentPage = parseInt(req.query.page) || 1;
+    const perPage =  parseInt(req.query.size) || 10;
+    let totalPosts;
+    //console.log("On Post Controller get Posts Dep id" + req.departmentId);
+    // postedFor = {
+    //     isDepartment: true,
+    //     department: departmentId
+    // }
+    Post.find({
+        'postedFor.isDepartment': true,
+        'postedFor.department': departmentId
+    })
+    // .or([{ visibilityPublic: true }, { department: req.departmentId }])
+    .countDocuments()
+    .then(postNumbers => {
+        totalPosts = postNumbers;
+        return true;
+    })
+    .then(bool =>{
+        Post.find({
+            'postedFor.isDepartment': true,
+            'postedFor.department': departmentId
+        })
+        .sort({created_at:-1})
+        .skip((currentPage - 1) * perPage)
+        .limit(perPage)
+        .populate('postedBy', 'name _id profileImage')
+        .populate({
+            path: 'comments',
+            populate: {path: 'commentBy', select: 'name _id'}//multiple level population
+        })//Here we populate comments first then commentBy(user) with in that comment
+        .then(allPosts =>{
+            allPosts.forEach(element => {
+                element.liked=false;
+                element.likes.forEach(user =>{
+                    if(user == req.userId){
+                        element.liked = true;
+                    }
+                })
+            });
+            return allPosts;
+        })
+        .then(posts =>{
+            res.status(200).json({
+                message: 'Fetched posts successfully.',
+                posts: posts,
+                totalPosts: totalPosts
+            });
+        }).catch(error =>{
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            next(error);
+        })
+    })
+}

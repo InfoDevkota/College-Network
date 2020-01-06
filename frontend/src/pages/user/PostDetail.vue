@@ -131,11 +131,11 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img :src="`https://cdn.quasar.dev/img/${offline[0].avatar}`" />
+              <img :src="$axios.defaults.baseURL + getAuthUser.profileImage" />
             </q-avatar>
           </q-item-section>
           <q-item-section>
-            <q-input v-model="comment" rounded autogrow standout dense></q-input>
+            <q-input v-model="comment" rounded autogrow standout dense required></q-input>
           </q-item-section>
            <q-item-section side>
             <q-btn outline round color="primary" @click="postComment" icon="fas fa-2x fa-paperclip" />
@@ -146,7 +146,7 @@
         <q-item>
           <q-item-section avatar>
             <q-avatar>
-              <img :src="`https://cdn.quasar.dev/img/${offline[0].avatar}`" />
+              <img v-if="comment.commentBy" :src="$axios.defaults.baseURL+comment.commentBy.profileImage">
             </q-avatar>
           </q-item-section>
 
@@ -281,20 +281,25 @@ export default {
     },
     handlePostLike (postId) {
       this.$axios.put(`/api/v1/like/${postId}`).then(response => {
-        const index = this.items.findIndex(
-          item => item.id === response.data.post._id
-        )
-        this.items[index]['liked'] = true
-        this.items[index]['totalLike'] = response.data.post.totalLike
+        // const index = this.items.findIndex(
+        //   item => item.id === response.data.post._id
+        // )
+        this.post['liked'] = true
+        this.post['totalLike'] = response.data.post.totalLike
+        // this.items[index]['liked'] = true
+        // this.items[index]['totalLike'] = response.data.post.totalLike
       })
     },
     handlePostUnlike (postId) {
       this.$axios.put(`/api/v1/unlike/${postId}`).then(response => {
-        const index = this.items.findIndex(
-          item => item.id === response.data.post._id
-        )
-        this.items[index]['liked'] = false
-        this.items[index]['totalLike'] = response.data.post.totalLike
+        // const index = this.items.findIndex(
+        //   item => item.id === response.data.post._id
+        // )
+        this.post['liked'] = false
+        this.post['totalLike'] = response.data.post.totalLike
+
+        // this.items[index]['liked'] = false
+        // this.items[index]['totalLike'] = response.data.post.totalLike
       })
     },
     onLoad (index, done) {

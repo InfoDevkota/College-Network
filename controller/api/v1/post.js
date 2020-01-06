@@ -47,6 +47,11 @@ exports.postCreatePost = (req,res,next) =>{
             return user.save();
         })
         .then(postCreator =>{
+            post.postedBy = {
+                name: postCreator.name,
+                _id: postCreator._id,
+                profileImage: postCreator.profileImage
+            }
             res.status(201).json({
                 message: 'Post created successfully!',
                 post: post
@@ -99,7 +104,7 @@ exports.getPosts = (req,res,next) =>{
         .populate('postedBy', 'name _id profileImage')
         .populate({
             path: 'comments',
-            populate: {path: 'commentBy', select: 'name _id'}//multiple level population
+            populate: {path: 'commentBy', select: 'name _id profileImage'}//multiple level population
         })//Here we populate comments first then commentBy(user) with in that comment
         .then(allPosts =>{
             allPosts.forEach(element => {
