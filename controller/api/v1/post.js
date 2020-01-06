@@ -192,10 +192,10 @@ exports.putPost = (req,res,next) =>{
 exports.putLike = (req,res,next) =>{
     let postId = req.params.postId;
     Post.findById(postId)
-    .then(post =>{
-        let liked = false; 
+    .then(post =>{  
+        let liked = false;
         post.likes.forEach(user =>{
-            if(user = req.userId){
+            if(user == req.userId){
                 liked = true;
             }
         })
@@ -224,13 +224,13 @@ exports.putUnLike = (req,res,next) =>{
     let postId = req.params.postId;
     Post.findById(postId)
     .then(post =>{
-        let yes = false; 
+        let liked = false; 
         post.likes.forEach(user =>{
-            if(user = req.userId){
-                yes = true;
+            if(user == req.userId){
+                liked = true;
             }
         })
-        if(yes){
+        if(liked){
             likes = post.totalLike - 1;
             post.likes.pop(req.userId);
             post.totalLike = likes;
