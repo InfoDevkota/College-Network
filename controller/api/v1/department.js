@@ -65,6 +65,9 @@ exports.postCreatePost = (req,res,next) =>{
                 date: date,
                 postedFor: postedFor
             })
+            if(req.files){
+                post.imageUrl = req.files.map(file => file.path);
+            }
             return post.save()
             .then(post =>{
                 department.posts.push(post);

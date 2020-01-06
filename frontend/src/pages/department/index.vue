@@ -2,7 +2,6 @@
   <q-page padding>
     <q-infinite-scroll @load="onLoad" :offset="250">
       <div class="row q-col-gutter-x-md q-col-gutter-y-md">
-        {{ departmentDetail }}
         <div class="col-md-12">
           <q-card>
             <q-card-section>
@@ -49,7 +48,7 @@
                   {{ errors.clientError }}
                 </div>
               </q-banner>
-              <q-card style="width: 100%">
+              <q-card style="width: 100%" class="q-mb-md" v-if="getAuthUser.ishod">
                 <q-card-section class="row items-center no-wrap">
                   <q-list :style="{ width: '100%' }">
                     <q-item>
@@ -202,6 +201,54 @@
                   </q-list>
                 </q-card-section>
               </q-card>
+              <h6 class="q-my-md">Posts</h6>
+              <q-card
+                v-for="(item, index) in items"
+                :key="index"
+                class="caption"
+                style="margin-bottom: 10px"
+                bordered
+                flat
+                >
+                <q-card-section class="q-pa-none">
+                  <q-list>
+                    <q-item
+                      class="q-px-md text-weight-thin"
+                    >
+                      <i>{{item.date | fromNow}}</i>
+                    </q-item>
+                    <q-item
+                    class="q-px-md"
+                    >
+                      <q-item-section v-html="item.content"> </q-item-section>
+                    </q-item>
+                    <q-item>
+                      <div class="q-gutter-xs q-mb-sm row items-start">
+                        <q-img
+                          transition="fade"
+                          v-for="(file, index) in item.files"
+                          :key="index"
+                          :src="file"
+                          style="width: 150px"
+                          ratio="1"
+                          spinner-color="white"
+                          class="rounded-borders shadow-2 cursor-pointer"
+                          @click="handleDownloadNote(file)"
+                        >
+                          <template v-slot:error>
+                          <div
+                            class="absolute-full flex flex-center text-white"
+                            style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;"
+                          >
+                            N/A
+                          </div>
+                        </template>
+                      </q-img>
+                    </div>
+                    </q-item>
+                </q-list>
+              </q-card-section>
+              </q-card>
             </div>
             <div class="col-xs-12 col-md-4">
               <q-card class="q-mb-md" v-if="departmentDetail.hod">
@@ -311,11 +358,24 @@
           </div>
         </div>
       </div>
+      <template v-slot:loading>
+        <div class="row justify-center q-my-md">
+          <q-spinner-dots
+            color="primary"
+            size="40px"
+            v-if="items.length < post_params.count"
+          />
+          <span v-else class="block text-weight-thin">
+            <i>You reached the end of posts.</i>
+          </span>
+      </div>
+    </template>
     </q-infinite-scroll>
   </q-page>
 </template>
 <script>
 import jwtDecode from "jwt-decode";
+import moment from "moment";
 
 import FileUpload from "../../components/FileUpload";
 export default {
@@ -330,6 +390,13 @@ export default {
         console.log(files);
       },
       deep: true
+    }
+  },
+  filters: {
+    fromNow: function(date) {
+      return moment(date)
+        .startOf("hour")
+        .fromNow();
     }
   },
   data() {
@@ -439,12 +506,21 @@ export default {
     },
   },
   methods: {
+    handleDownloadNote(file) {
+      const link = document.createElement("a");
+      // link.href = URL.createObjectURL(blob)
+      link.href = file;
+      link.setAttribute("target", "_blank");
+      link.setAttribute("download", file.substring(file.lastIndexOf("/") + 1));
+      link.click();
+      URL.revokeObjectURL(link.href);
+    },
     onLoad(index, done) {
       console.log(this.items.length, this.post_params.count);
       if (this.items.length < this.post_params.count) {
         this.post_params.page = index;
         this.$axios
-          .get(`/api/v1/department/${this.department_id}/createPost`, { params: this.post_params })
+          .get(`/api/v1/department/${this.department_id}/posts`, { params: this.post_params })
           .then(response => {
             this.post_params.count = response.data.totalPosts;
             var temp = response.data.posts.map(post => {
@@ -531,13 +607,6 @@ export default {
           this.errors.clientError = error.message;
         }
       } finally {
-      }
-    },
-    async getDepartmentPosts() {
-      try{
-        const { data } = this.$axios.get(`/api/v1/department/${this.department_id}/posts/`)
-      } catch(error) {
-        console.log(error)
       }
     },
     getDepartmentDetail() {
