@@ -113,6 +113,8 @@
               </q-item-section>
             </q-item>
             <q-separator />
+            <q-checkbox v-model="isPublic" label="Make this post as public" />
+            <q-separator />
              <q-item class="q-pa-xs">
                 <q-chip clickable @click="handleCreatePost" square style="background: rgba(0, 0, 0, 0) linear-gradient(150deg, rgb(0, 188, 212), rgb(0, 150, 136), rgb(103, 58, 183)) repeat scroll 0% 0%;" class="shadow-2" text-color="white" icon="post_add" label="Post" />
                 <q-chip clickable @click="$router.push({ name: 'feed-posts' })" square class="shadow-2" color="red" text-color="white" icon="cancel" label="Cancel" />
@@ -154,6 +156,7 @@ export default {
       },
       fileList: {},
       post: "",
+      isPublic: false,
       uploadFieldName: 'file',
       maxSize: 1024
     };
@@ -187,6 +190,7 @@ export default {
           }
         }
         payload.append('content', this.post )
+        payload.append('isPublic', this.isPublic)
         const {data, status} = await this.$axios.post('/api/v1/createPost', payload)
         if(status === 201) {
           this.$q.notify({
