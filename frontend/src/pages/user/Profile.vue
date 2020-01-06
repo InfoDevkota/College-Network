@@ -38,7 +38,7 @@
                 >
                   <q-item-section>
                     <q-item-label v-html="post.content"></q-item-label>
-                    <q-item-label caption>{{ post.date }}</q-item-label>
+                    <q-item-label caption>{{ post.date | fromNow }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -56,7 +56,7 @@
                 >
                   <q-item-section>
                     <q-item-label>{{ comment.comment }}</q-item-label>
-                    <q-item-label caption>{{ comment.updatedAt }}</q-item-label>
+                    <q-item-label caption>{{ comment.createdAt | fromNow }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -262,7 +262,7 @@
 </template>
 <script>
 import jwtDecode from "jwt-decode";
-
+import moment from "moment";
 export default {
   name: "user Profile",
   props: ["id"],
@@ -271,6 +271,12 @@ export default {
       userDetail: "",
       tab: "Posts"
     };
+  },
+  filters: {
+    fromNow: function(date) {
+      return moment(date)
+        .fromNow();
+    }
   },
   watch: {
     id(value) {

@@ -395,7 +395,6 @@ export default {
   filters: {
     fromNow: function(date) {
       return moment(date)
-        .startOf("hour")
         .fromNow();
     }
   },
@@ -535,7 +534,7 @@ export default {
                   name: post.postedBy.name,
                   profileImage: post.postedBy.profileImage
                 },
-                date: post.updatedAt,
+                date: post.createdAt,
                 liked: post.liked,
                 totalComments: post.totalComments,
                 totalLike: post.totalLike

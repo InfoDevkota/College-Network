@@ -53,7 +53,7 @@
 
           <q-item-section>
             <q-item-label v-if="post.postedBy">{{ post.postedBy.name }}</q-item-label>
-            <q-item-label caption lines="1">{{ post.date }}</q-item-label>
+            <q-item-label caption lines="1">{{ post.date | fromNow }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -138,7 +138,7 @@
             <q-input v-model="comment" rounded autogrow standout dense required></q-input>
           </q-item-section>
            <q-item-section side>
-            <q-btn outline round color="primary" @click="postComment" icon="fas fa-2x fa-paperclip" />
+            <q-btn size="xs" round color="primary" @click="postComment" icon="fas fa-paper-plane" />
           </q-item-section>
         </q-item>
       </q-list>
@@ -153,7 +153,7 @@
           <q-item-section>
             <q-item-label v-if="post.postedBy">{{ comment.commentBy.name }}</q-item-label>
             <q-item-label caption lines="1">{{ comment.comment }}</q-item-label>
-            <q-item-label caption lines="1">{{ comment.updatedAt }}</q-item-label>
+            <q-item-label caption lines="1">{{ comment.updatedAt | fromNow }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
@@ -162,6 +162,7 @@
 </template>
 <script>
 import jwtDecode from 'jwt-decode'
+import moment from "moment";
 
 const offline = [
   {
@@ -196,6 +197,12 @@ export default {
       return this.$q.sessionStorage.getItem("authUser");
     },
   },
+  filters: {
+    fromNow: function(date) {
+      return moment(date)
+        .fromNow();
+    }
+  },
   created () {},
   mounted () {
     this.getPostDetail(this.id)
@@ -221,7 +228,7 @@ export default {
             name: response.data.post.postedBy.name,
             profileImage: response.data.post.postedBy.profileImage
           },
-          date: response.data.post.updatedAt,
+          date: response.data.post.createdAt,
           liked: response.data.post.liked,
           totalComments: response.data.post.totalComments,
           totalLike: response.data.post.totalLike,

@@ -236,7 +236,6 @@ export default {
   filters: {
     fromNow: function(date) {
       return moment(date)
-        .startOf("hour")
         .fromNow();
     }
   },
