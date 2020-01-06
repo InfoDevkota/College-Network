@@ -58,12 +58,6 @@
           icon="question_answer"
           @click="$router.push({ name: 'chats' })"
         />
-        <q-btn dense size="sm" round flat icon="email">
-          <q-badge dense size="sm" color="red" floating>
-            4
-          </q-badge>
-        </q-btn>
-
         <q-btn
           size="sm"
           flat
