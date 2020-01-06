@@ -47,6 +47,11 @@ exports.postCreatePost = (req,res,next) =>{
             return user.save();
         })
         .then(postCreator =>{
+            post.postedBy = {
+                name: postCreator.name,
+                _id: postCreator._id,
+                profileImage: postCreator.profileImage
+            }
             res.status(201).json({
                 message: 'Post created successfully!',
                 post: post
