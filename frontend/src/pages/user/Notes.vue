@@ -247,14 +247,27 @@ export default {
   created() {},
   methods: {
     handleDeleteAllNote(noteId, noteIndex) {
-      this.$axios.delete(`/api/v1/note/${noteId}`).then(response => {
-        this.items.splice(noteIndex, 1);
-        this.post_params.count = this.post_params.count - 1;
-        this.$q.notify({
-          message: "Note Deleted",
-          color: "green"
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Are you sure you want to delete this note?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$axios.delete(`/api/v1/note/${noteId}`).then(response => {
+          this.items.splice(noteIndex, 1);
+          this.post_params.count = this.post_params.count - 1;
+          this.$q.notify({
+            message: "Note Deleted",
+            color: "green"
+          });
         });
-      });
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     },
     resetNoteForm() {
       this.noteTitle = ""
