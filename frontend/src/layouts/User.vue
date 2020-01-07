@@ -71,10 +71,6 @@
               <q-item clickable @click="handleProfileDetail">
                 <q-item-section>My Profile</q-item-section>
               </q-item>
-              <q-item clickable>
-                <q-item-section>My Setting</q-item-section>
-              </q-item>
-              <q-separator />
               <q-item clickable @click="handleLogout">
                 <q-item-section>Log out</q-item-section>
               </q-item>
