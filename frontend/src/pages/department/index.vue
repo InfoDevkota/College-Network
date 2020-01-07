@@ -1,6 +1,7 @@
 <template>
   <q-page padding>
     <q-infinite-scroll @load="onLoad" :offset="250">
+      {{getAuthUser}}
       <div class="row q-col-gutter-x-md q-col-gutter-y-md">
         <div class="col-md-12">
           <q-card>
@@ -48,7 +49,7 @@
                   {{ errors.clientError }}
                 </div>
               </q-banner>
-              <q-card style="width: 100%" class="q-mb-md" v-if="getAuthUser.ishod">
+              <q-card style="width: 100%" class="q-mb-md" v-if="departmentDetail.hod && getAuthUser.depId == department_id && getAuthUser.ishod">
                 <q-card-section class="row items-center no-wrap">
                   <q-list :style="{ width: '100%' }">
                     <q-item>
@@ -305,7 +306,7 @@
                   </q-item>
                 </q-list>
               </q-card>
-              <q-card class="q-mb-md" v-if="departmentDetail.hod">
+              <q-card class="q-mb-md" v-if="departmentDetail.hod && getAuthUser.depId == department_id && getAuthUser.ishod">
                 <q-toolbar class="bg-primary text-white shadow-2">
                   <q-toolbar-title class="text-weight-light"
                     >SMS Notice Details</q-toolbar-title
@@ -339,6 +340,7 @@
                     <q-item>
                       <q-item-section class="text-weight-light">
                         <q-select
+                          size="sm"
                           outlined
                           border
                           stack-label
@@ -356,6 +358,7 @@
                         />
                         <q-select
                           outlined
+                          size="sm"
                           border
                           stack-label
                           v-model="smsPost.section"
@@ -371,19 +374,27 @@
                           ]"
                         />
                         <q-input
+                          size="sm"
                           outlined
                           stack-label
                           label="Message"
                           border
+                          counter
+                          maxlength="20"
                           autogrow
                           v-model="smsPost.message"
+                          lazy-rules
+                          :rules="[
+                            val =>
+                              (val && val.length > 0) || 'Add message'
+                          ]"
                           class=""
                         />
                       </q-item-section>
                     </q-item>
                     <q-item>
                       <q-item-section class="text-weight-light">
-                        <q-btn label="Submit" type="submit" color="primary" />
+                        <q-btn size="sm" label="Submit" type="submit" color="primary" />
                       </q-item-section>
                     </q-item>
                   </q-list>
