@@ -278,7 +278,7 @@
         <q-list separator dark>
           <q-item>
             <q-item-section>
-              <q-item-label>Friends Online ({{onlineUsers.length}})</q-item-label>
+              <q-item-label> Online ({{onlineUsers.length}})</q-item-label>
             </q-item-section>
           </q-item>
           <!-- <q-item clickable v-for="(onlineUser, index) in onlineUsers" :key="index" @click="$router.push({ name: 'chat' })">
@@ -313,7 +313,7 @@
             </q-item-section>
             <q-item-section side>
               <q-avatar>
-                <img :src="`https://cdn.quasar.dev/img/avatar2.jpg`" />
+                <img :src="$axios.defaults.baseURL + onlineUser.profileImage" />
               </q-avatar>
             </q-item-section>
           </q-item>

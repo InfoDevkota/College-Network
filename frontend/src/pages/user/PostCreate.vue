@@ -199,10 +199,12 @@ export default {
             position: 'bottom-right',
             message: 'New Post Created.'
           })
-          socket.emit('createFeed', {
+          if(data.post.visibilityPublic) {
+            socket.emit('createFeed', {
             user: this.getAuthUser,
             message: "added new post."
           })
+          }
           this.$router.push({ name: "feed-posts" })
         } else {
           console.log(data)
