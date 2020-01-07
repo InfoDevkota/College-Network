@@ -311,48 +311,83 @@
                     >SMS Notice Details</q-toolbar-title
                   >
                 </q-toolbar>
-                <q-list class="rounded-borders">
-                  <q-item dense>
-                    <q-item-section class="text-weight-light">
-                      <q-scroll-area style="height: 100px;">
-                        <q-list>
-                          <q-item>
-                            SMS1
-                          </q-item>
-                          <q-item>
-                            SMS1
-                          </q-item>
-                          <q-item>
-                            SMS1
-                          </q-item>
-                          <q-item>
-                            SMS1
-                          </q-item>
-                          <q-item>
-                            SMS1
-                          </q-item>
-                        </q-list>
-                      </q-scroll-area>
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      <q-input
-                        outlined
-                        stack-label
-                        label="Message"
-                        border
-                        autogrow
-                        class=""
-                      />
-                    </q-item-section>
-                  </q-item>
-                  <q-item>
-                    <q-item-section class="text-weight-light">
-                      <q-btn color="primary" size="sm" label="Submit" />
-                    </q-item-section>
-                  </q-item>
-                </q-list>
+                <q-form @submit="onSmsSubmit">
+                  <q-list class="rounded-borders">
+                    <!-- <q-item dense>
+                      <q-item-section class="text-weight-light">
+                        <q-scroll-area style="height: 100px;">
+                          <q-list>
+                            <q-item>
+                              SMS1
+                            </q-item>
+                            <q-item>
+                              SMS1
+                            </q-item>
+                            <q-item>
+                              SMS1
+                            </q-item>
+                            <q-item>
+                              SMS1
+                            </q-item>
+                            <q-item>
+                              SMS1
+                            </q-item>
+                          </q-list>
+                        </q-scroll-area>
+                      </q-item-section>
+                    </q-item> -->
+                    <q-item>
+                      <q-item-section class="text-weight-light">
+                        <q-select
+                          outlined
+                          border
+                          stack-label
+                          v-model="smsPost.semester"
+                          :options="options.semesters"
+                          label="Semester *"
+                          hint="Semester is required"
+                          emit-value
+                          map-options
+                          lazy-rules
+                          :rules="[
+                            val =>
+                              (val && val.length > 0) || 'Select semester'
+                          ]"
+                        />
+                        <q-select
+                          outlined
+                          border
+                          stack-label
+                          v-model="smsPost.section"
+                          :options="options.sections"
+                          label="Section *"
+                          hint="Section is required"
+                          emit-value
+                          map-options
+                          lazy-rules
+                          :rules="[
+                            val =>
+                              (val && val.length > 0) || 'Select section'
+                          ]"
+                        />
+                        <q-input
+                          outlined
+                          stack-label
+                          label="Message"
+                          border
+                          autogrow
+                          v-model="smsPost.message"
+                          class=""
+                        />
+                      </q-item-section>
+                    </q-item>
+                    <q-item>
+                      <q-item-section class="text-weight-light">
+                        <q-btn label="Submit" type="submit" color="primary" />
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-form>
               </q-card>
             </div>
           </div>
@@ -400,6 +435,11 @@ export default {
   },
   data() {
     return {
+      smsPost: {
+        message: "",
+        semester: "",
+        section: ""
+      },
       post_params: {
         page: 1,
         count: 1,
@@ -423,81 +463,14 @@ export default {
       gender: "",
       accept: false,
       options: {
-        university: [
-          {
-            label: "Google",
-            value: "goog"
-          },
-          {
-            label: "Facebook",
-            value: "fb"
-          },
-          {
-            label: "Twitter",
-            value: "twt"
-          },
-          {
-            label: "Apple",
-            value: "app"
-          },
-          {
-            label: "Oracle",
-            value: "ora",
-            disable: true
-          }
-        ],
-        department: [
-          {
-            label: "Google",
-            value: "goog"
-          },
-          {
-            label: "Facebook",
-            value: "fb"
-          },
-          {
-            label: "Twitter",
-            value: "twt"
-          },
-          {
-            label: "Apple",
-            value: "app"
-          },
-          {
-            label: "Oracle",
-            value: "ora",
-            disable: true
-          }
-        ],
-        graduation_on: [
-          {
-            label: "Google",
-            value: "goog"
-          },
-          {
-            label: "Facebook",
-            value: "fb"
-          },
-          {
-            label: "Twitter",
-            value: "twt"
-          },
-          {
-            label: "Apple",
-            value: "app"
-          },
-          {
-            label: "Oracle",
-            value: "ora",
-            disable: true
-          }
-        ]
+        sections: [],
+        semesters: []
       }
     };
   },
   created() {
     this.getDepartmentDetail();
-    this.getDepartmentPosts()
+    this.getSemestersAndSections()
   },
   computed: {
     getAuthUser() {
@@ -505,6 +478,45 @@ export default {
     },
   },
   methods: {
+    onSmsSubmit() {
+      this.clearErrors(this.errors);
+      let payload = {
+        semesterId: this.smsPost.semester,
+        sectionId: this.smsPost.section
+      }
+      this.$axios
+        .post(`api/v1/department/${this.department_id}/sendSMS`, { data: { message: this.smsPost.message}}, { params: payload})
+        .then(response => {
+          if (response.status === 201) {
+            this.$q.notify({
+              color: "green-4",
+              textColor: "white",
+              icon: "fas fa-check-circle",
+              position: "top-right",
+              message: "SMS Sent."
+            });
+          }
+        })
+        .catch(error => {
+          if (error.response) {
+            if (error.response.data.hasOwnProperty("errors")) {
+              this.$q.notify({
+                color: "negative",
+                icon: "report_problem",
+                position: "top-right",
+                message: "Failed to submit SMS."
+              });
+              this.errors.responseError = error.response.data.errors;
+            } else {
+              this.errors.responseError = error.response.data.message;
+            }
+          } else if (error.request) {
+            this.errors.requestError = error.request;
+          } else {
+            this.errors.clientError = error.message;
+          }
+        });
+    },
     handleDownloadNote(file) {
       const link = document.createElement("a");
       // link.href = URL.createObjectURL(blob)
@@ -614,6 +626,23 @@ export default {
         .then(response => {
           this.departmentDetail = response.data.department;
         });
+    },
+    getSemestersAndSections() {
+      this.$axios.get(`/api/v1/addInfo`).then(response => {
+      const { sections, semesters } = response.data;
+      this.options.sections = sections.map(section => {
+        return {
+          label: section.name,
+          value: section._id
+        };
+      });
+      this.options.semesters = semesters.map(semester => {
+        return {
+          label: semester.name,
+          value: semester._id
+        };
+      });
+    });
     }
   }
 };
