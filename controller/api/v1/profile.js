@@ -155,6 +155,7 @@ exports.putMe = async (req,res,next) =>{
     const password = req.body.password;
 
     if(password){
+        console.log(password);
         hashedPassword = await bcrypt.hash(password, 12);
         passwordChanged = true;
     }
@@ -162,6 +163,9 @@ exports.putMe = async (req,res,next) =>{
     User.findById(req.userId)
     .select('-posts -password -messageBoxUser')
     .then(user =>{
+        if(hashedPassword){
+            user.password = hashedPassword;
+        }
         user.name = name;
         user.email = email;
         user.semester = semester;
@@ -179,10 +183,6 @@ exports.putMe = async (req,res,next) =>{
 
         req.user = user;
         req.departmentId = department; //Update department
-
-        if(passwordChanged){
-            req.password = hashedPassword;
-        }
 
         return user.save();
     })
