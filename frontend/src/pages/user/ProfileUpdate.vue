@@ -101,10 +101,22 @@
                     v-model="userDetail.password"
                     label="Password *"
                     filled
-                    type="text"
+                    clearable
                     lazy-rules
+                    :type="isPwd ? 'password' : 'text'"
                     hint="Your Password"
-                  />
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="lock" />
+                    </template>
+                    <template v-slot:append>
+                      <q-icon
+                        :name="isPwd ? 'visibility_off' : 'visibility'"
+                        class="cursor-pointer"
+                        @click="isPwd = !isPwd"
+                      />
+                    </template>
+                  </q-input>
                 </div>
               </div>
             </q-card-section>
@@ -385,6 +397,7 @@ export default {
   },
   data() {
     return {
+      isPwd: true,
       errors: {
         responseError: null,
         requestError: null,
@@ -408,6 +421,7 @@ export default {
         graduationOn: "",
         bornOn: new Date(),
         livesIn: "",
+        password: "",
         gender: "",
         phone: ""
       },
@@ -571,7 +585,8 @@ export default {
           bornOn: this.userDetail.bornOn,
           livesIn: this.userDetail.livesIn,
           phone: this.userDetail.phone,
-          gender: this.userDetail.gender
+          gender: this.userDetail.gender,
+          password: this.userDetail.password
         }
       }
       if(this.userDetail.ishod || this.userDetail.isTeacher) {
@@ -582,7 +597,8 @@ export default {
           bornOn: this.userDetail.bornOn,
           livesIn: this.userDetail.livesIn,
           phone: this.userDetail.phone,
-          gender: this.userDetail.gender
+          gender: this.userDetail.gender,
+          password: this.userDetail.password
         }
       }
       this.$axios
