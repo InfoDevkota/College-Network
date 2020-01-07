@@ -196,7 +196,6 @@
 <script>
 import jwtDecode from "jwt-decode";
 import moment from "moment";
-
 const offline = [
   {
     id: 5,
@@ -326,7 +325,13 @@ export default {
       this.editor = post.content;
     },
     handleRemovePost(postId, postIndex) {
-      this.$axios.delete(`/api/v1/post/${postId}`).then(response => {
+      this.$q.dialog({
+        title: 'Confirm',
+        message: 'Are you sure you want to delete this post ?',
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.$axios.delete(`/api/v1/post/${postId}`).then(response => {
         this.items.splice(postIndex, 1);
         this.post_params.count = this.post_params.count - 1;
         this.$q.notify({
@@ -334,6 +339,13 @@ export default {
           color: "green"
         });
       });
+      }).onOk(() => {
+        // console.log('>>>> second OK catcher')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     },
     savePost() {
       // this.$q.loading.show()
