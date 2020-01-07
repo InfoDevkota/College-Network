@@ -170,7 +170,8 @@ exports.postAddHOD = (req,res,next) =>{
             email: email,
             name: name,
             password: hashedPassword,
-            ishod: true
+            ishod: true,
+            isVerified: true
         });
         return user.save();
     })

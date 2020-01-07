@@ -221,11 +221,14 @@ module.exports.getTeachersBySemesterAndSectionByDepartment = (req,res,next) =>{
     });
 }
 
-module.exports.postSendSMS = (req,res,next) => {
+module.exports.postSendSMS = async (req,res,next) => {
     const departmentId = req.params.departmentId; // host/departmentId
     const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
     const sectionId = req.query.sectionId;
-    const message = req.body.message;
+    const smsMessage = req.body.data.message;
+    // console.log(req.body);
+    // console.log(req.body.data.message);
+    // console.log(smsMessage);
 
     let numbers = "";
 
@@ -233,7 +236,7 @@ module.exports.postSendSMS = (req,res,next) => {
     .then(department =>{
         if(department.hod == req.userId){
             const sms = new SMS({
-                message: message,
+                message: smsMessage,
                 sendBy: req.userId,
                 semester: semesterId,
                 section: sectionId,
@@ -245,34 +248,48 @@ module.exports.postSendSMS = (req,res,next) => {
                 semester: semesterId,
                 section: sectionId
             })
-            .then(users =>{
-                for(let i = 0; i < users.length; i++){
-                    if(i != length-1){
-                        numbers = numbers + users[i].phone + ", ";
-                    } else {
-                        numbers = numbers + users[i].phone;
-                    }
-                }
-                return true;
-            })
-            .then(bool =>{
+            .then(async users =>{
+                // console.log("############# this dep selected students")
+                // console.log(users);
+                users.forEach(user => {
+                    numbers = numbers + user.phone + ",";
+                });
+                // for(let i = 0; i < users.length; i++){
+                //     if(i != length-1){
+                //         numbers = numbers + users[i].phone + ", ";
+                //     } else {
+                //         numbers = numbers + users[i].phone;
+                //     }
+                // }
+
+                numbers = numbers.replace(/,([^,]*)$/, "" + '$1');
+                //numbers = "9814105801";
+
                 console.log("###############");
-                console.log("Message: - '" + message + "'");
+                console.log("Message: - '" + smsMessage + "'");
                 console.log("Will be send to::- '" + numbers + "'");
                 console.log("##################");
+                // res.status(200).json({
+                //     message: "success",
+                //     testMessage : smsMessage,
+                //     testNumbers : numbers
+                // })
+
+                let response = await sparrow.sendSMS(smsMessage, numbers)
+                console.log("RESponse");
                 res.status(200).json({
-                    message: "success",
-                    testMessage : message,
-                    testNumbers : numbers
+                    message: "Sms Send",
+                    response
                 })
-                // sparrow
-                // .sendSMS("Message", "to")
+                //console.log(response);
                 // .then(response =>{
                 //     if(response.error){
+                //         console.log("ERROR in sending SMS")
                 //         res.status(401).json({
                 //             message:response.message
                 //         })
                 //     } else {
+                //         console.log("SMS Sending Success")
                 //         res.status(200).json({
                 //             count: count,
                 //             message: response,
@@ -282,6 +299,20 @@ module.exports.postSendSMS = (req,res,next) => {
                 //         })
                 //     }
                 // })
+                // .catch(error => {
+                //     // console.log("error");
+                //     // console.log(error);
+                //     if (!error.statusCode) {
+                //         error.statusCode = 500;
+                //     }
+                //     next(error);
+                // })
+            }).catch(error => {
+                console.log("ERROR on SMS");
+                if (!error.statusCode) {
+                    error.statusCode = 500;
+                }
+                next(error);
             })
         } else {
             res.status(403).json({
@@ -307,7 +338,19 @@ module.exports.getSectionsAndSemesters = (req,res,next) =>{
                 semesters : semesters
             })
         })
+        .catch(error => {
+            if (!error.statusCode) {
+                error.statusCode = 500;
+            }
+            next(error);
+        });
     })
+    .catch(error => {
+        if (!error.statusCode) {
+            error.statusCode = 500;
+        }
+        next(error);
+    });
 }
 
 module.exports.getDepartmentPosts = (req,res,next) =>{
