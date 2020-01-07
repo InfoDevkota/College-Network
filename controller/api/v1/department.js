@@ -11,6 +11,7 @@ const Post = require('../../../model/post');
 const User = require('../../../model/user') //TODO DONE send all users related to this department
 const Section = require('../../../model/section');
 const Semester = require('../../../model/semester');
+const SMS = require('../../../model/sms');
 
 exports.getDepartmentById = (req,res,next) =>{
     const depId = req.params.departmentId;
@@ -231,6 +232,14 @@ module.exports.postSendSMS = (req,res,next) => {
     Department.findById(departmentId)
     .then(department =>{
         if(department.hod == req.userId){
+            const sms = new SMS({
+                message: message,
+                sendBy: req.userId,
+                semester: semesterId,
+                section: sectionId,
+                department: departmentId
+            })
+            sms.save();
             User.find({
                 department: departmentId,
                 semester: semesterId,
@@ -357,5 +366,28 @@ module.exports.getDepartmentPosts = (req,res,next) =>{
             }
             next(error);
         })
+    })
+}
+
+module.exports.getSMS = (req,res,next) =>{
+    const departmentId = req.params.departmentId;
+    Department.findById(departmentId)
+    .then(department =>{
+        if(department.hod == req.userId){
+            SMS.find({
+                department: departmentId
+            })
+            .populate('department semester section sendBy')
+            .then(smss => {
+                res.status(200).json({
+                    message: 'All SMS Send.',
+                    smss: smss,
+                });
+            })
+        } else {
+            res.status(403).json({
+                message: 'Not allowed.',
+            });
+        }
     })
 }
