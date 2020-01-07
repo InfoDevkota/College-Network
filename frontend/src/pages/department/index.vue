@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
     <q-infinite-scroll @load="onLoad" :offset="250">
-      {{getAuthUser}}
       <div class="row q-col-gutter-x-md q-col-gutter-y-md">
         <div class="col-md-12">
           <q-card>
