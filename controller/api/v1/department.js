@@ -220,133 +220,101 @@ module.exports.getTeachersBySemesterAndSectionByDepartment = (req,res,next) =>{
         }
     });
 }
-const Nexmo = require('nexmo');
+// const Nexmo = require('nexmo');
 
-const nexmo = new Nexmo({
-  apiKey: process.env.NEXMO_API_KEY,
-  apiSecret: process.env.NEXMO_API_SECRET
-}, {debug: true});
+// const nexmo = new Nexmo({
+//   apiKey: process.env.NEXMO_API_KEY,
+//   apiSecret: process.env.NEXMO_API_SECRET
+// }, {debug: true});
+
+
 module.exports.postSendSMS = async (req,res,next) => {
-    try {
-        nexmo.message.sendSms('Nexmo', req.body.data.toNumber, req.body.data.message,{
-            type: "unicode"
-          }, (err, responseData) => {
-            if (err) {
-              console.log(err);
-            } else {
-              if (responseData.messages[0]['status'] === "0") {
-                res.status(200).json({
-                    message: "Message sent successfully."
-                })
-              } else {
-                res.status(401).json({
-                    message: `Message failed with error: ${responseData.messages[0]['error-text']}`
-                })
-              }
-            }
-          });
-      } catch (err) {
-        next(err)
-      }
-    
-    // const departmentId = req.params.departmentId; // host/departmentId
-    // const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
-    // const sectionId = req.query.sectionId;
-    // const smsMessage = req.body.data.message;
-    // console.log(req.body);
-    // console.log(req.body.data.message);
-    // console.log(smsMessage);
-
-    // let numbers = "";
-
-    // Department.findById(departmentId)
-    // .then(department =>{
-    //     if(department.hod == req.userId){
-    //         const sms = new SMS({
-    //             message: smsMessage,
-    //             sendBy: req.userId,
-    //             semester: semesterId,
-    //             section: sectionId,
-    //             department: departmentId
-    //         })
-    //         sms.save();
-    //         User.find({
-    //             department: departmentId,
-    //             semester: semesterId,
-    //             section: sectionId
-    //         })
-    //         .then(async users =>{
-    //             // console.log("############# this dep selected students")
-    //             // console.log(users);
-    //             users.forEach(user => {
-    //                 numbers = numbers + user.phone + ",";
-    //             });
-    //             // for(let i = 0; i < users.length; i++){
-    //             //     if(i != length-1){
-    //             //         numbers = numbers + users[i].phone + ", ";
-    //             //     } else {
-    //             //         numbers = numbers + users[i].phone;
-    //             //     }
-    //             // }
-
-    //             numbers = numbers.replace(/,([^,]*)$/, "" + '$1');
-    //             //numbers = "9814105801";
-
-    //             console.log("###############");
-    //             console.log("Message: - '" + smsMessage + "'");
-    //             console.log("Will be send to::- '" + numbers + "'");
-    //             console.log("##################");
-    //             // res.status(200).json({
-    //             //     message: "success",
-    //             //     testMessage : smsMessage,
-    //             //     testNumbers : numbers
-    //             // })
-
-    //             let response = await sparrow.sendSMS(smsMessage, numbers)
-    //             console.log("RESponse");
+    // try {
+    //     nexmo.message.sendSms('Nexmo', req.body.data.toNumber, req.body.data.message,{
+    //         type: "unicode"
+    //       }, (err, responseData) => {
+    //         if (err) {
+    //           console.log(err);
+    //         } else {
+    //           if (responseData.messages[0]['status'] === "0") {
     //             res.status(200).json({
-    //                 message: "Sms Send",
-    //                 response
+    //                 message: "Message sent successfully."
     //             })
-    //             //console.log(response);
-    //             // .then(response =>{
-    //             //     if(response.error){
-    //             //         console.log("ERROR in sending SMS")
-    //             //         res.status(401).json({
-    //             //             message:response.message
-    //             //         })
-    //             //     } else {
-    //             //         console.log("SMS Sending Success")
-    //             //         res.status(200).json({
-    //             //             count: count,
-    //             //             message: response,
-    //             //             message_id: message_id,
-    //             //             credit_consumed: credit_consumed,
-    //             //             credit_available: credit_available,
-    //             //         })
-    //             //     }
-    //             // })
-    //             // .catch(error => {
-    //             //     // console.log("error");
-    //             //     // console.log(error);
-    //             //     if (!error.statusCode) {
-    //             //         error.statusCode = 500;
-    //             //     }
-    //             //     next(error);
-    //             // })
-    //         }).catch(error => {
-    //             console.log("ERROR on SMS");
-    //             if (!error.statusCode) {
-    //                 error.statusCode = 500;
-    //             }
-    //             next(error);
-    //         })
-    //     } else {
-    //         res.status(403).json({
-    //             message: 'Not Allowed'
-    //         })
-    //     }
-    // });
+    //           } else {
+    //             res.status(401).json({
+    //                 message: `Message failed with error: ${responseData.messages[0]['error-text']}`
+    //             })
+    //           }
+    //         }
+    //       });
+    //   } catch (err) {
+    //     next(err)
+    //   }
+    
+    const departmentId = req.params.departmentId; // host/departmentId
+    const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
+    const sectionId = req.query.sectionId;
+    const smsMessage = req.body.data.message;
+    console.log(req.body);
+    console.log(req.body.data.message);
+    console.log(smsMessage);
+
+    let numbers = "";
+
+    Department.findById(departmentId)
+    .then(department =>{
+        if(department.hod == req.userId){
+            const sms = new SMS({
+                message: smsMessage,
+                sendBy: req.userId,
+                semester: semesterId,
+                section: sectionId,
+                department: departmentId
+            })
+            sms.save();
+            User.find({
+                department: departmentId,
+                semester: semesterId,
+                section: sectionId
+            })
+            .then(users =>{
+                // console.log("############# this dep selected students")
+                // console.log(users);
+                users.forEach(user => {
+                    numbers = numbers + user.phone + ",";
+                });
+                // for(let i = 0; i < users.length; i++){
+                //     if(i != length-1){
+                //         numbers = numbers + users[i].phone + ", ";
+                //     } else {
+                //         numbers = numbers + users[i].phone;
+                //     }
+                // }
+                numbers = numbers.replace(/,([^,]*)$/, "" + '$1');
+               //numbers = "9814105801";
+
+                console.log("###############");
+                console.log("Message: - '" + smsMessage + "'");
+                console.log("Will be send to::- '" + numbers + "'");
+                console.log("##################");
+
+
+                sendSMSSPARROW(req,res,next, smsMessage, numbers)
+
+            }).catch(error => {
+                console.log(error);
+                error.message= "Error on Sending sms to users"
+                if (!error.statusCode) {
+                    error.statusCode = 500;
+                }
+                next(error);
+            })
+        } else {
+            res.status(403).json({
+                message: 'Not Allowed'
+            })
+        }
+    });
 }
 
 module.exports.getSectionsAndSemesters = (req,res,next) =>{
@@ -460,4 +428,74 @@ module.exports.getSMS = (req,res,next) =>{
             });
         }
     })
+}
+
+function sendSMSSPARROW(req,res,next, smsContent, to){
+    {
+        let sendSuccess = false;
+        console.log("########## SMS ###########");
+        const token = GLOBALtoken;
+        const identity = GLOBALidentity;
+        const formData = {
+            token:token,
+            from: identity,
+            to: to,
+            text: smsContent
+        }
+
+        const encodeForm = (data) => {
+            return Object.keys(data)
+                .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(data[key]))
+                .join('&');
+        }
+
+        console.log(token + " " + identity + " "+ to + " " + smsContent)
+        axios
+        .post('http://api.sparrowsms.com/v2/sms/', encodeForm(formData))
+        .then(res =>{
+            sendSuccess = true;
+            // console.log(res);
+            let count = res.data.count;
+            let response = res.data.response;
+            let message_id = res.data.message_id
+            let credit_consumed = res.data.credit_consumed
+            let credit_available = res.data.credit_available
+
+            let data = {
+                "error":false,
+                "count": count,
+                "message": response,
+                "message_id": message_id,
+                "credit_consumed": credit_consumed,
+                "credit_available": credit_available,
+            }
+            console.log("Success");
+            console.log(data);
+
+            res.status(200).json({
+                count: count,
+                message: response,
+                message_id: message_id,
+                credit_consumed: credit_consumed,
+                credit_available: credit_available,
+            })
+        })
+        .catch(error =>{
+            console.log("ERROR")
+            if(sendSuccess){
+                console.log("No it Succedded.")
+                res.status(200).json({
+                    extraMessage: "this is from catch success",
+                    message: "Message queed for sending."
+                })
+            } else {
+                console.log("Error")
+                error.message= "Error on Sending sms to users"
+                if (!error.statusCode) {
+                    error.statusCode = 500;
+                }
+                next(error);
+            }
+        })
+    }
 }
