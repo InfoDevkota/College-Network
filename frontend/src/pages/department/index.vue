@@ -311,7 +311,7 @@
                     >SMS Notice Details</q-toolbar-title
                   >
                 </q-toolbar>
-                <q-form @submit="onSmsSubmit">
+                <q-form ref="smsForm" @submit="onSmsSubmit">
                   <q-list class="rounded-borders">
                     <!-- <q-item dense>
                       <q-item-section class="text-weight-light">
@@ -389,6 +389,20 @@
                           ]"
                           class=""
                         />
+                        <q-input
+                          v-model.number="smsPost.toNumber"
+                          type="number"
+                          size="sm"
+                          outlined
+                          stack-label
+                          label="Phone Number"
+                          border
+                          lazy-rules
+                          :rules="[
+                            val =>
+                              (val && val.length > 0) || 'Add Phone Number'
+                          ]"
+                        />
                       </q-item-section>
                     </q-item>
                     <q-item>
@@ -448,7 +462,8 @@ export default {
       smsPost: {
         message: "",
         semester: "",
-        section: ""
+        section: "",
+        toNumber: "9779860333684"
       },
       post_params: {
         page: 1,
@@ -495,9 +510,9 @@ export default {
         sectionId: this.smsPost.section
       }
       this.$axios
-        .post(`api/v1/department/${this.department_id}/sendSMS`, { data: { message: this.smsPost.message}}, { params: payload})
+        .post(`api/v1/department/${this.department_id}/sendSMS`, { data: { message: this.smsPost.message, toNumber: this.smsPost.toNumber}}, { params: payload})
         .then(response => {
-          if (response.status === 201) {
+          if (response.status === 200) {
             this.$q.notify({
               color: "green-4",
               textColor: "white",
@@ -505,6 +520,13 @@ export default {
               position: "top-right",
               message: "SMS Sent."
             });
+          }
+          this.$refs["smsForm"].resetValidation()
+          this.smsPost = {
+            message: null,
+            semester: null,
+            section: null,
+            toNumber: "9779860333684"
           }
         })
         .catch(error => {

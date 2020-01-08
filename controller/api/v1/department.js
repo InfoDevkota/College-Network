@@ -220,106 +220,133 @@ module.exports.getTeachersBySemesterAndSectionByDepartment = (req,res,next) =>{
         }
     });
 }
+const Nexmo = require('nexmo');
 
+const nexmo = new Nexmo({
+  apiKey: process.env.NEXMO_API_KEY,
+  apiSecret: process.env.NEXMO_API_SECRET
+}, {debug: true});
 module.exports.postSendSMS = async (req,res,next) => {
-    const departmentId = req.params.departmentId; // host/departmentId
-    const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
-    const sectionId = req.query.sectionId;
-    const smsMessage = req.body.data.message;
+    try {
+        nexmo.message.sendSms('Nexmo', req.body.data.toNumber, req.body.data.message,{
+            type: "unicode"
+          }, (err, responseData) => {
+            if (err) {
+              console.log(err);
+            } else {
+              if (responseData.messages[0]['status'] === "0") {
+                res.status(200).json({
+                    message: "Message sent successfully."
+                })
+              } else {
+                res.status(401).json({
+                    message: `Message failed with error: ${responseData.messages[0]['error-text']}`
+                })
+              }
+            }
+          });
+      } catch (err) {
+        next(err)
+      }
+    
+    // const departmentId = req.params.departmentId; // host/departmentId
+    // const semesterId = req.query.semesterId; // host/departmentId?semesterId=6
+    // const sectionId = req.query.sectionId;
+    // const smsMessage = req.body.data.message;
     // console.log(req.body);
     // console.log(req.body.data.message);
     // console.log(smsMessage);
 
-    let numbers = "";
+    // let numbers = "";
 
-    Department.findById(departmentId)
-    .then(department =>{
-        if(department.hod == req.userId){
-            const sms = new SMS({
-                message: smsMessage,
-                sendBy: req.userId,
-                semester: semesterId,
-                section: sectionId,
-                department: departmentId
-            })
-            sms.save();
-            User.find({
-                department: departmentId,
-                semester: semesterId,
-                section: sectionId
-            })
-            .then(async users =>{
-                // console.log("############# this dep selected students")
-                // console.log(users);
-                users.forEach(user => {
-                    numbers = numbers + user.phone + ",";
-                });
-                // for(let i = 0; i < users.length; i++){
-                //     if(i != length-1){
-                //         numbers = numbers + users[i].phone + ", ";
-                //     } else {
-                //         numbers = numbers + users[i].phone;
-                //     }
-                // }
+    // Department.findById(departmentId)
+    // .then(department =>{
+    //     if(department.hod == req.userId){
+    //         const sms = new SMS({
+    //             message: smsMessage,
+    //             sendBy: req.userId,
+    //             semester: semesterId,
+    //             section: sectionId,
+    //             department: departmentId
+    //         })
+    //         sms.save();
+    //         User.find({
+    //             department: departmentId,
+    //             semester: semesterId,
+    //             section: sectionId
+    //         })
+    //         .then(async users =>{
+    //             // console.log("############# this dep selected students")
+    //             // console.log(users);
+    //             users.forEach(user => {
+    //                 numbers = numbers + user.phone + ",";
+    //             });
+    //             // for(let i = 0; i < users.length; i++){
+    //             //     if(i != length-1){
+    //             //         numbers = numbers + users[i].phone + ", ";
+    //             //     } else {
+    //             //         numbers = numbers + users[i].phone;
+    //             //     }
+    //             // }
 
-                numbers = numbers.replace(/,([^,]*)$/, "" + '$1');
-                //numbers = "9814105801";
+    //             numbers = numbers.replace(/,([^,]*)$/, "" + '$1');
+    //             //numbers = "9814105801";
 
-                console.log("###############");
-                console.log("Message: - '" + smsMessage + "'");
-                console.log("Will be send to::- '" + numbers + "'");
-                console.log("##################");
-                // res.status(200).json({
-                //     message: "success",
-                //     testMessage : smsMessage,
-                //     testNumbers : numbers
-                // })
+    //             console.log("###############");
+    //             console.log("Message: - '" + smsMessage + "'");
+    //             console.log("Will be send to::- '" + numbers + "'");
+    //             console.log("##################");
+    //             // res.status(200).json({
+    //             //     message: "success",
+    //             //     testMessage : smsMessage,
+    //             //     testNumbers : numbers
+    //             // })
 
-                let response = await sparrow.sendSMS(smsMessage, numbers)
-                console.log("RESponse");
-                res.status(200).json({
-                    message: "Sms Send",
-                    response
-                })
-                //console.log(response);
-                // .then(response =>{
-                //     if(response.error){
-                //         console.log("ERROR in sending SMS")
-                //         res.status(401).json({
-                //             message:response.message
-                //         })
-                //     } else {
-                //         console.log("SMS Sending Success")
-                //         res.status(200).json({
-                //             count: count,
-                //             message: response,
-                //             message_id: message_id,
-                //             credit_consumed: credit_consumed,
-                //             credit_available: credit_available,
-                //         })
-                //     }
-                // })
-                // .catch(error => {
-                //     // console.log("error");
-                //     // console.log(error);
-                //     if (!error.statusCode) {
-                //         error.statusCode = 500;
-                //     }
-                //     next(error);
-                // })
-            }).catch(error => {
-                console.log("ERROR on SMS");
-                if (!error.statusCode) {
-                    error.statusCode = 500;
-                }
-                next(error);
-            })
-        } else {
-            res.status(403).json({
-                message: 'Not Allowed'
-            })
-        }
-    });
+    //             let response = await sparrow.sendSMS(smsMessage, numbers)
+    //             console.log("RESponse");
+    //             res.status(200).json({
+    //                 message: "Sms Send",
+    //                 response
+    //             })
+    //             //console.log(response);
+    //             // .then(response =>{
+    //             //     if(response.error){
+    //             //         console.log("ERROR in sending SMS")
+    //             //         res.status(401).json({
+    //             //             message:response.message
+    //             //         })
+    //             //     } else {
+    //             //         console.log("SMS Sending Success")
+    //             //         res.status(200).json({
+    //             //             count: count,
+    //             //             message: response,
+    //             //             message_id: message_id,
+    //             //             credit_consumed: credit_consumed,
+    //             //             credit_available: credit_available,
+    //             //         })
+    //             //     }
+    //             // })
+    //             // .catch(error => {
+    //             //     // console.log("error");
+    //             //     // console.log(error);
+    //             //     if (!error.statusCode) {
+    //             //         error.statusCode = 500;
+    //             //     }
+    //             //     next(error);
+    //             // })
+    //         }).catch(error => {
+    //             console.log("ERROR on SMS");
+    //             if (!error.statusCode) {
+    //                 error.statusCode = 500;
+    //             }
+    //             next(error);
+    //         })
+    //     } else {
+    //         res.status(403).json({
+    //             message: 'Not Allowed'
+    //         })
+    //     }
+    // });
 }
 
 module.exports.getSectionsAndSemesters = (req,res,next) =>{
